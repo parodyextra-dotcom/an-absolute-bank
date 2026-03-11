@@ -1,0 +1,1760 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
+<title>스포츠지도사 문제은행</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.0/css/all.min.css">
+<style>
+:root {
+  --primary: #6366f1;
+  --primary-dark: #4f46e5;
+  --primary-light: #a5b4fc;
+  --primary-bg: #eef2ff;
+  --success: #10b981;
+  --success-bg: #d1fae5;
+  --danger: #ef4444;
+  --danger-bg: #fee2e2;
+  --warning: #f59e0b;
+  --warning-bg: #fef3c7;
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --radius-xs: 6px;
+  --shadow: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+  --shadow-md: 0 4px 12px rgba(0,0,0,.07);
+  --shadow-lg: 0 10px 30px rgba(0,0,0,.1);
+  --nav-height: 68px;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { font-size: 16px; }
+body {
+  font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--gray-50);
+  color: var(--gray-800);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  overflow-x: hidden;
+  padding-bottom: calc(var(--nav-height) + var(--safe-bottom));
+}
+
+/* ===== Scrollbar ===== */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--gray-300); border-radius: 4px; }
+
+/* ===== Loading ===== */
+#loadingScreen {
+  position: fixed; inset: 0; z-index: 9999;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  transition: opacity .5s, visibility .5s;
+}
+#loadingScreen.hidden { opacity: 0; visibility: hidden; }
+.loader-icon { font-size: 3rem; color: #fff; margin-bottom: 1.5rem; animation: pulse 1.2s infinite; }
+.loader-text { color: rgba(255,255,255,.9); font-size: .95rem; font-weight: 500; }
+.loader-bar { width: 200px; height: 4px; background: rgba(255,255,255,.2); border-radius: 2px; margin-top: 1rem; overflow: hidden; }
+.loader-bar-inner { height: 100%; width: 0%; background: #fff; border-radius: 2px; transition: width .3s; }
+@keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1)} }
+
+/* ===== Bottom Navigation ===== */
+.bottom-nav {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  height: calc(var(--nav-height) + var(--safe-bottom));
+  padding-bottom: var(--safe-bottom);
+  background: #fff;
+  border-top: 1px solid var(--gray-200);
+  display: flex; z-index: 100;
+  box-shadow: 0 -2px 10px rgba(0,0,0,.05);
+}
+.nav-item {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 4px; cursor: pointer; transition: all .2s;
+  color: var(--gray-400); text-decoration: none;
+  position: relative; -webkit-user-select: none; user-select: none;
+}
+.nav-item i { font-size: 1.25rem; transition: all .2s; }
+.nav-item span { font-size: .65rem; font-weight: 600; letter-spacing: -.01em; }
+.nav-item.active { color: var(--primary); }
+.nav-item.active i { transform: scale(1.15); }
+.nav-item::before {
+  content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  width: 0; height: 3px; background: var(--primary); border-radius: 0 0 3px 3px;
+  transition: width .3s;
+}
+.nav-item.active::before { width: 40px; }
+.nav-badge {
+  position: absolute; top: 6px; right: calc(50% - 20px);
+  background: var(--danger); color: #fff; font-size: .6rem;
+  min-width: 18px; height: 18px; border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; padding: 0 4px;
+}
+
+/* ===== Pages ===== */
+.page {
+  display: none; min-height: 100vh;
+  padding: 0 0 20px 0;
+  animation: fadeIn .35s ease;
+}
+.page.active { display: block; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+/* ===== Page Header ===== */
+.page-header {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  padding: 2rem 1.25rem 1.5rem;
+  color: #fff; position: relative; overflow: hidden;
+}
+.page-header::before {
+  content: ''; position: absolute; top: -40%; right: -20%;
+  width: 300px; height: 300px; border-radius: 50%;
+  background: rgba(255,255,255,.08);
+}
+.page-header::after {
+  content: ''; position: absolute; bottom: -50%; left: -10%;
+  width: 200px; height: 200px; border-radius: 50%;
+  background: rgba(255,255,255,.05);
+}
+.page-header h1 { font-size: 1.5rem; font-weight: 800; margin-bottom: .25rem; position: relative; z-index: 1; }
+.page-header p { font-size: .85rem; opacity: .85; font-weight: 400; position: relative; z-index: 1; }
+
+/* ===== Cards ===== */
+.card {
+  background: #fff; border-radius: var(--radius);
+  box-shadow: var(--shadow); margin: 1rem 1rem 0;
+  overflow: hidden;
+}
+.card-header {
+  padding: 1rem 1.25rem; display: flex;
+  align-items: center; justify-content: space-between;
+  border-bottom: 1px solid var(--gray-100);
+}
+.card-header h3 { font-size: .9rem; font-weight: 700; color: var(--gray-800); }
+.card-body { padding: 1.25rem; }
+
+/* ===== HOME: Stats Grid ===== */
+.stats-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: .75rem; margin: 1rem 1rem 0;
+}
+.stat-card {
+  background: #fff; border-radius: var(--radius);
+  padding: 1.25rem; box-shadow: var(--shadow);
+  position: relative; overflow: hidden;
+}
+.stat-card::before {
+  content: ''; position: absolute; top: 0; right: 0;
+  width: 60px; height: 60px; border-radius: 0 0 0 60px;
+}
+.stat-card.purple::before { background: rgba(99,102,241,.08); }
+.stat-card.green::before { background: rgba(16,185,129,.08); }
+.stat-card.orange::before { background: rgba(245,158,11,.08); }
+.stat-card.red::before { background: rgba(239,68,68,.08); }
+.stat-icon {
+  width: 40px; height: 40px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem; margin-bottom: .75rem;
+}
+.stat-card.purple .stat-icon { background: var(--primary-bg); color: var(--primary); }
+.stat-card.green .stat-icon { background: var(--success-bg); color: var(--success); }
+.stat-card.orange .stat-icon { background: var(--warning-bg); color: var(--warning); }
+.stat-card.red .stat-icon { background: var(--danger-bg); color: var(--danger); }
+.stat-value { font-size: 1.6rem; font-weight: 800; color: var(--gray-900); line-height: 1; }
+.stat-label { font-size: .75rem; color: var(--gray-500); margin-top: .35rem; font-weight: 500; }
+
+/* ===== HOME: Year Selector ===== */
+.year-scroll { padding: 1rem 1rem 0; }
+.year-chips {
+  display: flex; gap: .5rem; overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; padding-bottom: 4px;
+}
+.year-chips::-webkit-scrollbar { display: none; }
+.year-chip {
+  flex-shrink: 0; padding: .5rem 1rem;
+  background: #fff; border: 1.5px solid var(--gray-200);
+  border-radius: 50px; font-size: .8rem; font-weight: 600;
+  color: var(--gray-600); cursor: pointer; transition: all .2s;
+  white-space: nowrap;
+}
+.year-chip.active, .year-chip:hover {
+  background: var(--primary); color: #fff;
+  border-color: var(--primary); box-shadow: 0 2px 8px rgba(99,102,241,.3);
+}
+
+/* ===== HOME: Subject List ===== */
+.subject-list { padding: 0; }
+.subject-item {
+  display: flex; align-items: center; gap: 1rem;
+  padding: 1rem 1.25rem; cursor: pointer;
+  transition: background .15s; border-bottom: 1px solid var(--gray-50);
+}
+.subject-item:last-child { border-bottom: none; }
+.subject-item:active { background: var(--gray-50); }
+.subject-icon {
+  width: 44px; height: 44px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .85rem; font-weight: 700; color: #fff; flex-shrink: 0;
+}
+.subject-info { flex: 1; min-width: 0; }
+.subject-name { font-size: .88rem; font-weight: 600; color: var(--gray-800); }
+.subject-meta { font-size: .75rem; color: var(--gray-400); margin-top: 2px; }
+.subject-arrow { color: var(--gray-300); font-size: .8rem; }
+
+.subject-colors { --c1:#6366f1;--c2:#8b5cf6;--c3:#ec4899;--c4:#f59e0b;--c5:#10b981;--c6:#06b6d4;--c7:#f97316; }
+
+/* ===== QUIZ: Question Area ===== */
+.quiz-toolbar {
+  display: flex; align-items: center; gap: .5rem;
+  padding: 1rem; background: #fff;
+  border-bottom: 1px solid var(--gray-100);
+  position: sticky; top: 0; z-index: 10;
+}
+.quiz-toolbar select {
+  flex: 1; padding: .6rem .75rem; border: 1.5px solid var(--gray-200);
+  border-radius: var(--radius-sm); font-size: .82rem; font-weight: 500;
+  color: var(--gray-700); background: var(--gray-50);
+  font-family: inherit; appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right .75rem center;
+  padding-right: 2rem;
+}
+.quiz-toolbar .btn-icon {
+  width: 40px; height: 40px; border-radius: var(--radius-sm);
+  border: 1.5px solid var(--gray-200); background: var(--gray-50);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; color: var(--gray-600); font-size: .95rem;
+  transition: all .15s;
+}
+.quiz-toolbar .btn-icon:active { background: var(--gray-200); }
+
+.quiz-progress {
+  padding: .5rem 1rem; background: #fff;
+  border-bottom: 1px solid var(--gray-100);
+}
+.progress-bar-bg {
+  width: 100%; height: 6px; background: var(--gray-100);
+  border-radius: 3px; overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%; background: linear-gradient(90deg, var(--primary), #8b5cf6);
+  border-radius: 3px; transition: width .4s ease;
+}
+.progress-text {
+  display: flex; justify-content: space-between;
+  font-size: .7rem; color: var(--gray-400); margin-top: .3rem; font-weight: 500;
+}
+
+.question-card {
+  margin: 1rem; background: #fff;
+  border-radius: var(--radius); box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.q-number-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: .75rem 1.25rem; background: var(--primary-bg);
+  border-bottom: 1px solid rgba(99,102,241,.1);
+}
+.q-number {
+  font-size: .8rem; font-weight: 700; color: var(--primary);
+  display: flex; align-items: center; gap: .4rem;
+}
+.q-bookmark {
+  width: 32px; height: 32px; display: flex;
+  align-items: center; justify-content: center;
+  cursor: pointer; color: var(--gray-300);
+  font-size: 1rem; transition: all .2s; border: none; background: none;
+}
+.q-bookmark.active { color: var(--warning); }
+.q-text {
+  padding: 1.25rem; font-size: .88rem;
+  line-height: 1.7; color: var(--gray-800);
+  white-space: pre-wrap; font-weight: 400;
+}
+
+.options-list { padding: 0 1rem 1rem; }
+.option-item {
+  display: flex; align-items: flex-start; gap: .75rem;
+  padding: .9rem 1rem; margin-bottom: .5rem;
+  border: 1.5px solid var(--gray-200);
+  border-radius: var(--radius-sm); cursor: pointer;
+  transition: all .2s; background: #fff;
+}
+.option-item:last-child { margin-bottom: 0; }
+.option-item:active { transform: scale(.99); }
+.option-num {
+  width: 28px; height: 28px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .78rem; font-weight: 700; flex-shrink: 0;
+  background: var(--gray-100); color: var(--gray-600);
+  transition: all .2s;
+}
+.option-text { font-size: .84rem; line-height: 1.6; color: var(--gray-700); padding-top: 2px; flex: 1; }
+
+.option-item.selected { border-color: var(--primary); background: var(--primary-bg); }
+.option-item.selected .option-num { background: var(--primary); color: #fff; }
+
+.option-item.correct { border-color: var(--success); background: var(--success-bg); }
+.option-item.correct .option-num { background: var(--success); color: #fff; }
+.option-item.correct .option-text { color: var(--success); font-weight: 600; }
+
+.option-item.wrong { border-color: var(--danger); background: var(--danger-bg); }
+.option-item.wrong .option-num { background: var(--danger); color: #fff; }
+.option-item.wrong .option-text { color: var(--danger); }
+
+.option-item.disabled { pointer-events: none; }
+.option-item.dimmed { opacity: .5; }
+
+/* Explanation */
+.explanation-box {
+  margin: 0 1rem 1rem; padding: 1rem 1.25rem;
+  background: var(--gray-50); border-radius: var(--radius-sm);
+  border-left: 4px solid var(--primary);
+  display: none;
+}
+.explanation-box.show { display: block; animation: fadeIn .3s ease; }
+.explanation-title {
+  font-size: .78rem; font-weight: 700; color: var(--primary);
+  margin-bottom: .5rem; display: flex; align-items: center; gap: .3rem;
+}
+.explanation-text { font-size: .82rem; line-height: 1.7; color: var(--gray-600); }
+.explanation-wrong { margin-top: .75rem; padding-top: .75rem; border-top: 1px dashed var(--gray-200); }
+.explanation-wrong-item { font-size: .78rem; line-height: 1.6; color: var(--gray-500); margin-bottom: .4rem; }
+.explanation-wrong-item strong { color: var(--danger); font-weight: 600; }
+
+/* Quiz Nav */
+.quiz-nav {
+  display: flex; gap: .75rem; padding: 0 1rem 1rem;
+}
+.quiz-nav button {
+  flex: 1; padding: .85rem; border: none; border-radius: var(--radius-sm);
+  font-size: .85rem; font-weight: 600; cursor: pointer;
+  font-family: inherit; transition: all .15s;
+  display: flex; align-items: center; justify-content: center; gap: .4rem;
+}
+.btn-prev { background: var(--gray-100); color: var(--gray-600); }
+.btn-prev:active { background: var(--gray-200); }
+.btn-next { background: var(--primary); color: #fff; }
+.btn-next:active { background: var(--primary-dark); }
+
+/* Question Number Grid */
+.q-grid-overlay {
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(0,0,0,.5); backdrop-filter: blur(4px);
+  display: none; align-items: flex-end; justify-content: center;
+}
+.q-grid-overlay.show { display: flex; }
+.q-grid-panel {
+  background: #fff; width: 100%; max-width: 480px;
+  max-height: 70vh; border-radius: var(--radius) var(--radius) 0 0;
+  overflow-y: auto; animation: slideUp .3s ease;
+}
+@keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
+.q-grid-header {
+  padding: 1rem 1.25rem; border-bottom: 1px solid var(--gray-100);
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; background: #fff; z-index: 1;
+}
+.q-grid-header h3 { font-size: .9rem; font-weight: 700; }
+.q-grid-close {
+  width: 32px; height: 32px; border-radius: 50%;
+  border: none; background: var(--gray-100); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--gray-500);
+}
+.q-grid-body { padding: 1rem 1.25rem; }
+.q-grid-nums {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: .5rem;
+}
+.q-grid-num {
+  aspect-ratio: 1; border-radius: var(--radius-xs);
+  display: flex; align-items: center; justify-content: center;
+  font-size: .82rem; font-weight: 600; cursor: pointer;
+  border: 1.5px solid var(--gray-200); background: #fff;
+  color: var(--gray-600); transition: all .15s;
+}
+.q-grid-num.answered { background: var(--primary-bg); border-color: var(--primary-light); color: var(--primary); }
+.q-grid-num.correct { background: var(--success-bg); border-color: var(--success); color: var(--success); }
+.q-grid-num.wrong { background: var(--danger-bg); border-color: var(--danger); color: var(--danger); }
+.q-grid-num.current { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(99,102,241,.2); }
+
+/* ===== WRONG NOTES ===== */
+.empty-state {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 4rem 2rem; text-align: center;
+}
+.empty-icon { font-size: 3rem; color: var(--gray-300); margin-bottom: 1rem; }
+.empty-text { font-size: .9rem; color: var(--gray-400); font-weight: 500; }
+.empty-sub { font-size: .78rem; color: var(--gray-300); margin-top: .3rem; }
+
+.wrong-note-item {
+  padding: 1rem 1.25rem; border-bottom: 1px solid var(--gray-50);
+  cursor: pointer; transition: background .15s;
+}
+.wrong-note-item:active { background: var(--gray-50); }
+.wrong-note-meta {
+  display: flex; align-items: center; gap: .5rem; margin-bottom: .5rem;
+}
+.wrong-note-badge {
+  padding: .2rem .5rem; border-radius: 4px;
+  font-size: .65rem; font-weight: 600; background: var(--danger-bg); color: var(--danger);
+}
+.wrong-note-year {
+  font-size: .7rem; color: var(--gray-400); font-weight: 500;
+}
+.wrong-note-q {
+  font-size: .82rem; line-height: 1.5; color: var(--gray-700);
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.wrong-note-answer {
+  margin-top: .4rem; font-size: .75rem; color: var(--gray-400);
+}
+.wrong-note-actions {
+  display: flex; gap: .5rem; margin-top: .5rem;
+}
+.wrong-note-actions button {
+  padding: .35rem .65rem; border: 1px solid var(--gray-200);
+  border-radius: var(--radius-xs); background: #fff;
+  font-size: .7rem; font-weight: 500; cursor: pointer;
+  font-family: inherit; color: var(--gray-500); transition: all .15s;
+}
+.wrong-note-actions button:hover { border-color: var(--primary); color: var(--primary); }
+.wrong-note-actions button.delete-btn:hover { border-color: var(--danger); color: var(--danger); }
+
+/* ===== KEY POINTS (Placeholder) ===== */
+.placeholder-container {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 5rem 2rem; text-align: center;
+}
+.placeholder-icon {
+  width: 80px; height: 80px; border-radius: 50%;
+  background: var(--warning-bg); display: flex;
+  align-items: center; justify-content: center;
+  font-size: 2rem; color: var(--warning); margin-bottom: 1.5rem;
+}
+.placeholder-title { font-size: 1.1rem; font-weight: 700; color: var(--gray-700); margin-bottom: .5rem; }
+.placeholder-desc { font-size: .85rem; color: var(--gray-400); line-height: 1.6; }
+
+/* ===== SETTINGS ===== */
+.setting-group { padding: 1rem 1.25rem 0; }
+.setting-group-title {
+  font-size: .72rem; font-weight: 700; color: var(--gray-400);
+  text-transform: uppercase; letter-spacing: .05em; margin-bottom: .5rem;
+}
+.setting-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1rem 0; border-bottom: 1px solid var(--gray-50);
+}
+.setting-item:last-child { border-bottom: none; }
+.setting-left { display: flex; align-items: center; gap: .75rem; }
+.setting-icon {
+  width: 36px; height: 36px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .85rem;
+}
+.setting-icon.purple { background: var(--primary-bg); color: var(--primary); }
+.setting-icon.green { background: var(--success-bg); color: var(--success); }
+.setting-icon.orange { background: var(--warning-bg); color: var(--warning); }
+.setting-icon.red { background: var(--danger-bg); color: var(--danger); }
+.setting-icon.blue { background: #dbeafe; color: #3b82f6; }
+.setting-label { font-size: .85rem; font-weight: 500; color: var(--gray-700); }
+.setting-desc { font-size: .72rem; color: var(--gray-400); margin-top: 1px; }
+.setting-right { display: flex; align-items: center; gap: .5rem; }
+
+/* Toggle */
+.toggle {
+  width: 48px; height: 28px; border-radius: 14px;
+  background: var(--gray-300); position: relative;
+  cursor: pointer; transition: background .2s;
+}
+.toggle.active { background: var(--primary); }
+.toggle::after {
+  content: ''; position: absolute; top: 3px; left: 3px;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.15);
+  transition: transform .2s;
+}
+.toggle.active::after { transform: translateX(20px); }
+
+/* Buttons */
+.btn-primary {
+  padding: .85rem 1.5rem; background: var(--primary);
+  color: #fff; border: none; border-radius: var(--radius-sm);
+  font-size: .85rem; font-weight: 600; cursor: pointer;
+  font-family: inherit; transition: all .15s;
+  display: inline-flex; align-items: center; gap: .4rem;
+}
+.btn-primary:active { background: var(--primary-dark); transform: scale(.98); }
+.btn-outline {
+  padding: .85rem 1.5rem; background: #fff;
+  color: var(--primary); border: 1.5px solid var(--primary);
+  border-radius: var(--radius-sm);
+  font-size: .85rem; font-weight: 600; cursor: pointer;
+  font-family: inherit; transition: all .15s;
+}
+.btn-danger {
+  padding: .7rem 1.2rem; background: #fff;
+  color: var(--danger); border: 1.5px solid var(--danger);
+  border-radius: var(--radius-sm);
+  font-size: .82rem; font-weight: 600; cursor: pointer;
+  font-family: inherit;
+}
+
+/* ===== Filter Chips ===== */
+.filter-row {
+  display: flex; gap: .5rem; padding: .75rem 1rem;
+  overflow-x: auto; -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.filter-row::-webkit-scrollbar { display: none; }
+.filter-chip {
+  flex-shrink: 0; padding: .45rem .85rem;
+  border-radius: 50px; font-size: .75rem; font-weight: 600;
+  cursor: pointer; transition: all .2s; border: 1.5px solid var(--gray-200);
+  background: #fff; color: var(--gray-500); white-space: nowrap;
+}
+.filter-chip.active {
+  background: var(--primary); color: #fff;
+  border-color: var(--primary);
+}
+
+/* ===== Wrong Notes Detail Modal ===== */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 300;
+  background: rgba(0,0,0,.5); backdrop-filter: blur(4px);
+  display: none; align-items: center; justify-content: center;
+  padding: 1rem;
+}
+.modal-overlay.show { display: flex; }
+.modal-content {
+  background: #fff; border-radius: var(--radius);
+  max-width: 420px; width: 100%; max-height: 80vh;
+  overflow-y: auto; animation: fadeIn .25s ease;
+}
+.modal-header {
+  padding: 1.25rem; border-bottom: 1px solid var(--gray-100);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.modal-header h3 { font-size: .95rem; font-weight: 700; }
+.modal-close {
+  width: 32px; height: 32px; border-radius: 50%;
+  border: none; background: var(--gray-100); cursor: pointer;
+  font-size: .9rem; color: var(--gray-500);
+  display: flex; align-items: center; justify-content: center;
+}
+.modal-body { padding: 1.25rem; }
+
+/* ===== Results Screen ===== */
+.result-screen { padding: 2rem 1rem; text-align: center; }
+.result-circle-wrap { position: relative; width: 160px; height: 160px; margin: 0 auto 1.5rem; }
+.result-circle-wrap canvas { width: 160px; height: 160px; }
+.result-score-text {
+  position: absolute; inset: 0; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+}
+.result-score-num { font-size: 2.5rem; font-weight: 900; color: var(--gray-900); line-height: 1; }
+.result-score-label { font-size: .75rem; color: var(--gray-400); margin-top: .3rem; font-weight: 500; }
+.result-title { font-size: 1.2rem; font-weight: 800; color: var(--gray-900); margin-bottom: .3rem; }
+.result-subtitle { font-size: .85rem; color: var(--gray-500); margin-bottom: 1.5rem; }
+.result-stats { display: flex; justify-content: center; gap: 2rem; margin-bottom: 2rem; }
+.result-stat { text-align: center; }
+.result-stat-num { font-size: 1.5rem; font-weight: 800; }
+.result-stat-label { font-size: .72rem; color: var(--gray-400); font-weight: 500; }
+.result-buttons { display: flex; gap: .75rem; justify-content: center; flex-wrap: wrap; }
+
+/* ===== Responsive ===== */
+@media (min-width: 480px) {
+  .stats-grid { grid-template-columns: repeat(4, 1fr); }
+  .q-grid-nums { grid-template-columns: repeat(10, 1fr); }
+}
+@media (min-width: 600px) {
+  body { max-width: 480px; margin: 0 auto; }
+  .bottom-nav { max-width: 480px; left: 50%; transform: translateX(-50%); }
+  .q-grid-overlay, .modal-overlay { max-width: 480px; left: 50%; transform: translateX(-50%); }
+}
+
+/* Toast */
+.toast {
+  position: fixed; bottom: calc(var(--nav-height) + 20px + var(--safe-bottom));
+  left: 50%; transform: translateX(-50%) translateY(100px);
+  background: var(--gray-800); color: #fff;
+  padding: .75rem 1.25rem; border-radius: 50px;
+  font-size: .82rem; font-weight: 500; z-index: 500;
+  box-shadow: var(--shadow-lg); transition: transform .3s;
+  white-space: nowrap; max-width: 90%;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* Shimmer loading placeholder */
+.shimmer {
+  background: linear-gradient(90deg, var(--gray-100) 25%, var(--gray-50) 50%, var(--gray-100) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--radius-sm);
+}
+@keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+
+/* Custom scrollbar for question card area */
+.quiz-content { overflow-y: auto; }
+</style>
+</head>
+<body>
+
+<!-- Loading Screen -->
+<div id="loadingScreen">
+  <div class="loader-icon"><i class="fas fa-dumbbell"></i></div>
+  <div class="loader-text">문제은행을 준비하고 있어요...</div>
+  <div class="loader-bar"><div class="loader-bar-inner" id="loaderBar"></div></div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- ===== PAGE: HOME ===== -->
+<div class="page active" id="pageHome">
+  <div class="page-header">
+    <h1>🏋️ 스포츠지도사 문제은행</h1>
+    <p>2급 전문스포츠지도사 필기시험 대비</p>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card purple">
+      <div class="stat-icon"><i class="fas fa-book"></i></div>
+      <div class="stat-value" id="statTotal">0</div>
+      <div class="stat-label">전체 문제</div>
+    </div>
+    <div class="stat-card green">
+      <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+      <div class="stat-value" id="statSolved">0</div>
+      <div class="stat-label">풀은 문제</div>
+    </div>
+    <div class="stat-card orange">
+      <div class="stat-icon"><i class="fas fa-percentage"></i></div>
+      <div class="stat-value" id="statRate">0%</div>
+      <div class="stat-label">정답률</div>
+    </div>
+    <div class="stat-card red">
+      <div class="stat-icon"><i class="fas fa-times-circle"></i></div>
+      <div class="stat-value" id="statWrong">0</div>
+      <div class="stat-label">오답 수</div>
+    </div>
+  </div>
+
+  <div class="year-scroll">
+    <div class="year-chips" id="yearChips"></div>
+  </div>
+
+  <div class="card" style="margin-top:.75rem">
+    <div class="card-header">
+      <h3><i class="fas fa-list-ul" style="color:var(--primary);margin-right:.4rem"></i>과목 선택</h3>
+      <span style="font-size:.75rem;color:var(--gray-400)" id="selectedYearLabel">2025</span>
+    </div>
+    <div class="subject-list" id="subjectList"></div>
+  </div>
+
+  <!-- Recent History -->
+  <div class="card" id="recentCard" style="display:none">
+    <div class="card-header">
+      <h3><i class="fas fa-clock-rotate-left" style="color:var(--warning);margin-right:.4rem"></i>최근 학습</h3>
+    </div>
+    <div id="recentList"></div>
+  </div>
+</div>
+
+<!-- ===== PAGE: QUIZ ===== -->
+<div class="page" id="pageQuiz">
+  <div class="quiz-toolbar">
+    <select id="quizYearSelect"></select>
+    <select id="quizSubjectSelect"></select>
+    <button class="btn-icon" id="btnGrid" title="문제 목록"><i class="fas fa-th"></i></button>
+    <button class="btn-icon" id="btnShuffle" title="섞기"><i class="fas fa-shuffle"></i></button>
+  </div>
+  <div class="quiz-progress">
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="quizProgressBar"></div></div>
+    <div class="progress-text">
+      <span id="quizProgressText">0 / 0</span>
+      <span id="quizScoreText">정답: 0</span>
+    </div>
+  </div>
+  <div class="quiz-content" id="quizContent">
+    <div id="questionArea"></div>
+    <div id="resultArea" style="display:none"></div>
+  </div>
+</div>
+
+<!-- Question Number Grid Overlay -->
+<div class="q-grid-overlay" id="qGridOverlay">
+  <div class="q-grid-panel">
+    <div class="q-grid-header">
+      <h3>문제 목록</h3>
+      <button class="q-grid-close" onclick="closeQGrid()"><i class="fas fa-xmark"></i></button>
+    </div>
+    <div class="q-grid-body">
+      <div class="q-grid-nums" id="qGridNums"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE: WRONG NOTES ===== -->
+<div class="page" id="pageWrong">
+  <div class="page-header">
+    <h1>📝 오답노트</h1>
+    <p>틀린 문제를 복습하고 실력을 높여보세요</p>
+  </div>
+  <div class="filter-row" id="wrongFilters"></div>
+  <div class="card" style="margin-top:0">
+    <div class="card-header">
+      <h3 id="wrongCount">오답 0개</h3>
+      <button class="btn-danger" id="btnClearWrong" style="display:none" onclick="clearAllWrong()">
+        <i class="fas fa-trash-can"></i> 전체 삭제
+      </button>
+    </div>
+    <div id="wrongList"></div>
+  </div>
+</div>
+
+<!-- Wrong Note Detail Modal -->
+<div class="modal-overlay" id="wrongModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>오답 상세</h3>
+      <button class="modal-close" onclick="closeWrongModal()"><i class="fas fa-xmark"></i></button>
+    </div>
+    <div class="modal-body" id="wrongModalBody"></div>
+  </div>
+</div>
+
+<!-- ===== PAGE: KEY POINTS ===== -->
+<div class="page" id="pageKeyPoints">
+  <div class="page-header">
+    <h1>📌 요점정리</h1>
+    <p>핵심 내용을 한 눈에 정리</p>
+  </div>
+  <div class="placeholder-container">
+    <div class="placeholder-icon"><i class="fas fa-bookmark"></i></div>
+    <div class="placeholder-title">준비 중입니다</div>
+    <div class="placeholder-desc">과목별 핵심 요점정리가<br>곧 업데이트될 예정이에요!</div>
+  </div>
+</div>
+
+<!-- ===== PAGE: SETTINGS ===== -->
+<div class="page" id="pageSettings">
+  <div class="page-header">
+    <h1>⚙️ 설정</h1>
+    <p>앱 설정을 관리하세요</p>
+  </div>
+
+  <div class="card">
+    <div class="setting-group">
+      <div class="setting-group-title">학습 설정</div>
+      <div class="setting-item">
+        <div class="setting-left">
+          <div class="setting-icon purple"><i class="fas fa-eye"></i></div>
+          <div>
+            <div class="setting-label">즉시 정답 확인</div>
+            <div class="setting-desc">문제 선택 시 바로 정답 표시</div>
+          </div>
+        </div>
+        <div class="toggle active" id="toggleInstant" onclick="toggleSetting('instantCheck')"></div>
+      </div>
+      <div class="setting-item">
+        <div class="setting-left">
+          <div class="setting-icon green"><i class="fas fa-lightbulb"></i></div>
+          <div>
+            <div class="setting-label">해설 자동 표시</div>
+            <div class="setting-desc">정답 확인 시 해설도 함께 표시</div>
+          </div>
+        </div>
+        <div class="toggle active" id="toggleExplanation" onclick="toggleSetting('showExplanation')"></div>
+      </div>
+      <div class="setting-item">
+        <div class="setting-left">
+          <div class="setting-icon orange"><i class="fas fa-shuffle"></i></div>
+          <div>
+            <div class="setting-label">보기 순서 섞기</div>
+            <div class="setting-desc">선택지 순서를 무작위로 변경</div>
+          </div>
+        </div>
+        <div class="toggle" id="toggleShuffle" onclick="toggleSetting('shuffleOptions')"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="setting-group">
+      <div class="setting-group-title">데이터 관리</div>
+      <div class="setting-item">
+        <div class="setting-left">
+          <div class="setting-icon red"><i class="fas fa-rotate-left"></i></div>
+          <div>
+            <div class="setting-label">학습 기록 초기화</div>
+            <div class="setting-desc">모든 풀이 기록과 오답노트를 삭제합니다</div>
+          </div>
+        </div>
+        <button class="btn-danger" onclick="resetAllData()">초기화</button>
+      </div>
+      <div class="setting-item">
+        <div class="setting-left">
+          <div class="setting-icon blue"><i class="fas fa-info-circle"></i></div>
+          <div>
+            <div class="setting-label">앱 정보</div>
+            <div class="setting-desc">스포츠지도사 문제은행 v1.0</div>
+          </div>
+        </div>
+        <span style="font-size:.75rem;color:var(--gray-400)">2016~2025</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== BOTTOM NAV ===== -->
+<nav class="bottom-nav">
+  <div class="nav-item active" data-page="pageHome">
+    <i class="fas fa-home"></i><span>홈</span>
+  </div>
+  <div class="nav-item" data-page="pageQuiz">
+    <i class="fas fa-pen-to-square"></i><span>문제</span>
+  </div>
+  <div class="nav-item" data-page="pageWrong">
+    <i class="fas fa-book-open"></i><span>오답노트</span>
+    <div class="nav-badge" id="wrongBadge" style="display:none">0</div>
+  </div>
+  <div class="nav-item" data-page="pageKeyPoints">
+    <i class="fas fa-bookmark"></i><span>요점정리</span>
+  </div>
+  <div class="nav-item" data-page="pageSettings">
+    <i class="fas fa-gear"></i><span>설정</span>
+  </div>
+</nav>
+
+<script>
+// ===== GLOBAL STATE =====
+const DATA_URLS = {
+  2016: 'data/2016.json',
+  2017: 'data/2017.json',
+  2018: 'data/2018.json',
+  2019: 'data/2019.json',
+  2020: 'data/2020.json',
+  2021: 'data/2021.json',
+  2022: 'data/2022.json',
+  2023: 'data/2023.json',
+  2025: 'data/2025.json'
+};
+const YEARS = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2025];
+const SUBJECT_COLORS = ['#6366f1','#8b5cf6','#ec4899','#f59e0b','#10b981','#06b6d4','#f97316'];
+
+let allData = {};         // { year: normalized data }
+let selectedYear = 2025;
+let settings = {
+  instantCheck: true,
+  showExplanation: true,
+  shuffleOptions: false
+};
+
+// Quiz state
+let quiz = {
+  year: null,
+  subjectCode: null,
+  questions: [],
+  currentIndex: 0,
+  answers: {},       // { index: selectedOption }
+  correctCount: 0,
+  finished: false,
+  shuffleMap: {}     // { index: [shuffled indices] }
+};
+
+// Storage keys
+const STORAGE_WRONG = 'sportsQuiz_wrong';
+const STORAGE_HISTORY = 'sportsQuiz_history';
+const STORAGE_SETTINGS = 'sportsQuiz_settings';
+const STORAGE_SOLVED = 'sportsQuiz_solved';
+
+// ===== LOAD & NORMALIZE DATA =====
+function normalizeData(year, raw) {
+  const subjects = [];
+  const rawSubjects = raw.subjects || [];
+
+  for (const subj of rawSubjects) {
+    const subjectName = subj.subject_name || subj.name || '';
+    const subjectCode = String(subj.subject_code || subj.code || '');
+    const questions = [];
+
+    for (const q of (subj.questions || [])) {
+      const qNum = q.question_number || q.number || 0;
+      const qText = q.question || '';
+      const answer = q.answer;
+
+      // Normalize options - can be array or object
+      let options = [];
+      const rawOpts = q.options;
+      if (Array.isArray(rawOpts)) {
+        options = rawOpts.map((o, i) => ({ num: i + 1, text: String(o).replace(/^[①②③④⑤\d]+[\.\)]\s*/, '') }));
+      } else if (typeof rawOpts === 'object' && rawOpts !== null) {
+        const keys = Object.keys(rawOpts).sort((a, b) => parseInt(a) - parseInt(b));
+        options = keys.map(k => ({ num: parseInt(k), text: rawOpts[k] }));
+      }
+
+      // Normalize explanation
+      let correctExpl = '';
+      let wrongExpls = {};
+
+      if (typeof q.explanation === 'string') {
+        correctExpl = q.explanation;
+        // Check option_explanations
+        if (q.option_explanations) {
+          const oe = q.option_explanations;
+          Object.keys(oe).forEach(k => {
+            if (parseInt(k) !== answer) wrongExpls[k] = oe[k];
+          });
+        }
+      } else if (typeof q.explanation === 'object' && q.explanation !== null) {
+        correctExpl = q.explanation.correct_answer_explanation || q.explanation.correct || '';
+        const we = q.explanation.wrong_answers_explanation || q.explanation.wrong_answer_explanations || q.explanation.wrong || q.explanation.incorrect || {};
+        Object.keys(we).forEach(k => { wrongExpls[k] = we[k]; });
+      }
+
+      if (q.correct_answer_explanation) correctExpl = q.correct_answer_explanation;
+      if (q.wrong_answers_explanation) {
+        const we = q.wrong_answers_explanation;
+        Object.keys(we).forEach(k => { wrongExpls[k] = we[k]; });
+      }
+
+      // Handle explanations (2018, 2021, 2025 format)
+      if (q.explanations) {
+        const expl = q.explanations;
+        correctExpl = expl.correct_answer_explanation || expl.correct || '';
+        const we = expl.wrong_options_explanation || expl.wrong_answer_explanations || expl.wrong || expl.incorrect || {};
+        Object.keys(we).forEach(k => { wrongExpls[k] = we[k]; });
+      }
+
+      questions.push({
+        number: qNum,
+        question: qText,
+        options: options,
+        answer: answer,
+        correctExplanation: correctExpl,
+        wrongExplanations: wrongExpls
+      });
+    }
+
+    subjects.push({
+      code: subjectCode,
+      name: subjectName,
+      questions: questions
+    });
+  }
+
+  return { year, subjects };
+}
+
+async function loadAllData() {
+  const bar = document.getElementById('loaderBar');
+  let loaded = 0;
+  const total = YEARS.length;
+
+  const promises = YEARS.map(async (year) => {
+    try {
+      const resp = await fetch(DATA_URLS[year]);
+      let text = await resp.text();
+      // Sanitize: remove control characters inside JSON strings
+      text = text.replace(/[\x00-\x1f\x7f]/g, (match) => {
+        if (match === '\n' || match === '\r' || match === '\t') return match;
+        return '';
+      });
+      // Fix stray newlines inside JSON string values
+      text = text.replace(/("(?:[^"\\]|\\.)*")/gs, (match) => {
+        return match.replace(/\n/g, ' ').replace(/\r/g, '');
+      });
+      const raw = JSON.parse(text);
+      allData[year] = normalizeData(year, raw);
+    } catch(e) {
+      console.error(`Error loading ${year}:`, e);
+    }
+    loaded++;
+    bar.style.width = (loaded / total * 100) + '%';
+  });
+
+  await Promise.all(promises);
+}
+
+// ===== STORAGE =====
+function loadSettings() {
+  try {
+    const s = JSON.parse(localStorage.getItem(STORAGE_SETTINGS));
+    if (s) settings = { ...settings, ...s };
+  } catch(e) {}
+  updateSettingsUI();
+}
+function saveSettings() {
+  localStorage.setItem(STORAGE_SETTINGS, JSON.stringify(settings));
+}
+function getWrongNotes() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_WRONG)) || []; } catch(e) { return []; }
+}
+function saveWrongNotes(notes) {
+  localStorage.setItem(STORAGE_WRONG, JSON.stringify(notes));
+  updateWrongBadge();
+}
+function getSolvedData() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_SOLVED)) || {}; } catch(e) { return {}; }
+}
+function saveSolvedData(data) {
+  localStorage.setItem(STORAGE_SOLVED, JSON.stringify(data));
+}
+function getHistory() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_HISTORY)) || []; } catch(e) { return []; }
+}
+function saveHistory(h) {
+  localStorage.setItem(STORAGE_HISTORY, JSON.stringify(h.slice(0, 20)));
+}
+
+// ===== NAVIGATION =====
+document.querySelectorAll('.nav-item').forEach(item => {
+  item.addEventListener('click', () => {
+    const pageId = item.dataset.page;
+    switchPage(pageId);
+  });
+});
+
+function switchPage(pageId) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById(pageId).classList.add('active');
+  document.querySelector(`[data-page="${pageId}"]`).classList.add('active');
+
+  if (pageId === 'pageWrong') renderWrongNotes();
+  if (pageId === 'pageHome') refreshHomeStats();
+  window.scrollTo(0, 0);
+}
+
+// ===== TOAST =====
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+// ===== HOME PAGE =====
+function renderYearChips() {
+  const wrap = document.getElementById('yearChips');
+  wrap.innerHTML = YEARS.map(y =>
+    `<div class="year-chip ${y === selectedYear ? 'active' : ''}" data-year="${y}">${y}년</div>`
+  ).join('');
+  wrap.querySelectorAll('.year-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      selectedYear = parseInt(chip.dataset.year);
+      renderYearChips();
+      renderSubjectList();
+    });
+  });
+}
+
+function renderSubjectList() {
+  const data = allData[selectedYear];
+  if (!data) return;
+  const list = document.getElementById('subjectList');
+  document.getElementById('selectedYearLabel').textContent = selectedYear + '년';
+
+  const solved = getSolvedData();
+
+  list.innerHTML = data.subjects.map((subj, i) => {
+    const color = SUBJECT_COLORS[i % SUBJECT_COLORS.length];
+    const initial = subj.name.substring(0, 2);
+    const qCount = subj.questions.length;
+    const key = `${selectedYear}_${subj.code}`;
+    const solvedCount = solved[key] ? Object.keys(solved[key]).length : 0;
+
+    return `
+      <div class="subject-item" onclick="startQuiz(${selectedYear}, '${subj.code}')">
+        <div class="subject-icon" style="background:${color}">${initial}</div>
+        <div class="subject-info">
+          <div class="subject-name">${subj.name}</div>
+          <div class="subject-meta">${qCount}문제 · 풀이 ${solvedCount}/${qCount}</div>
+        </div>
+        <div class="subject-arrow"><i class="fas fa-chevron-right"></i></div>
+      </div>
+    `;
+  }).join('');
+}
+
+function refreshHomeStats() {
+  const solved = getSolvedData();
+  const wrong = getWrongNotes();
+
+  let totalQ = 0;
+  let totalSolved = 0;
+  let totalCorrect = 0;
+
+  for (const year of YEARS) {
+    const data = allData[year];
+    if (!data) continue;
+    for (const subj of data.subjects) {
+      totalQ += subj.questions.length;
+      const key = `${year}_${subj.code}`;
+      if (solved[key]) {
+        const entries = Object.entries(solved[key]);
+        totalSolved += entries.length;
+        totalCorrect += entries.filter(([, v]) => v.correct).length;
+      }
+    }
+  }
+
+  document.getElementById('statTotal').textContent = totalQ;
+  document.getElementById('statSolved').textContent = totalSolved;
+  document.getElementById('statRate').textContent = totalSolved > 0 ? Math.round(totalCorrect / totalSolved * 100) + '%' : '0%';
+  document.getElementById('statWrong').textContent = wrong.length;
+
+  // Recent history
+  const history = getHistory();
+  const recentCard = document.getElementById('recentCard');
+  if (history.length > 0) {
+    recentCard.style.display = '';
+    document.getElementById('recentList').innerHTML = history.slice(0, 5).map(h => `
+      <div class="subject-item" onclick="startQuiz(${h.year}, '${h.code}')">
+        <div class="subject-icon" style="background:${h.color || '#6366f1'}">${h.initial || '📖'}</div>
+        <div class="subject-info">
+          <div class="subject-name">${h.year}년 ${h.name}</div>
+          <div class="subject-meta">${h.score || ''} · ${h.date || ''}</div>
+        </div>
+        <div class="subject-arrow"><i class="fas fa-chevron-right"></i></div>
+      </div>
+    `).join('');
+  } else {
+    recentCard.style.display = 'none';
+  }
+}
+
+// ===== QUIZ =====
+function startQuiz(year, subjectCode) {
+  const data = allData[year];
+  if (!data) return;
+
+  const subject = data.subjects.find(s => String(s.code) === String(subjectCode));
+  if (!subject || subject.questions.length === 0) {
+    showToast('문제가 없습니다');
+    return;
+  }
+
+  quiz = {
+    year,
+    subjectCode: String(subjectCode),
+    subjectName: subject.name,
+    questions: [...subject.questions],
+    currentIndex: 0,
+    answers: {},
+    correctCount: 0,
+    finished: false,
+    shuffleMap: {}
+  };
+
+  // Populate selects
+  const ys = document.getElementById('quizYearSelect');
+  ys.innerHTML = YEARS.map(y => `<option value="${y}" ${y === year ? 'selected' : ''}>${y}년</option>`).join('');
+  updateQuizSubjectSelect(year, subjectCode);
+
+  ys.onchange = () => {
+    const ny = parseInt(ys.value);
+    const nd = allData[ny];
+    if (nd && nd.subjects.length > 0) {
+      updateQuizSubjectSelect(ny, nd.subjects[0].code);
+      startQuiz(ny, nd.subjects[0].code);
+    }
+  };
+
+  switchPage('pageQuiz');
+  renderQuestion();
+
+  // Save to history
+  const history = getHistory();
+  const color = SUBJECT_COLORS[data.subjects.indexOf(subject) % SUBJECT_COLORS.length];
+  const entry = {
+    year, code: subjectCode, name: subject.name,
+    initial: subject.name.substring(0, 2),
+    color, date: new Date().toLocaleDateString('ko'), score: ''
+  };
+  const existing = history.findIndex(h => h.year === year && h.code === subjectCode);
+  if (existing >= 0) history.splice(existing, 1);
+  history.unshift(entry);
+  saveHistory(history);
+}
+
+function updateQuizSubjectSelect(year, selectedCode) {
+  const data = allData[year];
+  if (!data) return;
+  const ss = document.getElementById('quizSubjectSelect');
+  ss.innerHTML = data.subjects.map(s =>
+    `<option value="${s.code}" ${String(s.code) === String(selectedCode) ? 'selected' : ''}>${s.name}</option>`
+  ).join('');
+  ss.onchange = () => startQuiz(year, ss.value);
+}
+
+function renderQuestion() {
+  if (quiz.finished) return;
+
+  const area = document.getElementById('questionArea');
+  const resultArea = document.getElementById('resultArea');
+  area.style.display = '';
+  resultArea.style.display = 'none';
+
+  const q = quiz.questions[quiz.currentIndex];
+  if (!q) return;
+
+  const total = quiz.questions.length;
+  const idx = quiz.currentIndex;
+  const answered = quiz.answers[idx] !== undefined;
+
+  // Progress
+  const answeredCount = Object.keys(quiz.answers).length;
+  document.getElementById('quizProgressBar').style.width = (answeredCount / total * 100) + '%';
+  document.getElementById('quizProgressText').textContent = `${idx + 1} / ${total}`;
+  document.getElementById('quizScoreText').textContent = `정답: ${quiz.correctCount} / ${answeredCount}`;
+
+  // Options (possibly shuffled)
+  let options = [...q.options];
+  if (settings.shuffleOptions && !quiz.shuffleMap[idx]) {
+    const indices = options.map((_, i) => i);
+    for (let i = indices.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [indices[i], indices[j]] = [indices[j], indices[i]];
+    }
+    quiz.shuffleMap[idx] = indices;
+  }
+  if (quiz.shuffleMap[idx]) {
+    options = quiz.shuffleMap[idx].map(i => q.options[i]);
+  }
+
+  const selectedOpt = quiz.answers[idx];
+
+  let optionsHtml = options.map((opt, i) => {
+    const realNum = opt.num;
+    const isSelected = selectedOpt === realNum;
+    const isCorrect = realNum === q.answer;
+    let cls = '';
+    if (answered) {
+      cls += ' disabled';
+      if (isCorrect) cls += ' correct';
+      else if (isSelected && !isCorrect) cls += ' wrong';
+      else cls += ' dimmed';
+    } else if (isSelected) {
+      cls += ' selected';
+    }
+    return `
+      <div class="option-item${cls}" data-num="${realNum}" onclick="selectOption(${realNum})">
+        <div class="option-num">${realNum}</div>
+        <div class="option-text">${escHtml(opt.text)}</div>
+      </div>
+    `;
+  }).join('');
+
+  // Explanation
+  let explHtml = '';
+  if (answered && settings.showExplanation && q.correctExplanation) {
+    let wrongHtml = '';
+    if (Object.keys(q.wrongExplanations).length > 0) {
+      wrongHtml = '<div class="explanation-wrong">';
+      for (const [k, v] of Object.entries(q.wrongExplanations)) {
+        wrongHtml += `<div class="explanation-wrong-item"><strong>보기 ${k})</strong> ${escHtml(v)}</div>`;
+      }
+      wrongHtml += '</div>';
+    }
+    explHtml = `
+      <div class="explanation-box show">
+        <div class="explanation-title"><i class="fas fa-lightbulb"></i> 해설</div>
+        <div class="explanation-text">${escHtml(q.correctExplanation)}</div>
+        ${wrongHtml}
+      </div>
+    `;
+  }
+
+  area.innerHTML = `
+    <div class="question-card">
+      <div class="q-number-bar">
+        <div class="q-number">
+          <i class="fas fa-circle-question"></i>
+          문제 ${q.number}번
+        </div>
+        <button class="q-bookmark ${isBookmarked(quiz.year, quiz.subjectCode, q.number) ? 'active' : ''}"
+          onclick="toggleBookmark(${quiz.year}, '${quiz.subjectCode}', ${q.number}, this)">
+          <i class="fas fa-star"></i>
+        </button>
+      </div>
+      <div class="q-text">${escHtml(q.question)}</div>
+      <div class="options-list">${optionsHtml}</div>
+      ${explHtml}
+    </div>
+    <div class="quiz-nav">
+      <button class="btn-prev" onclick="prevQuestion()" ${idx === 0 ? 'disabled style="opacity:.4"' : ''}>
+        <i class="fas fa-chevron-left"></i> 이전
+      </button>
+      ${idx === total - 1 && answeredCount === total ?
+        `<button class="btn-next" onclick="showResults()"><i class="fas fa-flag-checkered"></i> 결과 보기</button>` :
+        `<button class="btn-next" onclick="nextQuestion()">다음 <i class="fas fa-chevron-right"></i></button>`
+      }
+    </div>
+  `;
+}
+
+function selectOption(num) {
+  const idx = quiz.currentIndex;
+  if (quiz.answers[idx] !== undefined) return;
+
+  const q = quiz.questions[idx];
+
+  if (settings.instantCheck) {
+    quiz.answers[idx] = num;
+    const isCorrect = num === q.answer;
+    if (isCorrect) quiz.correctCount++;
+
+    // Save solved data
+    const solved = getSolvedData();
+    const key = `${quiz.year}_${quiz.subjectCode}`;
+    if (!solved[key]) solved[key] = {};
+    solved[key][q.number] = { correct: isCorrect, selected: num, answer: q.answer };
+    saveSolvedData(solved);
+
+    // Save wrong note if incorrect
+    if (!isCorrect) {
+      addWrongNote(quiz.year, quiz.subjectCode, quiz.subjectName, q, num);
+    }
+
+    renderQuestion();
+  } else {
+    quiz.answers[idx] = num;
+    renderQuestion();
+  }
+}
+
+function nextQuestion() {
+  if (quiz.currentIndex < quiz.questions.length - 1) {
+    quiz.currentIndex++;
+    renderQuestion();
+    window.scrollTo(0, 0);
+  }
+}
+function prevQuestion() {
+  if (quiz.currentIndex > 0) {
+    quiz.currentIndex--;
+    renderQuestion();
+    window.scrollTo(0, 0);
+  }
+}
+
+function showResults() {
+  quiz.finished = true;
+  const total = quiz.questions.length;
+  const correct = quiz.correctCount;
+  const wrong = total - correct;
+  const rate = Math.round(correct / total * 100);
+
+  document.getElementById('questionArea').style.display = 'none';
+  const resultArea = document.getElementById('resultArea');
+  resultArea.style.display = '';
+
+  let emoji = '🎉';
+  let msg = '훌륭해요!';
+  if (rate < 40) { emoji = '💪'; msg = '더 분발해봐요!'; }
+  else if (rate < 60) { emoji = '📚'; msg = '조금만 더 힘내요!'; }
+  else if (rate < 80) { emoji = '👍'; msg = '잘하고 있어요!'; }
+
+  resultArea.innerHTML = `
+    <div class="result-screen">
+      <div class="result-circle-wrap">
+        <canvas id="resultCanvas" width="160" height="160"></canvas>
+        <div class="result-score-text">
+          <div class="result-score-num">${rate}%</div>
+          <div class="result-score-label">정답률</div>
+        </div>
+      </div>
+      <div class="result-title">${emoji} ${msg}</div>
+      <div class="result-subtitle">${quiz.year}년 ${quiz.subjectName}</div>
+      <div class="result-stats">
+        <div class="result-stat">
+          <div class="result-stat-num" style="color:var(--primary)">${total}</div>
+          <div class="result-stat-label">전체</div>
+        </div>
+        <div class="result-stat">
+          <div class="result-stat-num" style="color:var(--success)">${correct}</div>
+          <div class="result-stat-label">정답</div>
+        </div>
+        <div class="result-stat">
+          <div class="result-stat-num" style="color:var(--danger)">${wrong}</div>
+          <div class="result-stat-label">오답</div>
+        </div>
+      </div>
+      <div class="result-buttons">
+        <button class="btn-outline" onclick="reviewQuiz()"><i class="fas fa-eye"></i> 문제 다시보기</button>
+        <button class="btn-primary" onclick="startQuiz(${quiz.year}, '${quiz.subjectCode}')"><i class="fas fa-redo"></i> 다시 풀기</button>
+      </div>
+    </div>
+  `;
+
+  // Draw circle
+  setTimeout(() => drawResultCircle(rate), 100);
+
+  // Update history with score
+  const history = getHistory();
+  const hIdx = history.findIndex(h => h.year === quiz.year && h.code === quiz.subjectCode);
+  if (hIdx >= 0) {
+    history[hIdx].score = `${correct}/${total} (${rate}%)`;
+    history[hIdx].date = new Date().toLocaleDateString('ko');
+    saveHistory(history);
+  }
+}
+
+function drawResultCircle(rate) {
+  const canvas = document.getElementById('resultCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const cx = 80, cy = 80, r = 65, lw = 12;
+
+  ctx.clearRect(0, 0, 160, 160);
+  // BG
+  ctx.beginPath();
+  ctx.arc(cx, cy, r, 0, Math.PI * 2);
+  ctx.strokeStyle = '#e5e7eb';
+  ctx.lineWidth = lw;
+  ctx.stroke();
+  // FG
+  const endAngle = -Math.PI / 2 + (Math.PI * 2 * rate / 100);
+  ctx.beginPath();
+  ctx.arc(cx, cy, r, -Math.PI / 2, endAngle);
+  const grad = ctx.createLinearGradient(0, 0, 160, 160);
+  grad.addColorStop(0, '#6366f1');
+  grad.addColorStop(1, '#8b5cf6');
+  ctx.strokeStyle = grad;
+  ctx.lineWidth = lw;
+  ctx.lineCap = 'round';
+  ctx.stroke();
+}
+
+function reviewQuiz() {
+  quiz.finished = false;
+  quiz.currentIndex = 0;
+  renderQuestion();
+  window.scrollTo(0, 0);
+}
+
+// Shuffle button
+document.getElementById('btnShuffle').addEventListener('click', () => {
+  if (quiz.questions.length === 0) return;
+  const questions = [...quiz.questions];
+  for (let i = questions.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [questions[i], questions[j]] = [questions[j], questions[i]];
+  }
+  quiz.questions = questions;
+  quiz.currentIndex = 0;
+  quiz.answers = {};
+  quiz.correctCount = 0;
+  quiz.finished = false;
+  quiz.shuffleMap = {};
+  renderQuestion();
+  showToast('문제 순서가 섞였습니다');
+});
+
+// Grid
+document.getElementById('btnGrid').addEventListener('click', () => {
+  if (quiz.questions.length === 0) return;
+  openQGrid();
+});
+function openQGrid() {
+  const overlay = document.getElementById('qGridOverlay');
+  const grid = document.getElementById('qGridNums');
+  grid.innerHTML = quiz.questions.map((q, i) => {
+    const answered = quiz.answers[i] !== undefined;
+    const isCorrect = answered && quiz.answers[i] === q.answer;
+    const isWrong = answered && quiz.answers[i] !== q.answer;
+    let cls = '';
+    if (i === quiz.currentIndex) cls += ' current';
+    if (isCorrect) cls += ' correct';
+    else if (isWrong) cls += ' wrong';
+    else if (answered) cls += ' answered';
+    return `<div class="q-grid-num${cls}" onclick="goToQuestion(${i})">${i + 1}</div>`;
+  }).join('');
+  overlay.classList.add('show');
+}
+function closeQGrid() {
+  document.getElementById('qGridOverlay').classList.remove('show');
+}
+function goToQuestion(idx) {
+  quiz.currentIndex = idx;
+  quiz.finished = false;
+  document.getElementById('questionArea').style.display = '';
+  document.getElementById('resultArea').style.display = 'none';
+  renderQuestion();
+  closeQGrid();
+  window.scrollTo(0, 0);
+}
+
+// ===== BOOKMARK (reuses wrong notes approach) =====
+function isBookmarked(year, code, qNum) {
+  const notes = getWrongNotes();
+  return notes.some(n => n.year === year && n.code === String(code) && n.qNum === qNum && n.bookmarked);
+}
+function toggleBookmark(year, code, qNum, el) {
+  // Not implementing full bookmark, just visual toggle
+  el.classList.toggle('active');
+  showToast(el.classList.contains('active') ? '북마크 추가됨' : '북마크 해제됨');
+}
+
+// ===== WRONG NOTES =====
+function addWrongNote(year, code, subjectName, q, selectedAnswer) {
+  const notes = getWrongNotes();
+  // Check for duplicate
+  const exists = notes.findIndex(n => n.year === year && n.code === String(code) && n.qNum === q.number);
+  if (exists >= 0) {
+    notes[exists].selectedAnswer = selectedAnswer;
+    notes[exists].date = new Date().toISOString();
+  } else {
+    notes.push({
+      id: Date.now(),
+      year,
+      code: String(code),
+      subjectName,
+      qNum: q.number,
+      question: q.question,
+      options: q.options,
+      answer: q.answer,
+      selectedAnswer,
+      correctExplanation: q.correctExplanation,
+      wrongExplanations: q.wrongExplanations,
+      date: new Date().toISOString()
+    });
+  }
+  saveWrongNotes(notes);
+}
+
+function updateWrongBadge() {
+  const notes = getWrongNotes();
+  const badge = document.getElementById('wrongBadge');
+  if (notes.length > 0) {
+    badge.style.display = '';
+    badge.textContent = notes.length > 99 ? '99+' : notes.length;
+  } else {
+    badge.style.display = 'none';
+  }
+}
+
+let wrongFilter = 'all';
+
+function renderWrongNotes() {
+  const notes = getWrongNotes();
+  const list = document.getElementById('wrongList');
+  const countEl = document.getElementById('wrongCount');
+  const clearBtn = document.getElementById('btnClearWrong');
+
+  // Filters
+  const subjects = [...new Set(notes.map(n => n.subjectName))];
+  const filtersEl = document.getElementById('wrongFilters');
+  filtersEl.innerHTML = `<div class="filter-chip ${wrongFilter === 'all' ? 'active' : ''}" onclick="setWrongFilter('all')">전체 (${notes.length})</div>` +
+    subjects.map(s => {
+      const count = notes.filter(n => n.subjectName === s).length;
+      return `<div class="filter-chip ${wrongFilter === s ? 'active' : ''}" onclick="setWrongFilter('${s}')">${s} (${count})</div>`;
+    }).join('');
+
+  const filtered = wrongFilter === 'all' ? notes : notes.filter(n => n.subjectName === wrongFilter);
+  countEl.textContent = `오답 ${filtered.length}개`;
+  clearBtn.style.display = notes.length > 0 ? '' : 'none';
+
+  if (filtered.length === 0) {
+    list.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon"><i class="fas fa-face-smile"></i></div>
+        <div class="empty-text">오답이 없습니다</div>
+        <div class="empty-sub">문제를 풀어보세요!</div>
+      </div>
+    `;
+    return;
+  }
+
+  list.innerHTML = filtered.sort((a, b) => new Date(b.date) - new Date(a.date)).map(note => `
+    <div class="wrong-note-item" onclick="openWrongDetail(${note.id})">
+      <div class="wrong-note-meta">
+        <span class="wrong-note-badge">${note.subjectName}</span>
+        <span class="wrong-note-year">${note.year}년 · ${note.qNum}번</span>
+      </div>
+      <div class="wrong-note-q">${escHtml(note.question)}</div>
+      <div class="wrong-note-answer">내 답: ${note.selectedAnswer}번 → 정답: ${note.answer}번</div>
+      <div class="wrong-note-actions">
+        <button onclick="event.stopPropagation(); retryWrongNote(${note.id})">
+          <i class="fas fa-redo"></i> 다시풀기
+        </button>
+        <button class="delete-btn" onclick="event.stopPropagation(); deleteWrongNote(${note.id})">
+          <i class="fas fa-trash"></i> 삭제
+        </button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function setWrongFilter(f) {
+  wrongFilter = f;
+  renderWrongNotes();
+}
+
+function openWrongDetail(id) {
+  const notes = getWrongNotes();
+  const note = notes.find(n => n.id === id);
+  if (!note) return;
+
+  const modal = document.getElementById('wrongModal');
+  const body = document.getElementById('wrongModalBody');
+
+  let optionsHtml = note.options.map(opt => {
+    const isCorrect = opt.num === note.answer;
+    const isSelected = opt.num === note.selectedAnswer;
+    let cls = '';
+    if (isCorrect) cls = 'correct';
+    else if (isSelected) cls = 'wrong';
+    else cls = 'dimmed';
+    return `
+      <div class="option-item ${cls} disabled">
+        <div class="option-num">${opt.num}</div>
+        <div class="option-text">${escHtml(opt.text)}</div>
+      </div>
+    `;
+  }).join('');
+
+  let explHtml = '';
+  if (note.correctExplanation) {
+    let wrongHtml = '';
+    if (note.wrongExplanations && Object.keys(note.wrongExplanations).length > 0) {
+      wrongHtml = '<div class="explanation-wrong">';
+      for (const [k, v] of Object.entries(note.wrongExplanations)) {
+        wrongHtml += `<div class="explanation-wrong-item"><strong>보기 ${k})</strong> ${escHtml(v)}</div>`;
+      }
+      wrongHtml += '</div>';
+    }
+    explHtml = `
+      <div class="explanation-box show" style="margin:1rem 0 0;border-left-color:var(--primary)">
+        <div class="explanation-title"><i class="fas fa-lightbulb"></i> 해설</div>
+        <div class="explanation-text">${escHtml(note.correctExplanation)}</div>
+        ${wrongHtml}
+      </div>
+    `;
+  }
+
+  body.innerHTML = `
+    <div style="margin-bottom:.5rem">
+      <span class="wrong-note-badge">${note.subjectName}</span>
+      <span class="wrong-note-year" style="margin-left:.5rem">${note.year}년 · ${note.qNum}번</span>
+    </div>
+    <div class="q-text" style="padding:1rem 0;font-size:.88rem">${escHtml(note.question)}</div>
+    <div style="margin-bottom:1rem">${optionsHtml}</div>
+    ${explHtml}
+  `;
+  modal.classList.add('show');
+}
+function closeWrongModal() {
+  document.getElementById('wrongModal').classList.remove('show');
+}
+
+function deleteWrongNote(id) {
+  let notes = getWrongNotes();
+  notes = notes.filter(n => n.id !== id);
+  saveWrongNotes(notes);
+  renderWrongNotes();
+  showToast('오답이 삭제되었습니다');
+}
+
+function retryWrongNote(id) {
+  const notes = getWrongNotes();
+  const note = notes.find(n => n.id === id);
+  if (!note) return;
+  startQuiz(note.year, note.code);
+}
+
+function clearAllWrong() {
+  if (!confirm('모든 오답을 삭제하시겠습니까?')) return;
+  saveWrongNotes([]);
+  renderWrongNotes();
+  showToast('모든 오답이 삭제되었습니다');
+}
+
+// ===== SETTINGS =====
+function toggleSetting(key) {
+  settings[key] = !settings[key];
+  saveSettings();
+  updateSettingsUI();
+}
+function updateSettingsUI() {
+  const map = {
+    instantCheck: 'toggleInstant',
+    showExplanation: 'toggleExplanation',
+    shuffleOptions: 'toggleShuffle'
+  };
+  for (const [k, id] of Object.entries(map)) {
+    const el = document.getElementById(id);
+    if (el) {
+      if (settings[k]) el.classList.add('active');
+      else el.classList.remove('active');
+    }
+  }
+}
+
+function resetAllData() {
+  if (!confirm('모든 학습 기록, 오답노트가 삭제됩니다.\n계속하시겠습니까?')) return;
+  localStorage.removeItem(STORAGE_WRONG);
+  localStorage.removeItem(STORAGE_HISTORY);
+  localStorage.removeItem(STORAGE_SOLVED);
+  updateWrongBadge();
+  refreshHomeStats();
+  showToast('모든 데이터가 초기화되었습니다');
+}
+
+// ===== UTILS =====
+function escHtml(str) {
+  if (!str) return '';
+  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/\n/g, '<br>');
+}
+
+// Close overlays on backdrop click
+document.getElementById('qGridOverlay').addEventListener('click', (e) => {
+  if (e.target === e.currentTarget) closeQGrid();
+});
+document.getElementById('wrongModal').addEventListener('click', (e) => {
+  if (e.target === e.currentTarget) closeWrongModal();
+});
+
+// ===== INIT =====
+async function init() {
+  loadSettings();
+  updateWrongBadge();
+  await loadAllData();
+  renderYearChips();
+  renderSubjectList();
+  refreshHomeStats();
+
+  // Hide loading
+  setTimeout(() => {
+    document.getElementById('loadingScreen').classList.add('hidden');
+  }, 500);
+}
+
+init();
+</script>
+</body>
+</html>

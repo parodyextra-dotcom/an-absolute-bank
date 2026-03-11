@@ -581,6 +581,160 @@ body {
 .result-stat-label { font-size: .72rem; color: var(--gray-400); font-weight: 500; }
 .result-buttons { display: flex; gap: .75rem; justify-content: center; flex-wrap: wrap; }
 
+/* ===== D-Day Box ===== */
+.dday-box {
+  margin: 1rem 1rem 0;
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a78bfa 100%);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.5rem;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(99,102,241,.3);
+}
+.dday-box::before {
+  content: ''; position: absolute; top: -30%; right: -15%;
+  width: 150px; height: 150px; border-radius: 50%;
+  background: rgba(255,255,255,.1);
+}
+.dday-box::after {
+  content: ''; position: absolute; bottom: -40%; left: -10%;
+  width: 100px; height: 100px; border-radius: 50%;
+  background: rgba(255,255,255,.06);
+}
+.dday-top {
+  display: flex; align-items: center; justify-content: space-between;
+  position: relative; z-index: 1;
+}
+.dday-left { display: flex; flex-direction: column; gap: .25rem; }
+.dday-label {
+  font-size: .75rem; font-weight: 500; opacity: .85;
+  display: flex; align-items: center; gap: .35rem;
+}
+.dday-exam-name { font-size: .95rem; font-weight: 700; }
+.dday-date { font-size: .72rem; opacity: .7; margin-top: .1rem; }
+.dday-right { text-align: right; position: relative; z-index: 1; }
+.dday-count {
+  font-size: 2.2rem; font-weight: 900; line-height: 1;
+  text-shadow: 0 2px 8px rgba(0,0,0,.15);
+}
+.dday-count-label { font-size: .7rem; opacity: .75; margin-top: .25rem; font-weight: 500; }
+.dday-progress-row {
+  display: flex; align-items: center; gap: .5rem;
+  margin-top: .75rem; position: relative; z-index: 1;
+}
+.dday-progress-bar {
+  flex: 1; height: 6px; background: rgba(255,255,255,.2);
+  border-radius: 3px; overflow: hidden;
+}
+.dday-progress-fill {
+  height: 100%; background: #fff; border-radius: 3px;
+  transition: width .6s ease;
+}
+.dday-progress-text { font-size: .68rem; opacity: .8; font-weight: 600; white-space: nowrap; }
+
+/* D-Day Settings Modal */
+.dday-setting-overlay {
+  position: fixed; inset: 0; z-index: 300;
+  background: rgba(0,0,0,.5); backdrop-filter: blur(4px);
+  display: none; align-items: center; justify-content: center;
+  padding: 1rem;
+}
+.dday-setting-overlay.show { display: flex; }
+.dday-setting-panel {
+  background: #fff; border-radius: var(--radius);
+  max-width: 380px; width: 100%; animation: fadeIn .25s ease;
+  overflow: hidden;
+}
+.dday-setting-header {
+  padding: 1.25rem; border-bottom: 1px solid var(--gray-100);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.dday-setting-header h3 { font-size: .95rem; font-weight: 700; }
+.dday-setting-close {
+  width: 32px; height: 32px; border-radius: 50%;
+  border: none; background: var(--gray-100); cursor: pointer;
+  font-size: .9rem; color: var(--gray-500);
+  display: flex; align-items: center; justify-content: center;
+}
+.dday-setting-body { padding: 1.25rem; }
+.dday-setting-body label {
+  display: block; font-size: .82rem; font-weight: 600;
+  color: var(--gray-700); margin-bottom: .4rem;
+}
+.dday-setting-body input {
+  width: 100%; padding: .7rem .85rem; border: 1.5px solid var(--gray-200);
+  border-radius: var(--radius-sm); font-size: .85rem;
+  font-family: inherit; color: var(--gray-700); background: var(--gray-50);
+  margin-bottom: 1rem;
+}
+.dday-setting-body input:focus { outline: none; border-color: var(--primary); }
+.dday-setting-actions { display: flex; gap: .5rem; }
+.dday-setting-actions button { flex: 1; padding: .75rem; border-radius: var(--radius-sm); font-size: .85rem; font-weight: 600; cursor: pointer; font-family: inherit; border: none; }
+.dday-btn-cancel { background: var(--gray-100); color: var(--gray-600); }
+.dday-btn-save { background: var(--primary); color: #fff; }
+
+/* ===== Bookmark Tab in Wrong Notes ===== */
+.wrong-tabs {
+  display: flex; background: #fff;
+  border-bottom: 2px solid var(--gray-100);
+}
+.wrong-tab {
+  flex: 1; padding: .85rem; text-align: center;
+  font-size: .82rem; font-weight: 600; cursor: pointer;
+  color: var(--gray-400); position: relative;
+  transition: all .2s; border: none; background: none;
+  font-family: inherit;
+}
+.wrong-tab.active { color: var(--primary); }
+.wrong-tab.active::after {
+  content: ''; position: absolute; bottom: -2px; left: 0; right: 0;
+  height: 2px; background: var(--primary);
+}
+.wrong-tab i { margin-right: .3rem; }
+.wrong-tab-badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 18px; height: 18px; border-radius: 9px;
+  background: var(--gray-200); color: var(--gray-500);
+  font-size: .6rem; font-weight: 700; padding: 0 4px;
+  margin-left: .3rem;
+}
+.wrong-tab.active .wrong-tab-badge {
+  background: var(--primary-bg); color: var(--primary);
+}
+
+.bookmark-item {
+  padding: 1rem 1.25rem; border-bottom: 1px solid var(--gray-50);
+  cursor: pointer; transition: background .15s;
+}
+.bookmark-item:active { background: var(--gray-50); }
+.bookmark-meta {
+  display: flex; align-items: center; gap: .5rem; margin-bottom: .5rem;
+}
+.bookmark-badge {
+  padding: .2rem .5rem; border-radius: 4px;
+  font-size: .65rem; font-weight: 600; background: var(--warning-bg); color: var(--warning);
+}
+.bookmark-year {
+  font-size: .7rem; color: var(--gray-400); font-weight: 500;
+}
+.bookmark-q {
+  font-size: .82rem; line-height: 1.5; color: var(--gray-700);
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.bookmark-actions {
+  display: flex; gap: .5rem; margin-top: .5rem;
+}
+.bookmark-actions button {
+  padding: .35rem .65rem; border: 1px solid var(--gray-200);
+  border-radius: var(--radius-xs); background: #fff;
+  font-size: .7rem; font-weight: 500; cursor: pointer;
+  font-family: inherit; color: var(--gray-500); transition: all .15s;
+}
+.bookmark-actions button:hover { border-color: var(--warning); color: var(--warning); }
+.bookmark-actions button.delete-btn:hover { border-color: var(--danger); color: var(--danger); }
+
 /* ===== Responsive ===== */
 @media (min-width: 480px) {
   .stats-grid { grid-template-columns: repeat(4, 1fr); }
@@ -592,17 +746,7 @@ body {
   .q-grid-overlay, .modal-overlay { max-width: 480px; left: 50%; transform: translateX(-50%); }
 }
 
-/* Toast */
-.toast {
-  position: fixed; bottom: calc(var(--nav-height) + 20px + var(--safe-bottom));
-  left: 50%; transform: translateX(-50%) translateY(100px);
-  background: var(--gray-800); color: #fff;
-  padding: .75rem 1.25rem; border-radius: 50px;
-  font-size: .82rem; font-weight: 500; z-index: 500;
-  box-shadow: var(--shadow-lg); transition: transform .3s;
-  white-space: nowrap; max-width: 90%;
-}
-.toast.show { transform: translateX(-50%) translateY(0); }
+
 
 /* Shimmer loading placeholder */
 .shimmer {
@@ -626,14 +770,34 @@ body {
   <div class="loader-bar"><div class="loader-bar-inner" id="loaderBar"></div></div>
 </div>
 
-<!-- Toast -->
-<div class="toast" id="toast"></div>
+
 
 <!-- ===== PAGE: HOME ===== -->
 <div class="page active" id="pageHome">
   <div class="page-header">
     <h1>🏋️ 스포츠지도사 문제은행</h1>
     <p>2급 전문스포츠지도사 필기시험 대비</p>
+  </div>
+
+  <!-- D-Day Box -->
+  <div class="dday-box" id="ddayBox" onclick="openDdaySetting()">
+    <div class="dday-top">
+      <div class="dday-left">
+        <div class="dday-label"><i class="fas fa-calendar-check"></i> 시험일까지</div>
+        <div class="dday-exam-name" id="ddayExamName">2급 스포츠지도사 필기</div>
+        <div class="dday-date" id="ddayExamDate"></div>
+      </div>
+      <div class="dday-right">
+        <div class="dday-count" id="ddayCount">D-0</div>
+        <div class="dday-count-label">남은 일수</div>
+      </div>
+    </div>
+    <div class="dday-progress-row">
+      <div class="dday-progress-bar">
+        <div class="dday-progress-fill" id="ddayProgressFill" style="width:0%"></div>
+      </div>
+      <div class="dday-progress-text" id="ddayProgressText">0%</div>
+    </div>
   </div>
 
   <div class="stats-grid">
@@ -720,15 +884,42 @@ body {
     <h1>📝 오답노트</h1>
     <p>틀린 문제를 복습하고 실력을 높여보세요</p>
   </div>
-  <div class="filter-row" id="wrongFilters"></div>
-  <div class="card" style="margin-top:0">
-    <div class="card-header">
-      <h3 id="wrongCount">오답 0개</h3>
-      <button class="btn-danger" id="btnClearWrong" style="display:none" onclick="clearAllWrong()">
-        <i class="fas fa-trash-can"></i> 전체 삭제
-      </button>
+  <!-- Tabs: 오답 / 북마크 -->
+  <div class="wrong-tabs">
+    <button class="wrong-tab active" id="tabWrongNotes" onclick="switchWrongTab('wrong')">
+      <i class="fas fa-times-circle"></i>오답
+      <span class="wrong-tab-badge" id="wrongTabBadge">0</span>
+    </button>
+    <button class="wrong-tab" id="tabBookmarks" onclick="switchWrongTab('bookmark')">
+      <i class="fas fa-star"></i>북마크
+      <span class="wrong-tab-badge" id="bookmarkTabBadge">0</span>
+    </button>
+  </div>
+  <!-- Wrong Notes Content -->
+  <div id="wrongNotesContent">
+    <div class="filter-row" id="wrongFilters"></div>
+    <div class="card" style="margin-top:0">
+      <div class="card-header">
+        <h3 id="wrongCount">오답 0개</h3>
+        <button class="btn-danger" id="btnClearWrong" style="display:none" onclick="clearAllWrong()">
+          <i class="fas fa-trash-can"></i> 전체 삭제
+        </button>
+      </div>
+      <div id="wrongList"></div>
     </div>
-    <div id="wrongList"></div>
+  </div>
+  <!-- Bookmarks Content -->
+  <div id="bookmarksContent" style="display:none">
+    <div class="filter-row" id="bookmarkFilters"></div>
+    <div class="card" style="margin-top:0">
+      <div class="card-header">
+        <h3 id="bookmarkCount">북마크 0개</h3>
+        <button class="btn-danger" id="btnClearBookmarks" style="display:none" onclick="clearAllBookmarks()">
+          <i class="fas fa-trash-can"></i> 전체 삭제
+        </button>
+      </div>
+      <div id="bookmarkList"></div>
+    </div>
   </div>
 </div>
 
@@ -743,18 +934,7 @@ body {
   </div>
 </div>
 
-<!-- ===== PAGE: KEY POINTS ===== -->
-<div class="page" id="pageKeyPoints">
-  <div class="page-header">
-    <h1>📌 요점정리</h1>
-    <p>핵심 내용을 한 눈에 정리</p>
-  </div>
-  <div class="placeholder-container">
-    <div class="placeholder-icon"><i class="fas fa-bookmark"></i></div>
-    <div class="placeholder-title">준비 중입니다</div>
-    <div class="placeholder-desc">과목별 핵심 요점정리가<br>곧 업데이트될 예정이에요!</div>
-  </div>
-</div>
+
 
 <!-- ===== PAGE: SETTINGS ===== -->
 <div class="page" id="pageSettings">
@@ -820,26 +1000,43 @@ body {
             <div class="setting-desc">스포츠지도사 문제은행 v1.0</div>
           </div>
         </div>
-        <span style="font-size:.75rem;color:var(--gray-400)">2016~2025</span>
+        <span style="font-size:.75rem;color:var(--gray-400)">2016~2025 (2024 포함)</span>
       </div>
     </div>
   </div>
 </div>
 
 <!-- ===== BOTTOM NAV ===== -->
+<!-- D-Day Settings Modal -->
+<div class="dday-setting-overlay" id="ddaySettingOverlay">
+  <div class="dday-setting-panel">
+    <div class="dday-setting-header">
+      <h3><i class="fas fa-calendar-alt" style="color:var(--primary);margin-right:.4rem"></i>D-Day 설정</h3>
+      <button class="dday-setting-close" onclick="closeDdaySetting()"><i class="fas fa-xmark"></i></button>
+    </div>
+    <div class="dday-setting-body">
+      <label for="ddayInputName">시험 이름</label>
+      <input type="text" id="ddayInputName" placeholder="예: 2급 스포츠지도사 필기" value="2급 스포츠지도사 필기">
+      <label for="ddayInputDate">시험 날짜</label>
+      <input type="date" id="ddayInputDate">
+      <div class="dday-setting-actions">
+        <button class="dday-btn-cancel" onclick="closeDdaySetting()">취소</button>
+        <button class="dday-btn-save" onclick="saveDdaySetting()">저장</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <nav class="bottom-nav">
   <div class="nav-item active" data-page="pageHome">
     <i class="fas fa-home"></i><span>홈</span>
   </div>
   <div class="nav-item" data-page="pageQuiz">
-    <i class="fas fa-pen-to-square"></i><span>문제</span>
+    <i class="fas fa-pen-to-square"></i><span>문제풀기</span>
   </div>
   <div class="nav-item" data-page="pageWrong">
     <i class="fas fa-book-open"></i><span>오답노트</span>
     <div class="nav-badge" id="wrongBadge" style="display:none">0</div>
-  </div>
-  <div class="nav-item" data-page="pageKeyPoints">
-    <i class="fas fa-bookmark"></i><span>요점정리</span>
   </div>
   <div class="nav-item" data-page="pageSettings">
     <i class="fas fa-gear"></i><span>설정</span>
@@ -849,17 +1046,18 @@ body {
 <script>
 // ===== GLOBAL STATE =====
 const DATA_URLS = {
-  2016: 'data/2016.json',
-  2017: 'data/2017.json',
-  2018: 'data/2018.json',
-  2019: 'data/2019.json',
-  2020: 'data/2020.json',
-  2021: 'data/2021.json',
-  2022: 'data/2022.json',
-  2023: 'data/2023.json',
-  2025: 'data/2025.json'
+  2016: 'data/2016.json.txt',
+  2017: 'data/2017.json.txt',
+  2018: 'data/2018.json.txt',
+  2019: 'data/2019.json.txt',
+  2020: 'data/2020.json.txt',
+  2021: 'data/2021.json.txt',
+  2022: 'data/2022.json.txt',
+  2023: 'data/2023.json.txt',
+  2024: 'data/2024.json.txt',
+  2025: 'data/2025.json.txt'
 };
-const YEARS = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2025];
+const YEARS = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025];
 const SUBJECT_COLORS = ['#6366f1','#8b5cf6','#ec4899','#f59e0b','#10b981','#06b6d4','#f97316'];
 
 let allData = {};         // { year: normalized data }
@@ -887,6 +1085,8 @@ const STORAGE_WRONG = 'sportsQuiz_wrong';
 const STORAGE_HISTORY = 'sportsQuiz_history';
 const STORAGE_SETTINGS = 'sportsQuiz_settings';
 const STORAGE_SOLVED = 'sportsQuiz_solved';
+const STORAGE_BOOKMARKS = 'sportsQuiz_bookmarks';
+const STORAGE_DDAY = 'sportsQuiz_dday';
 
 // ===== LOAD & NORMALIZE DATA =====
 function normalizeData(year, raw) {
@@ -900,7 +1100,11 @@ function normalizeData(year, raw) {
 
     for (const q of (subj.questions || [])) {
       const qNum = q.question_number || q.number || 0;
-      const qText = q.question || '';
+      let qText = q.question || '';
+      // Append 보기 (reference text) to question if present
+      if (q['보기']) {
+        qText += '\n\n[보기]\n' + q['보기'];
+      }
       const answer = q.answer;
 
       // Normalize options - can be array or object
@@ -933,9 +1137,15 @@ function normalizeData(year, raw) {
       }
 
       if (q.correct_answer_explanation) correctExpl = q.correct_answer_explanation;
+      if (q.correct_explanation && !correctExpl) correctExpl = q.correct_explanation;
       if (q.wrong_answers_explanation) {
         const we = q.wrong_answers_explanation;
         Object.keys(we).forEach(k => { wrongExpls[k] = we[k]; });
+      }
+      if (q.wrong_explanation && typeof q.wrong_explanation === 'string' && !Object.keys(wrongExpls).length) {
+        wrongExpls['all'] = q.wrong_explanation;
+      } else if (q.wrong_explanation && typeof q.wrong_explanation === 'object') {
+        Object.keys(q.wrong_explanation).forEach(k => { wrongExpls[k] = q.wrong_explanation[k]; });
       }
 
       // Handle explanations (2018, 2021, 2025 format)
@@ -1041,19 +1251,17 @@ function switchPage(pageId) {
   document.getElementById(pageId).classList.add('active');
   document.querySelector(`[data-page="${pageId}"]`).classList.add('active');
 
-  if (pageId === 'pageWrong') renderWrongNotes();
+  if (pageId === 'pageWrong') {
+    if (wrongTabMode === 'wrong') renderWrongNotes();
+    else renderBookmarks();
+  }
   if (pageId === 'pageHome') refreshHomeStats();
   window.scrollTo(0, 0);
 }
 
-// ===== TOAST =====
-let toastTimer;
+// ===== TOAST (disabled) =====
 function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove('show'), 2000);
+  // Toast disabled - do nothing
 }
 
 // ===== HOME PAGE =====
@@ -1508,15 +1716,199 @@ function goToQuestion(idx) {
   window.scrollTo(0, 0);
 }
 
-// ===== BOOKMARK (reuses wrong notes approach) =====
+// ===== BOOKMARKS =====
+function getBookmarks() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_BOOKMARKS)) || []; } catch(e) { return []; }
+}
+function saveBookmarks(bookmarks) {
+  localStorage.setItem(STORAGE_BOOKMARKS, JSON.stringify(bookmarks));
+  updateBookmarkBadge();
+}
 function isBookmarked(year, code, qNum) {
-  const notes = getWrongNotes();
-  return notes.some(n => n.year === year && n.code === String(code) && n.qNum === qNum && n.bookmarked);
+  const bookmarks = getBookmarks();
+  return bookmarks.some(b => b.year === year && b.code === String(code) && b.qNum === qNum);
 }
 function toggleBookmark(year, code, qNum, el) {
-  // Not implementing full bookmark, just visual toggle
-  el.classList.toggle('active');
-  showToast(el.classList.contains('active') ? '북마크 추가됨' : '북마크 해제됨');
+  let bookmarks = getBookmarks();
+  const idx = bookmarks.findIndex(b => b.year === year && b.code === String(code) && b.qNum === qNum);
+  if (idx >= 0) {
+    bookmarks.splice(idx, 1);
+    el.classList.remove('active');
+    showToast('북마크가 해제되었습니다');
+  } else {
+    // Find the question data
+    const data = allData[year];
+    if (data) {
+      const subject = data.subjects.find(s => String(s.code) === String(code));
+      if (subject) {
+        const q = subject.questions.find(qq => qq.number === qNum);
+        if (q) {
+          bookmarks.push({
+            id: Date.now(),
+            year,
+            code: String(code),
+            subjectName: subject.name,
+            qNum: q.number,
+            question: q.question,
+            options: q.options,
+            answer: q.answer,
+            correctExplanation: q.correctExplanation,
+            wrongExplanations: q.wrongExplanations,
+            date: new Date().toISOString()
+          });
+          el.classList.add('active');
+          showToast('북마크에 추가되었습니다');
+        }
+      }
+    }
+  }
+  saveBookmarks(bookmarks);
+}
+
+function updateBookmarkBadge() {
+  const bookmarks = getBookmarks();
+  const badge = document.getElementById('bookmarkTabBadge');
+  if (badge) badge.textContent = bookmarks.length;
+}
+
+let wrongTabMode = 'wrong';
+
+function switchWrongTab(mode) {
+  wrongTabMode = mode;
+  document.getElementById('tabWrongNotes').classList.toggle('active', mode === 'wrong');
+  document.getElementById('tabBookmarks').classList.toggle('active', mode === 'bookmark');
+  document.getElementById('wrongNotesContent').style.display = mode === 'wrong' ? '' : 'none';
+  document.getElementById('bookmarksContent').style.display = mode === 'bookmark' ? '' : 'none';
+  if (mode === 'wrong') renderWrongNotes();
+  else renderBookmarks();
+}
+
+let bookmarkFilter = 'all';
+
+function renderBookmarks() {
+  const bookmarks = getBookmarks();
+  const list = document.getElementById('bookmarkList');
+  const countEl = document.getElementById('bookmarkCount');
+  const clearBtn = document.getElementById('btnClearBookmarks');
+  const badge = document.getElementById('bookmarkTabBadge');
+  if (badge) badge.textContent = bookmarks.length;
+
+  // Filters
+  const subjects = [...new Set(bookmarks.map(b => b.subjectName))];
+  const filtersEl = document.getElementById('bookmarkFilters');
+  filtersEl.innerHTML = `<div class="filter-chip ${bookmarkFilter === 'all' ? 'active' : ''}" onclick="setBookmarkFilter('all')">전체 (${bookmarks.length})</div>` +
+    subjects.map(s => {
+      const count = bookmarks.filter(b => b.subjectName === s).length;
+      return `<div class="filter-chip ${bookmarkFilter === s ? 'active' : ''}" onclick="setBookmarkFilter('${s}')">${s} (${count})</div>`;
+    }).join('');
+
+  const filtered = bookmarkFilter === 'all' ? bookmarks : bookmarks.filter(b => b.subjectName === bookmarkFilter);
+  countEl.textContent = `북마크 ${filtered.length}개`;
+  clearBtn.style.display = bookmarks.length > 0 ? '' : 'none';
+
+  if (filtered.length === 0) {
+    list.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon"><i class="fas fa-star"></i></div>
+        <div class="empty-text">북마크가 없습니다</div>
+        <div class="empty-sub">문제 풀이 중 ⭐를 눌러 북마크하세요!</div>
+      </div>
+    `;
+    return;
+  }
+
+  list.innerHTML = filtered.sort((a, b) => new Date(b.date) - new Date(a.date)).map(bm => `
+    <div class="bookmark-item" onclick="openBookmarkDetail(${bm.id})">
+      <div class="bookmark-meta">
+        <span class="bookmark-badge">${bm.subjectName}</span>
+        <span class="bookmark-year">${bm.year}년 · ${bm.qNum}번</span>
+      </div>
+      <div class="bookmark-q">${escHtml(bm.question)}</div>
+      <div class="bookmark-actions">
+        <button onclick="event.stopPropagation(); goToBookmarkQuestion(${bm.year}, '${bm.code}', ${bm.qNum})">
+          <i class="fas fa-play"></i> 문제풀기
+        </button>
+        <button class="delete-btn" onclick="event.stopPropagation(); deleteBookmark(${bm.id})">
+          <i class="fas fa-trash"></i> 삭제
+        </button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function setBookmarkFilter(f) {
+  bookmarkFilter = f;
+  renderBookmarks();
+}
+
+function openBookmarkDetail(id) {
+  const bookmarks = getBookmarks();
+  const bm = bookmarks.find(b => b.id === id);
+  if (!bm) return;
+
+  const modal = document.getElementById('wrongModal');
+  const body = document.getElementById('wrongModalBody');
+  document.querySelector('#wrongModal .modal-header h3').textContent = '북마크 상세';
+
+  let optionsHtml = bm.options.map(opt => {
+    const isCorrect = opt.num === bm.answer;
+    let cls = isCorrect ? 'correct' : 'dimmed';
+    return `
+      <div class="option-item ${cls} disabled">
+        <div class="option-num">${opt.num}</div>
+        <div class="option-text">${escHtml(opt.text)}</div>
+      </div>
+    `;
+  }).join('');
+
+  let explHtml = '';
+  if (bm.correctExplanation) {
+    let wrongHtml = '';
+    if (bm.wrongExplanations && Object.keys(bm.wrongExplanations).length > 0) {
+      wrongHtml = '<div class="explanation-wrong">';
+      for (const [k, v] of Object.entries(bm.wrongExplanations)) {
+        wrongHtml += `<div class="explanation-wrong-item"><strong>보기 ${k})</strong> ${escHtml(v)}</div>`;
+      }
+      wrongHtml += '</div>';
+    }
+    explHtml = `
+      <div class="explanation-box show" style="margin:1rem 0 0;border-left-color:var(--warning)">
+        <div class="explanation-title" style="color:var(--warning)"><i class="fas fa-lightbulb"></i> 해설</div>
+        <div class="explanation-text">${escHtml(bm.correctExplanation)}</div>
+        ${wrongHtml}
+      </div>
+    `;
+  }
+
+  body.innerHTML = `
+    <div style="margin-bottom:.5rem">
+      <span class="bookmark-badge">${bm.subjectName}</span>
+      <span class="bookmark-year" style="margin-left:.5rem">${bm.year}년 · ${bm.qNum}번</span>
+    </div>
+    <div class="q-text" style="padding:1rem 0;font-size:.88rem">${escHtml(bm.question)}</div>
+    <div style="margin-bottom:1rem">${optionsHtml}</div>
+    ${explHtml}
+  `;
+  modal.classList.add('show');
+}
+
+function goToBookmarkQuestion(year, code, qNum) {
+  startQuiz(year, code);
+}
+
+function deleteBookmark(id) {
+  let bookmarks = getBookmarks();
+  bookmarks = bookmarks.filter(b => b.id !== id);
+  saveBookmarks(bookmarks);
+  renderBookmarks();
+  showToast('북마크가 삭제되었습니다');
+}
+
+function clearAllBookmarks() {
+  if (!confirm('모든 북마크를 삭제하시겠습니까?')) return;
+  saveBookmarks([]);
+  renderBookmarks();
+  showToast('모든 북마크가 삭제되었습니다');
 }
 
 // ===== WRONG NOTES =====
@@ -1564,6 +1956,8 @@ function renderWrongNotes() {
   const list = document.getElementById('wrongList');
   const countEl = document.getElementById('wrongCount');
   const clearBtn = document.getElementById('btnClearWrong');
+  const wrongTabBadge = document.getElementById('wrongTabBadge');
+  if (wrongTabBadge) wrongTabBadge.textContent = notes.length;
 
   // Filters
   const subjects = [...new Set(notes.map(n => n.subjectName))];
@@ -1715,14 +2109,88 @@ function updateSettingsUI() {
 }
 
 function resetAllData() {
-  if (!confirm('모든 학습 기록, 오답노트가 삭제됩니다.\n계속하시겠습니까?')) return;
+  if (!confirm('모든 학습 기록, 오답노트, 북마크가 삭제됩니다.\n계속하시겠습니까?')) return;
   localStorage.removeItem(STORAGE_WRONG);
   localStorage.removeItem(STORAGE_HISTORY);
   localStorage.removeItem(STORAGE_SOLVED);
+  localStorage.removeItem(STORAGE_BOOKMARKS);
   updateWrongBadge();
+  updateBookmarkBadge();
   refreshHomeStats();
   showToast('모든 데이터가 초기화되었습니다');
 }
+
+// ===== D-DAY =====
+function getDdaySettings() {
+  try {
+    return JSON.parse(localStorage.getItem(STORAGE_DDAY)) || { name: '2급 스포츠지도사 필기', date: '2026-04-25' };
+  } catch(e) {
+    return { name: '2급 스포츠지도사 필기', date: '2026-04-25' };
+  }
+}
+function saveDdaySettings(data) {
+  localStorage.setItem(STORAGE_DDAY, JSON.stringify(data));
+}
+
+function renderDday() {
+  const ddayData = getDdaySettings();
+  const examDate = new Date(ddayData.date + 'T00:00:00');
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const diffTime = examDate.getTime() - today.getTime();
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+  const nameEl = document.getElementById('ddayExamName');
+  const dateEl = document.getElementById('ddayExamDate');
+  const countEl = document.getElementById('ddayCount');
+  const fillEl = document.getElementById('ddayProgressFill');
+  const textEl = document.getElementById('ddayProgressText');
+
+  nameEl.textContent = ddayData.name;
+  dateEl.textContent = ddayData.date.replace(/-/g, '.');
+
+  if (diffDays > 0) {
+    countEl.textContent = `D-${diffDays}`;
+  } else if (diffDays === 0) {
+    countEl.textContent = 'D-Day';
+  } else {
+    countEl.textContent = `D+${Math.abs(diffDays)}`;
+  }
+
+  // Progress: assume 90 day study period
+  const totalStudyDays = 90;
+  const studied = Math.max(0, totalStudyDays - diffDays);
+  const pct = Math.min(100, Math.max(0, Math.round(studied / totalStudyDays * 100)));
+  fillEl.style.width = pct + '%';
+  textEl.textContent = diffDays > 0 ? `${diffDays}일 남음` : (diffDays === 0 ? '오늘 시험!' : '시험 완료');
+}
+
+function openDdaySetting() {
+  const ddayData = getDdaySettings();
+  document.getElementById('ddayInputName').value = ddayData.name;
+  document.getElementById('ddayInputDate').value = ddayData.date;
+  document.getElementById('ddaySettingOverlay').classList.add('show');
+}
+function closeDdaySetting() {
+  document.getElementById('ddaySettingOverlay').classList.remove('show');
+}
+function saveDdaySetting() {
+  const name = document.getElementById('ddayInputName').value.trim();
+  const date = document.getElementById('ddayInputDate').value;
+  if (!name || !date) {
+    showToast('시험 이름과 날짜를 입력해주세요');
+    return;
+  }
+  saveDdaySettings({ name, date });
+  renderDday();
+  closeDdaySetting();
+  showToast('D-Day가 설정되었습니다');
+}
+
+document.getElementById('ddaySettingOverlay').addEventListener('click', (e) => {
+  if (e.target === e.currentTarget) closeDdaySetting();
+});
 
 // ===== UTILS =====
 function escHtml(str) {
@@ -1743,6 +2211,8 @@ document.getElementById('wrongModal').addEventListener('click', (e) => {
 async function init() {
   loadSettings();
   updateWrongBadge();
+  updateBookmarkBadge();
+  renderDday();
   await loadAllData();
   renderYearChips();
   renderSubjectList();

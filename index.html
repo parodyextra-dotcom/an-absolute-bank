@@ -1251,9 +1251,200 @@ body {
 
 /* Custom scrollbar for question card area */
 .quiz-content { overflow-y: auto; }
+
+/* ===== Daily Quiz Answer Animation Overlay ===== */
+.daily-answer-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+.daily-answer-overlay.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+.daily-answer-overlay.hiding {
+  opacity: 0;
+}
+
+/* Backdrop */
+.daily-answer-overlay .dao-backdrop {
+  position: absolute;
+  inset: 0;
+  transition: opacity 0.3s ease;
+}
+.daily-answer-overlay.correct .dao-backdrop {
+  background: radial-gradient(circle at center, rgba(16, 185, 129, 0.25) 0%, rgba(16, 185, 129, 0.08) 100%);
+}
+.daily-answer-overlay.wrong .dao-backdrop {
+  background: radial-gradient(circle at center, rgba(239, 68, 68, 0.25) 0%, rgba(239, 68, 68, 0.08) 100%);
+}
+
+/* Content container */
+.dao-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Character image */
+.dao-image {
+  width: 220px;
+  height: 220px;
+  object-fit: contain;
+  border-radius: 1rem;
+  filter: drop-shadow(0 8px 32px rgba(0,0,0,0.25));
+}
+
+/* Correct animation: zoom in big → shrink to normal + glow pulse */
+.daily-answer-overlay.correct .dao-image {
+  animation: daoCorrectZoom 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards,
+             daoCorrectGlow 1.5s ease-in-out 0.8s infinite;
+}
+@keyframes daoCorrectZoom {
+  0% { transform: scale(2.8) rotate(5deg); opacity: 0; filter: blur(8px); }
+  15% { opacity: 1; filter: blur(2px); }
+  40% { transform: scale(1.15) rotate(-2deg); filter: blur(0); }
+  60% { transform: scale(1.05) rotate(1deg); }
+  80% { transform: scale(0.98) rotate(0deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+@keyframes daoCorrectGlow {
+  0%, 100% { filter: drop-shadow(0 0 20px rgba(16,185,129,0.3)) drop-shadow(0 0 60px rgba(251,191,36,0.15)); }
+  50% { filter: drop-shadow(0 0 40px rgba(16,185,129,0.6)) drop-shadow(0 0 80px rgba(251,191,36,0.3)); }
+}
+
+/* Wrong animation: zoom in big → shrink to normal + shake */
+.daily-answer-overlay.wrong .dao-image {
+  animation: daoWrongZoom 1s cubic-bezier(0.22, 1, 0.36, 1) forwards,
+             daoWrongShake 0.6s ease-in-out 1s;
+}
+@keyframes daoWrongZoom {
+  0% { transform: scale(3) rotate(-5deg); opacity: 0; filter: blur(10px) saturate(2); }
+  10% { opacity: 1; }
+  25% { filter: blur(3px) saturate(1.5); }
+  50% { transform: scale(1.1) rotate(2deg); filter: blur(0) saturate(1); }
+  70% { transform: scale(0.97) rotate(-1deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+@keyframes daoWrongShake {
+  0%, 100% { transform: translateX(0) rotate(0); }
+  10% { transform: translateX(-14px) rotate(-4deg); }
+  20% { transform: translateX(12px) rotate(3deg); }
+  30% { transform: translateX(-10px) rotate(-3deg); }
+  40% { transform: translateX(8px) rotate(2deg); }
+  50% { transform: translateX(-5px) rotate(-1deg); }
+  60% { transform: translateX(3px) rotate(1deg); }
+  70% { transform: translateX(-2px); }
+}
+
+/* Text label under image */
+.dao-label {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  opacity: 0;
+  animation: daoLabelFade 0.4s ease 0.35s forwards;
+}
+.daily-answer-overlay.correct .dao-label {
+  color: #10b981;
+}
+.daily-answer-overlay.wrong .dao-label {
+  color: #ef4444;
+}
+@keyframes daoLabelFade {
+  0% { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Sparkle particles for correct */
+.dao-sparkles {
+  position: absolute;
+  inset: -40px;
+  pointer-events: none;
+}
+.dao-sparkle {
+  position: absolute;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  opacity: 0;
+}
+.daily-answer-overlay.correct .dao-sparkle {
+  background: #fbbf24;
+  animation: daoSparkle 1s ease-out forwards;
+}
+@keyframes daoSparkle {
+  0% { transform: translate(0,0) scale(0); opacity: 1; }
+  100% { transform: translate(var(--sx), var(--sy)) scale(1); opacity: 0; }
+}
+
+/* Impact lines for wrong */
+.dao-impact-lines {
+  position: absolute;
+  inset: -30px;
+  pointer-events: none;
+}
+.dao-impact-line {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 3px;
+  height: 25px;
+  background: #ef4444;
+  transform-origin: center bottom;
+  opacity: 0;
+  border-radius: 2px;
+}
+.daily-answer-overlay.wrong .dao-impact-line {
+  animation: daoImpact 0.6s ease-out 0.3s forwards;
+}
+@keyframes daoImpact {
+  0% { opacity: 0.9; transform: rotate(var(--rot)) translateY(-30px) scaleY(0); }
+  50% { opacity: 0.8; transform: rotate(var(--rot)) translateY(-60px) scaleY(1); }
+  100% { opacity: 0; transform: rotate(var(--rot)) translateY(-90px) scaleY(0.5); }
+}
+
+/* Confetti for correct */
+.dao-confetti-piece {
+  position: absolute;
+  width: 10px; height: 10px;
+  opacity: 0;
+}
+.daily-answer-overlay.correct .dao-confetti-piece {
+  animation: daoConfetti 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+@keyframes daoConfetti {
+  0% { transform: translate(0, 0) rotate(0deg) scale(0); opacity: 1; }
+  100% { transform: translate(var(--cx), var(--cy)) rotate(var(--cr)) scale(1); opacity: 0; }
+}
+
+/* Mobile adjustments */
+@media (max-width: 480px) {
+  .dao-image { width: 180px; height: 180px; }
+  .dao-label { font-size: 1.2rem; }
+}
 </style>
 </head>
 <body>
+
+<!-- Daily Answer Animation Overlay -->
+<div class="daily-answer-overlay" id="dailyAnswerOverlay">
+  <div class="dao-backdrop"></div>
+  <div class="dao-content">
+    <div class="dao-sparkles" id="daoSparkles"></div>
+    <div class="dao-impact-lines" id="daoImpactLines"></div>
+    <img class="dao-image" id="daoImage" src="" alt="">
+    <div class="dao-label" id="daoLabel"></div>
+  </div>
+</div>
 
 <!-- Loading Screen -->
 <div id="loadingScreen">
@@ -2609,6 +2800,9 @@ function selectOption(num) {
       daily[today].answered = Object.keys(quiz.answers).length;
       daily[today].correct = quiz.correctCount;
       saveDailyData(daily);
+
+      // Show animated overlay for daily quiz
+      showDailyAnswerAnimation(isCorrect);
     }
 
     renderQuestion();
@@ -2616,6 +2810,95 @@ function selectOption(num) {
     quiz.answers[idx] = num;
     renderQuestion();
   }
+}
+
+// ===== DAILY ANSWER ANIMATION =====
+function showDailyAnswerAnimation(isCorrect) {
+  const overlay = document.getElementById('dailyAnswerOverlay');
+  const img = document.getElementById('daoImage');
+  const label = document.getElementById('daoLabel');
+  const sparkles = document.getElementById('daoSparkles');
+  const impactLines = document.getElementById('daoImpactLines');
+
+  // Reset
+  overlay.className = 'daily-answer-overlay';
+  sparkles.innerHTML = '';
+  impactLines.innerHTML = '';
+
+  if (isCorrect) {
+    img.src = 'images/success.png';
+    label.textContent = '🎉 정답! 영~차!';
+    overlay.classList.add('correct');
+
+    // Generate sparkle particles
+    for (let i = 0; i < 14; i++) {
+      const spark = document.createElement('div');
+      spark.className = 'dao-sparkle';
+      const angle = (Math.PI * 2 / 14) * i;
+      const dist = 80 + Math.random() * 60;
+      spark.style.left = '50%';
+      spark.style.top = '50%';
+      spark.style.setProperty('--sx', `${Math.cos(angle) * dist}px`);
+      spark.style.setProperty('--sy', `${Math.sin(angle) * dist}px`);
+      spark.style.animationDelay = `${0.2 + Math.random() * 0.4}s`;
+      spark.style.width = `${4 + Math.random() * 8}px`;
+      spark.style.height = spark.style.width;
+      sparkles.appendChild(spark);
+    }
+
+    // Generate confetti pieces
+    const confettiColors = ['#10b981', '#fbbf24', '#6366f1', '#ef4444', '#3b82f6', '#f97316'];
+    for (let i = 0; i < 20; i++) {
+      const piece = document.createElement('div');
+      piece.className = 'dao-confetti-piece';
+      piece.style.left = '50%';
+      piece.style.top = '50%';
+      piece.style.background = confettiColors[i % confettiColors.length];
+      piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+      piece.style.width = `${6 + Math.random() * 8}px`;
+      piece.style.height = `${6 + Math.random() * 8}px`;
+      const cx = (Math.random() - 0.5) * 300;
+      const cy = -50 - Math.random() * 200;
+      piece.style.setProperty('--cx', `${cx}px`);
+      piece.style.setProperty('--cy', `${cy}px`);
+      piece.style.setProperty('--cr', `${Math.random() * 720 - 360}deg`);
+      piece.style.animationDelay = `${Math.random() * 0.3}s`;
+      sparkles.appendChild(piece);
+    }
+  } else {
+    img.src = 'images/fail.png';
+    label.textContent = '😢 오답... 돌대가리!';
+    overlay.classList.add('wrong');
+
+    // Generate impact lines
+    for (let i = 0; i < 10; i++) {
+      const line = document.createElement('div');
+      line.className = 'dao-impact-line';
+      const rot = (360 / 10) * i;
+      line.style.setProperty('--rot', `${rot}deg`);
+      line.style.animationDelay = `${0.3 + Math.random() * 0.15}s`;
+      impactLines.appendChild(line);
+    }
+  }
+
+  // Show overlay
+  overlay.classList.add('show');
+
+  // Auto-hide after delay
+  setTimeout(() => {
+    overlay.classList.add('hiding');
+    setTimeout(() => {
+      overlay.className = 'daily-answer-overlay';
+    }, 300);
+  }, isCorrect ? 2000 : 2200);
+
+  // Allow tap to dismiss early
+  overlay.onclick = () => {
+    overlay.classList.add('hiding');
+    setTimeout(() => {
+      overlay.className = 'daily-answer-overlay';
+    }, 300);
+  };
 }
 
 function nextQuestion() {

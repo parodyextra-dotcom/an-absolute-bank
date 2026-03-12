@@ -757,6 +757,290 @@ body {
 }
 @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
 
+/* ===== HOME: Mode Boxes ===== */
+.home-mode-box {
+  margin: .75rem 1rem 0;
+  background: #fff; border-radius: var(--radius);
+  box-shadow: var(--shadow); overflow: hidden;
+  cursor: pointer; transition: all .2s;
+  border: 1.5px solid transparent;
+}
+.home-mode-box:active { transform: scale(.99); }
+.home-mode-box:hover { border-color: var(--primary-light); }
+.home-mode-header {
+  display: flex; align-items: center; gap: .85rem;
+  padding: 1rem 1.25rem;
+}
+.home-mode-icon {
+  width: 52px; height: 52px; border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem; flex-shrink: 0;
+}
+.home-mode-icon.daily { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff; }
+.home-mode-icon.chapter { background: linear-gradient(135deg, #10b981, #06b6d4); color: #fff; }
+.home-mode-icon.mock { background: linear-gradient(135deg, #f59e0b, #f97316); color: #fff; }
+.home-mode-info { flex: 1; min-width: 0; }
+.home-mode-title {
+  font-size: .92rem; font-weight: 700; color: var(--gray-800);
+  display: flex; align-items: center; gap: .4rem;
+}
+.home-mode-title .badge-new {
+  font-size: .55rem; font-weight: 700; color: #fff;
+  background: var(--danger); border-radius: 4px;
+  padding: .1rem .35rem; line-height: 1.3;
+}
+.home-mode-desc {
+  font-size: .75rem; color: var(--gray-400); margin-top: 2px; font-weight: 400;
+}
+.home-mode-arrow {
+  color: var(--gray-300); font-size: .85rem; flex-shrink: 0;
+}
+.home-mode-progress {
+  padding: 0 1.25rem .85rem;
+}
+.home-mode-progress-bar {
+  width: 100%; height: 6px; background: var(--gray-100);
+  border-radius: 3px; overflow: hidden;
+}
+.home-mode-progress-fill {
+  height: 100%; border-radius: 3px; transition: width .5s ease;
+}
+.home-mode-progress-fill.daily { background: linear-gradient(90deg, #6366f1, #8b5cf6); }
+.home-mode-progress-fill.chapter { background: linear-gradient(90deg, #10b981, #06b6d4); }
+.home-mode-progress-fill.mock { background: linear-gradient(90deg, #f59e0b, #f97316); }
+.home-mode-progress-text {
+  display: flex; justify-content: space-between;
+  font-size: .68rem; color: var(--gray-400); margin-top: .3rem; font-weight: 500;
+}
+
+/* ===== QUIZ HUB PAGE ===== */
+.quiz-hub-header {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  padding: 2rem 1.25rem 1.5rem; color: #fff;
+  position: relative; overflow: hidden;
+}
+.quiz-hub-header::before {
+  content: ''; position: absolute; top: -40%; right: -20%;
+  width: 300px; height: 300px; border-radius: 50%;
+  background: rgba(255,255,255,.08);
+}
+.quiz-hub-header h1 { font-size: 1.5rem; font-weight: 800; position: relative; z-index: 1; }
+.quiz-hub-header p { font-size: .85rem; opacity: .85; font-weight: 400; position: relative; z-index: 1; }
+
+.quiz-hub-tabs {
+  display: flex; background: #fff;
+  border-bottom: 1px solid var(--gray-100);
+  position: sticky; top: 0; z-index: 10;
+}
+.quiz-hub-tab {
+  flex: 1; padding: .85rem .5rem;
+  text-align: center; font-size: .78rem; font-weight: 600;
+  color: var(--gray-400); cursor: pointer;
+  transition: all .2s; position: relative;
+  border: none; background: none; font-family: inherit;
+}
+.quiz-hub-tab.active { color: var(--primary); }
+.quiz-hub-tab::after {
+  content: ''; position: absolute; bottom: 0; left: 20%; right: 20%;
+  height: 2.5px; background: var(--primary); border-radius: 2px;
+  transform: scaleX(0); transition: transform .25s;
+}
+.quiz-hub-tab.active::after { transform: scaleX(1); }
+.quiz-hub-tab i { display: block; font-size: 1.1rem; margin-bottom: .3rem; }
+
+.quiz-hub-panel { display: none; animation: fadeIn .3s ease; }
+.quiz-hub-panel.active { display: block; }
+
+/* Daily Quiz Card */
+.daily-hero {
+  margin: 1rem; padding: 1.5rem; background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  border-radius: var(--radius); color: #fff; position: relative; overflow: hidden;
+}
+.daily-hero::before {
+  content: ''; position: absolute; top: -30%; right: -15%;
+  width: 140px; height: 140px; border-radius: 50%;
+  background: rgba(255,255,255,.1);
+}
+.daily-hero-top { display: flex; align-items: center; justify-content: space-between; position: relative; z-index: 1; }
+.daily-hero-date { font-size: .78rem; opacity: .8; font-weight: 500; }
+.daily-hero-streak {
+  display: flex; align-items: center; gap: .3rem;
+  font-size: .75rem; font-weight: 600;
+  background: rgba(255,255,255,.2); padding: .3rem .6rem;
+  border-radius: 50px;
+}
+.daily-hero h2 { font-size: 1.25rem; font-weight: 800; margin: .5rem 0 .25rem; position: relative; z-index: 1; }
+.daily-hero-sub { font-size: .8rem; opacity: .85; position: relative; z-index: 1; }
+.daily-hero-progress { margin-top: 1rem; position: relative; z-index: 1; }
+.daily-hero-progress-bar {
+  width: 100%; height: 8px; background: rgba(255,255,255,.2);
+  border-radius: 4px; overflow: hidden;
+}
+.daily-hero-progress-fill {
+  height: 100%; background: #fff; border-radius: 4px;
+  transition: width .5s ease;
+}
+.daily-hero-progress-text {
+  display: flex; justify-content: space-between;
+  font-size: .72rem; opacity: .8; margin-top: .4rem;
+}
+.daily-start-btn {
+  margin: 0 1rem 1rem; padding: 1rem; border: none; border-radius: var(--radius-sm);
+  background: var(--primary); color: #fff;
+  font-size: .92rem; font-weight: 700; cursor: pointer;
+  font-family: inherit; width: calc(100% - 2rem);
+  display: flex; align-items: center; justify-content: center; gap: .5rem;
+  transition: all .15s;
+}
+.daily-start-btn:active { background: var(--primary-dark); transform: scale(.98); }
+.daily-start-btn.completed {
+  background: var(--success);
+}
+.daily-history-item {
+  display: flex; align-items: center; gap: .75rem;
+  padding: .85rem 1.25rem; border-bottom: 1px solid var(--gray-50);
+}
+.daily-history-date { font-size: .78rem; font-weight: 600; color: var(--gray-600); min-width: 80px; }
+.daily-history-score { font-size: .78rem; color: var(--gray-400); flex: 1; }
+.daily-history-badge {
+  font-size: .65rem; font-weight: 700; padding: .2rem .5rem;
+  border-radius: 4px;
+}
+.daily-history-badge.pass { background: var(--success-bg); color: var(--success); }
+.daily-history-badge.fail { background: var(--danger-bg); color: var(--danger); }
+
+/* Chapter Quiz */
+.chapter-quiz-subject {
+  margin: .75rem 1rem 0; background: #fff;
+  border-radius: var(--radius); box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.chapter-quiz-subject-header {
+  display: flex; align-items: center; gap: .75rem;
+  padding: 1rem 1.25rem; cursor: pointer;
+  transition: background .15s;
+}
+.chapter-quiz-subject-header:active { background: var(--gray-50); }
+.chapter-quiz-subject-icon {
+  width: 40px; height: 40px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .85rem; font-weight: 700; color: #fff; flex-shrink: 0;
+}
+.chapter-quiz-subject-info { flex: 1; }
+.chapter-quiz-subject-name { font-size: .88rem; font-weight: 700; color: var(--gray-800); }
+.chapter-quiz-subject-meta { font-size: .72rem; color: var(--gray-400); margin-top: 2px; }
+.chapter-quiz-subject-progress {
+  width: 44px; height: 44px; position: relative; flex-shrink: 0;
+}
+.chapter-quiz-subject-progress svg { width: 44px; height: 44px; transform: rotate(-90deg); }
+.chapter-quiz-subject-progress .progress-ring-bg { fill: none; stroke: var(--gray-100); stroke-width: 4; }
+.chapter-quiz-subject-progress .progress-ring-fg { fill: none; stroke-width: 4; stroke-linecap: round; transition: stroke-dashoffset .5s; }
+.chapter-quiz-subject-progress .progress-text-center {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  font-size: .55rem; font-weight: 700; color: var(--gray-500);
+}
+.chapter-quiz-expand {
+  padding: 0 1rem 1rem;
+  display: none;
+}
+.chapter-quiz-expand.show { display: block; }
+.chapter-quiz-chapter-item {
+  display: flex; align-items: center; gap: .75rem;
+  padding: .7rem .75rem; margin-bottom: .4rem;
+  background: var(--gray-50); border-radius: var(--radius-xs);
+  cursor: pointer; transition: all .15s;
+}
+.chapter-quiz-chapter-item:active { background: var(--gray-100); }
+.chapter-quiz-chapter-num {
+  width: 26px; height: 26px; border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .68rem; font-weight: 700; color: #fff; flex-shrink: 0;
+}
+.chapter-quiz-chapter-title { font-size: .8rem; font-weight: 600; color: var(--gray-700); flex: 1; }
+.chapter-quiz-chapter-badge {
+  font-size: .65rem; font-weight: 600; padding: .15rem .45rem;
+  border-radius: 4px; background: var(--gray-100); color: var(--gray-400);
+}
+.chapter-quiz-chapter-badge.done { background: var(--success-bg); color: var(--success); }
+
+/* Mock Exam */
+.mock-exam-card {
+  margin: .75rem 1rem 0; background: #fff;
+  border-radius: var(--radius); box-shadow: var(--shadow);
+  overflow: hidden; cursor: pointer; transition: all .2s;
+  border: 1.5px solid transparent;
+}
+.mock-exam-card:active { transform: scale(.99); }
+.mock-exam-card:hover { border-color: var(--primary-light); }
+.mock-exam-header {
+  display: flex; align-items: center; gap: .85rem;
+  padding: 1rem 1.25rem;
+}
+.mock-exam-year-badge {
+  width: 52px; height: 52px; border-radius: 14px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  font-weight: 800; color: #fff; flex-shrink: 0;
+  font-size: .95rem; line-height: 1.1;
+}
+.mock-exam-year-badge small { font-size: .55rem; font-weight: 600; opacity: .8; }
+.mock-exam-info { flex: 1; }
+.mock-exam-title { font-size: .88rem; font-weight: 700; color: var(--gray-800); }
+.mock-exam-meta { font-size: .72rem; color: var(--gray-400); margin-top: 2px; }
+.mock-exam-status {
+  font-size: .68rem; font-weight: 700; padding: .25rem .55rem;
+  border-radius: 5px; flex-shrink: 0;
+}
+.mock-exam-status.not-started { background: var(--gray-100); color: var(--gray-400); }
+.mock-exam-status.in-progress { background: var(--warning-bg); color: var(--warning); }
+.mock-exam-status.completed { background: var(--success-bg); color: var(--success); }
+.mock-exam-progress {
+  padding: 0 1.25rem .85rem;
+}
+.mock-exam-progress-bar {
+  width: 100%; height: 5px; background: var(--gray-100);
+  border-radius: 3px; overflow: hidden;
+}
+.mock-exam-progress-fill {
+  height: 100%; border-radius: 3px;
+  transition: width .5s ease;
+}
+.mock-exam-subjects {
+  padding: 0 1.25rem .85rem;
+  display: flex; flex-wrap: wrap; gap: .3rem;
+}
+.mock-exam-subj-chip {
+  font-size: .62rem; font-weight: 600; padding: .2rem .45rem;
+  border-radius: 4px; background: var(--gray-50); color: var(--gray-400);
+}
+.mock-exam-subj-chip.done { background: var(--success-bg); color: var(--success); }
+.mock-exam-subj-chip.current { background: var(--primary-bg); color: var(--primary); }
+
+/* Mock Subject Selection Overlay */
+.mock-subject-overlay {
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(0,0,0,.5); backdrop-filter: blur(4px);
+  display: none; align-items: flex-end; justify-content: center;
+}
+.mock-subject-overlay.show { display: flex; }
+.mock-subject-panel {
+  background: #fff; width: 100%; max-width: 480px;
+  max-height: 80vh; border-radius: var(--radius) var(--radius) 0 0;
+  overflow-y: auto; animation: slideUp .3s ease;
+}
+.mock-subject-header {
+  padding: 1rem 1.25rem; border-bottom: 1px solid var(--gray-100);
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; background: #fff; z-index: 1;
+}
+.mock-subject-header h3 { font-size: .95rem; font-weight: 700; }
+.mock-subject-close {
+  width: 32px; height: 32px; border-radius: 50%;
+  border: none; background: var(--gray-100); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--gray-500);
+}
+.mock-subject-body { padding: 1rem 1.25rem; }
+
 /* ===== SUMMARY (요점정리) ===== */
 .summary-page .page-header {
   background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
@@ -1008,6 +1292,54 @@ body {
     </div>
   </div>
 
+  <!-- 매일 10문제 풀기 -->
+  <div class="home-mode-box" id="homeDailyBox" onclick="openQuizTab('daily')">
+    <div class="home-mode-header">
+      <div class="home-mode-icon daily"><i class="fas fa-fire"></i></div>
+      <div class="home-mode-info">
+        <div class="home-mode-title">매일 10문제 풀기 <span class="badge-new" id="dailyBadge">TODAY</span></div>
+        <div class="home-mode-desc" id="homeDailyDesc">오늘의 문제를 풀어보세요!</div>
+      </div>
+      <div class="home-mode-arrow"><i class="fas fa-chevron-right"></i></div>
+    </div>
+    <div class="home-mode-progress">
+      <div class="home-mode-progress-bar"><div class="home-mode-progress-fill daily" id="homeDailyFill" style="width:0%"></div></div>
+      <div class="home-mode-progress-text"><span id="homeDailyText">0/10 문제</span><span id="homeDailyPct">0%</span></div>
+    </div>
+  </div>
+
+  <!-- 단원별 문제풀기 -->
+  <div class="home-mode-box" onclick="openQuizTab('chapter')">
+    <div class="home-mode-header">
+      <div class="home-mode-icon chapter"><i class="fas fa-layer-group"></i></div>
+      <div class="home-mode-info">
+        <div class="home-mode-title">단원별 문제풀기</div>
+        <div class="home-mode-desc">과목·단원별로 집중 학습하세요</div>
+      </div>
+      <div class="home-mode-arrow"><i class="fas fa-chevron-right"></i></div>
+    </div>
+    <div class="home-mode-progress">
+      <div class="home-mode-progress-bar"><div class="home-mode-progress-fill chapter" id="homeChapterFill" style="width:0%"></div></div>
+      <div class="home-mode-progress-text"><span id="homeChapterText">0/0 과목 완료</span><span id="homeChapterPct">0%</span></div>
+    </div>
+  </div>
+
+  <!-- 연도별 모의고사 -->
+  <div class="home-mode-box" onclick="openQuizTab('mock')">
+    <div class="home-mode-header">
+      <div class="home-mode-icon mock"><i class="fas fa-trophy"></i></div>
+      <div class="home-mode-info">
+        <div class="home-mode-title">연도별 모의고사</div>
+        <div class="home-mode-desc">실전처럼 연도별 전 과목 풀기</div>
+      </div>
+      <div class="home-mode-arrow"><i class="fas fa-chevron-right"></i></div>
+    </div>
+    <div class="home-mode-progress">
+      <div class="home-mode-progress-bar"><div class="home-mode-progress-fill mock" id="homeMockFill" style="width:0%"></div></div>
+      <div class="home-mode-progress-text"><span id="homeMockText">0/10 연도 완료</span><span id="homeMockPct">0%</span></div>
+    </div>
+  </div>
+
   <div class="stats-grid">
     <div class="stat-card purple">
       <div class="stat-icon"><i class="fas fa-book"></i></div>
@@ -1031,20 +1363,8 @@ body {
     </div>
   </div>
 
-  <div class="year-scroll">
-    <div class="year-chips" id="yearChips"></div>
-  </div>
-
-  <div class="card" style="margin-top:.75rem">
-    <div class="card-header">
-      <h3><i class="fas fa-list-ul" style="color:var(--primary);margin-right:.4rem"></i>과목 선택</h3>
-      <span style="font-size:.75rem;color:var(--gray-400)" id="selectedYearLabel">2025</span>
-    </div>
-    <div class="subject-list" id="subjectList"></div>
-  </div>
-
   <!-- Recent History -->
-  <div class="card" id="recentCard" style="display:none">
+  <div class="card" id="recentCard" style="display:none;margin-top:.75rem">
     <div class="card-header">
       <h3><i class="fas fa-clock-rotate-left" style="color:var(--warning);margin-right:.4rem"></i>최근 학습</h3>
     </div>
@@ -1052,24 +1372,100 @@ body {
   </div>
 </div>
 
-<!-- ===== PAGE: QUIZ ===== -->
+<!-- ===== PAGE: QUIZ (Hub + Solver) ===== -->
 <div class="page" id="pageQuiz">
-  <div class="quiz-toolbar">
-    <select id="quizYearSelect"></select>
-    <select id="quizSubjectSelect"></select>
-    <button class="btn-icon" id="btnGrid" title="문제 목록"><i class="fas fa-th"></i></button>
-    <button class="btn-icon" id="btnShuffle" title="섞기"><i class="fas fa-shuffle"></i></button>
-  </div>
-  <div class="quiz-progress">
-    <div class="progress-bar-bg"><div class="progress-bar-fill" id="quizProgressBar"></div></div>
-    <div class="progress-text">
-      <span id="quizProgressText">0 / 0</span>
-      <span id="quizScoreText">정답: 0</span>
+  <!-- Quiz Hub (선택 화면) -->
+  <div id="quizHub">
+    <div class="quiz-hub-header">
+      <h1>✏️ 문제풀기</h1>
+      <p>다양한 모드로 학습해보세요</p>
+    </div>
+    <div class="quiz-hub-tabs">
+      <button class="quiz-hub-tab active" data-tab="daily" onclick="switchQuizHubTab('daily')">
+        <i class="fas fa-fire"></i>매일 10문제
+      </button>
+      <button class="quiz-hub-tab" data-tab="chapter" onclick="switchQuizHubTab('chapter')">
+        <i class="fas fa-layer-group"></i>단원별
+      </button>
+      <button class="quiz-hub-tab" data-tab="mock" onclick="switchQuizHubTab('mock')">
+        <i class="fas fa-trophy"></i>모의고사
+      </button>
+    </div>
+
+    <!-- Daily 10 Panel -->
+    <div class="quiz-hub-panel active" id="panelDaily">
+      <div class="daily-hero" id="dailyHero">
+        <div class="daily-hero-top">
+          <div class="daily-hero-date" id="dailyDate"></div>
+          <div class="daily-hero-streak"><i class="fas fa-fire"></i> <span id="dailyStreak">0</span>일 연속</div>
+        </div>
+        <h2>오늘의 10문제</h2>
+        <div class="daily-hero-sub" id="dailyHeroSub">랜덤 과목에서 10문제를 출제합니다</div>
+        <div class="daily-hero-progress">
+          <div class="daily-hero-progress-bar"><div class="daily-hero-progress-fill" id="dailyProgressFill" style="width:0%"></div></div>
+          <div class="daily-hero-progress-text"><span id="dailyProgressLeft">0/10 완료</span><span id="dailyProgressPct">0%</span></div>
+        </div>
+      </div>
+      <button class="daily-start-btn" id="dailyStartBtn" onclick="startDailyQuiz()">
+        <i class="fas fa-play"></i> 오늘의 문제 시작하기
+      </button>
+      <div class="card" style="margin:.5rem 1rem 1rem">
+        <div class="card-header"><h3><i class="fas fa-history" style="color:var(--gray-400);margin-right:.4rem"></i>최근 기록</h3></div>
+        <div id="dailyHistoryList">
+          <div class="empty-state" style="padding:2rem"><div class="empty-icon" style="font-size:1.5rem"><i class="fas fa-calendar-days"></i></div><div class="empty-text" style="font-size:.8rem">아직 기록이 없습니다</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chapter Panel -->
+    <div class="quiz-hub-panel" id="panelChapter">
+      <div style="padding:1rem 1rem .5rem">
+        <div style="font-size:.78rem;font-weight:600;color:var(--gray-500)">과목을 선택하고 단원별로 학습하세요</div>
+      </div>
+      <div id="chapterQuizList"></div>
+      <div style="height:1rem"></div>
+    </div>
+
+    <!-- Mock Exam Panel -->
+    <div class="quiz-hub-panel" id="panelMock">
+      <div style="padding:1rem 1rem .5rem">
+        <div style="font-size:.78rem;font-weight:600;color:var(--gray-500)">연도를 선택하면 해당 연도의 전 과목을 순서대로 풀 수 있습니다</div>
+      </div>
+      <div id="mockExamList"></div>
+      <div style="height:1rem"></div>
     </div>
   </div>
-  <div class="quiz-content" id="quizContent">
-    <div id="questionArea"></div>
-    <div id="resultArea" style="display:none"></div>
+
+  <!-- Quiz Solver (문제 풀이 화면) -->
+  <div id="quizSolver" style="display:none">
+    <div class="quiz-toolbar">
+      <button class="btn-icon" onclick="backToQuizHub()" title="뒤로"><i class="fas fa-arrow-left"></i></button>
+      <div id="quizSolverTitle" style="flex:1;font-size:.82rem;font-weight:600;color:var(--gray-700);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></div>
+      <button class="btn-icon" id="btnGrid" title="문제 목록"><i class="fas fa-th"></i></button>
+      <button class="btn-icon" id="btnShuffle" title="섞기"><i class="fas fa-shuffle"></i></button>
+    </div>
+    <div class="quiz-progress">
+      <div class="progress-bar-bg"><div class="progress-bar-fill" id="quizProgressBar"></div></div>
+      <div class="progress-text">
+        <span id="quizProgressText">0 / 0</span>
+        <span id="quizScoreText">정답: 0</span>
+      </div>
+    </div>
+    <div class="quiz-content" id="quizContent">
+      <div id="questionArea"></div>
+      <div id="resultArea" style="display:none"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Mock Subject Selection Overlay -->
+<div class="mock-subject-overlay" id="mockSubjectOverlay">
+  <div class="mock-subject-panel">
+    <div class="mock-subject-header">
+      <h3 id="mockSubjectTitle">과목 선택</h3>
+      <button class="mock-subject-close" onclick="closeMockSubjectOverlay()"><i class="fas fa-xmark"></i></button>
+    </div>
+    <div class="mock-subject-body" id="mockSubjectBody"></div>
   </div>
 </div>
 
@@ -1308,6 +1704,7 @@ const STORAGE_SETTINGS = 'sportsQuiz_settings';
 const STORAGE_SOLVED = 'sportsQuiz_solved';
 const STORAGE_BOOKMARKS = 'sportsQuiz_bookmarks';
 const STORAGE_DDAY = 'sportsQuiz_dday';
+const STORAGE_DAILY = 'sportsQuiz_daily';
 
 // ===== LOAD & NORMALIZE DATA =====
 function normalizeData(year, raw) {
@@ -1470,14 +1867,16 @@ function switchPage(pageId) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.getElementById(pageId).classList.add('active');
-  document.querySelector(`[data-page="${pageId}"]`).classList.add('active');
+  const navItem = document.querySelector(`[data-page="${pageId}"]`);
+  if (navItem) navItem.classList.add('active');
 
   if (pageId === 'pageWrong') {
     if (wrongTabMode === 'wrong') renderWrongNotes();
     else renderBookmarks();
   }
-  if (pageId === 'pageHome') refreshHomeStats();
+  if (pageId === 'pageHome') { refreshHomeStats(); renderHomeBoxes(); }
   if (pageId === 'pageSummary') renderSummary();
+  if (pageId === 'pageQuiz') renderQuizHub();
   window.scrollTo(0, 0);
 }
 
@@ -1487,48 +1886,6 @@ function showToast(msg) {
 }
 
 // ===== HOME PAGE =====
-function renderYearChips() {
-  const wrap = document.getElementById('yearChips');
-  wrap.innerHTML = YEARS.map(y =>
-    `<div class="year-chip ${y === selectedYear ? 'active' : ''}" data-year="${y}">${y}년</div>`
-  ).join('');
-  wrap.querySelectorAll('.year-chip').forEach(chip => {
-    chip.addEventListener('click', () => {
-      selectedYear = parseInt(chip.dataset.year);
-      renderYearChips();
-      renderSubjectList();
-    });
-  });
-}
-
-function renderSubjectList() {
-  const data = allData[selectedYear];
-  if (!data) return;
-  const list = document.getElementById('subjectList');
-  document.getElementById('selectedYearLabel').textContent = selectedYear + '년';
-
-  const solved = getSolvedData();
-
-  list.innerHTML = data.subjects.map((subj, i) => {
-    const color = SUBJECT_COLORS[i % SUBJECT_COLORS.length];
-    const initial = subj.name.substring(0, 2);
-    const qCount = subj.questions.length;
-    const key = `${selectedYear}_${subj.code}`;
-    const solvedCount = solved[key] ? Object.keys(solved[key]).length : 0;
-
-    return `
-      <div class="subject-item" onclick="startQuiz(${selectedYear}, '${subj.code}')">
-        <div class="subject-icon" style="background:${color}">${initial}</div>
-        <div class="subject-info">
-          <div class="subject-name">${subj.name}</div>
-          <div class="subject-meta">${qCount}문제 · 풀이 ${solvedCount}/${qCount}</div>
-        </div>
-        <div class="subject-arrow"><i class="fas fa-chevron-right"></i></div>
-      </div>
-    `;
-  }).join('');
-}
-
 function refreshHomeStats() {
   const solved = getSolvedData();
   const wrong = getWrongNotes();
@@ -1562,7 +1919,7 @@ function refreshHomeStats() {
   if (history.length > 0) {
     recentCard.style.display = '';
     document.getElementById('recentList').innerHTML = history.slice(0, 5).map(h => `
-      <div class="subject-item" onclick="startQuiz(${h.year}, '${h.code}')">
+      <div class="subject-item" onclick="startQuizDirect(${h.year}, '${h.code}')">
         <div class="subject-icon" style="background:${h.color || '#6366f1'}">${h.initial || '📖'}</div>
         <div class="subject-info">
           <div class="subject-name">${h.year}년 ${h.name}</div>
@@ -1576,16 +1933,475 @@ function refreshHomeStats() {
   }
 }
 
-// ===== QUIZ =====
-function startQuiz(year, subjectCode) {
+function renderHomeBoxes() {
+  // Daily box
+  const daily = getDailyData();
+  const today = getTodayKey();
+  const todayData = daily[today];
+  const dailyDone = todayData ? todayData.answered : 0;
+  const dailyPct = Math.round(dailyDone / 10 * 100);
+  document.getElementById('homeDailyFill').style.width = dailyPct + '%';
+  document.getElementById('homeDailyText').textContent = `${dailyDone}/10 문제`;
+  document.getElementById('homeDailyPct').textContent = dailyPct + '%';
+  if (dailyDone >= 10) {
+    document.getElementById('homeDailyDesc').textContent = `✅ 오늘의 문제 완료! (${todayData.correct}/10 정답)`;
+    document.getElementById('dailyBadge').textContent = '완료';
+    document.getElementById('dailyBadge').style.background = 'var(--success)';
+  } else if (dailyDone > 0) {
+    document.getElementById('homeDailyDesc').textContent = `진행 중... ${dailyDone}/10 완료`;
+    document.getElementById('dailyBadge').textContent = 'TODAY';
+    document.getElementById('dailyBadge').style.background = '';
+  } else {
+    document.getElementById('homeDailyDesc').textContent = '오늘의 문제를 풀어보세요!';
+    document.getElementById('dailyBadge').textContent = 'TODAY';
+    document.getElementById('dailyBadge').style.background = '';
+  }
+
+  // Chapter box
+  const solved = getSolvedData();
+  let totalSubjects = 0;
+  let completedSubjects = 0;
+  let totalChapterQ = 0;
+  let solvedChapterQ = 0;
+  for (const year of YEARS) {
+    const data = allData[year];
+    if (!data) continue;
+    for (const subj of data.subjects) {
+      totalSubjects++;
+      totalChapterQ += subj.questions.length;
+      const key = `${year}_${subj.code}`;
+      const sc = solved[key] ? Object.keys(solved[key]).length : 0;
+      solvedChapterQ += sc;
+      if (sc >= subj.questions.length) completedSubjects++;
+    }
+  }
+  const chapterPct = totalChapterQ > 0 ? Math.round(solvedChapterQ / totalChapterQ * 100) : 0;
+  document.getElementById('homeChapterFill').style.width = chapterPct + '%';
+  document.getElementById('homeChapterText').textContent = `${solvedChapterQ}/${totalChapterQ} 문제 풀이`;
+  document.getElementById('homeChapterPct').textContent = chapterPct + '%';
+
+  // Mock box
+  let mockCompleted = 0;
+  for (const year of YEARS) {
+    const data = allData[year];
+    if (!data) continue;
+    let allDone = true;
+    for (const subj of data.subjects) {
+      const key = `${year}_${subj.code}`;
+      const sc = solved[key] ? Object.keys(solved[key]).length : 0;
+      if (sc < subj.questions.length) { allDone = false; break; }
+    }
+    if (allDone && data.subjects.length > 0) mockCompleted++;
+  }
+  const mockPct = Math.round(mockCompleted / YEARS.length * 100);
+  document.getElementById('homeMockFill').style.width = mockPct + '%';
+  document.getElementById('homeMockText').textContent = `${mockCompleted}/${YEARS.length} 연도 완료`;
+  document.getElementById('homeMockPct').textContent = mockPct + '%';
+}
+
+function openQuizTab(tab) {
+  switchPage('pageQuiz');
+  switchQuizHubTab(tab);
+}
+
+// ===== QUIZ HUB =====
+let currentQuizHubTab = 'daily';
+let quizMode = 'direct'; // 'daily' | 'chapter' | 'mock' | 'direct'
+let chapterExpandedSubject = null;
+
+function switchQuizHubTab(tab) {
+  currentQuizHubTab = tab;
+  document.querySelectorAll('.quiz-hub-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+  document.querySelectorAll('.quiz-hub-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel' + tab.charAt(0).toUpperCase() + tab.slice(1)).classList.add('active');
+  if (tab === 'daily') renderDailyPanel();
+  if (tab === 'chapter') renderChapterPanel();
+  if (tab === 'mock') renderMockPanel();
+}
+
+function renderQuizHub() {
+  // Show hub, hide solver
+  document.getElementById('quizHub').style.display = '';
+  document.getElementById('quizSolver').style.display = 'none';
+  switchQuizHubTab(currentQuizHubTab);
+}
+
+function showQuizSolver(title) {
+  document.getElementById('quizHub').style.display = 'none';
+  document.getElementById('quizSolver').style.display = '';
+  document.getElementById('quizSolverTitle').textContent = title || '';
+}
+
+function backToQuizHub() {
+  document.getElementById('quizHub').style.display = '';
+  document.getElementById('quizSolver').style.display = 'none';
+  switchQuizHubTab(currentQuizHubTab);
+  window.scrollTo(0, 0);
+}
+
+// ===== DAILY 10 =====
+function getTodayKey() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+function getDailyData() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_DAILY)) || {}; } catch(e) { return {}; }
+}
+function saveDailyData(data) {
+  localStorage.setItem(STORAGE_DAILY, JSON.stringify(data));
+}
+
+function generateDailyQuestions() {
+  // Collect all questions from all years
+  const allQuestions = [];
+  for (const year of YEARS) {
+    const data = allData[year];
+    if (!data) continue;
+    for (const subj of data.subjects) {
+      for (const q of subj.questions) {
+        allQuestions.push({ year, code: subj.code, subjectName: subj.name, ...q });
+      }
+    }
+  }
+  // Seed random by date
+  const today = getTodayKey();
+  let seed = 0;
+  for (let i = 0; i < today.length; i++) seed += today.charCodeAt(i) * (i + 1);
+  function seededRandom() {
+    seed = (seed * 9301 + 49297) % 233280;
+    return seed / 233280;
+  }
+  // Shuffle and pick 10
+  const shuffled = [...allQuestions];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(seededRandom() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled.slice(0, 10);
+}
+
+function getDailyStreak() {
+  const daily = getDailyData();
+  let streak = 0;
+  const d = new Date();
+  for (let i = 0; i < 365; i++) {
+    const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    if (daily[key] && daily[key].answered >= 10) {
+      streak++;
+      d.setDate(d.getDate() - 1);
+    } else if (i === 0) {
+      d.setDate(d.getDate() - 1); // today might not be done yet
+    } else {
+      break;
+    }
+  }
+  return streak;
+}
+
+function renderDailyPanel() {
+  const today = getTodayKey();
+  const daily = getDailyData();
+  const todayData = daily[today];
+  const answered = todayData ? todayData.answered : 0;
+  const correct = todayData ? todayData.correct : 0;
+  const pct = Math.round(answered / 10 * 100);
+  const streak = getDailyStreak();
+
+  const d = new Date();
+  const dateStr = `${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일 ${['일','월','화','수','목','금','토'][d.getDay()]}요일`;
+  document.getElementById('dailyDate').textContent = dateStr;
+  document.getElementById('dailyStreak').textContent = streak;
+  document.getElementById('dailyProgressFill').style.width = pct + '%';
+  document.getElementById('dailyProgressLeft').textContent = `${answered}/10 완료`;
+  document.getElementById('dailyProgressPct').textContent = pct + '%';
+
+  const btn = document.getElementById('dailyStartBtn');
+  if (answered >= 10) {
+    document.getElementById('dailyHeroSub').textContent = `오늘의 결과: ${correct}/10 정답 (${Math.round(correct/10*100)}%)`;
+    btn.innerHTML = '<i class="fas fa-redo"></i> 다시 풀기';
+    btn.className = 'daily-start-btn completed';
+  } else if (answered > 0) {
+    document.getElementById('dailyHeroSub').textContent = `진행 중... ${answered}/10 완료`;
+    btn.innerHTML = '<i class="fas fa-play"></i> 이어서 풀기';
+    btn.className = 'daily-start-btn';
+  } else {
+    document.getElementById('dailyHeroSub').textContent = '전체 연도에서 랜덤 10문제가 출제됩니다';
+    btn.innerHTML = '<i class="fas fa-play"></i> 오늘의 문제 시작하기';
+    btn.className = 'daily-start-btn';
+  }
+
+  // History
+  const sortedDays = Object.keys(daily).filter(k => k !== today).sort().reverse().slice(0, 7);
+  const histList = document.getElementById('dailyHistoryList');
+  if (sortedDays.length === 0) {
+    histList.innerHTML = '<div class="empty-state" style="padding:2rem"><div class="empty-icon" style="font-size:1.5rem"><i class="fas fa-calendar-days"></i></div><div class="empty-text" style="font-size:.8rem">아직 기록이 없습니다</div></div>';
+  } else {
+    histList.innerHTML = sortedDays.map(day => {
+      const dd = daily[day];
+      const rate = dd.answered > 0 ? Math.round(dd.correct / dd.answered * 100) : 0;
+      return `
+        <div class="daily-history-item">
+          <div class="daily-history-date">${day.slice(5)}</div>
+          <div class="daily-history-score">${dd.correct}/${dd.answered} 정답 (${rate}%)</div>
+          <div class="daily-history-badge ${rate >= 60 ? 'pass' : 'fail'}">${rate >= 60 ? '합격' : '불합격'}</div>
+        </div>`;
+    }).join('');
+  }
+}
+
+function startDailyQuiz() {
+  const questions = generateDailyQuestions();
+  if (questions.length === 0) return;
+
+  const daily = getDailyData();
+  const today = getTodayKey();
+  const todayData = daily[today];
+
+  // If already completed, reset
+  if (todayData && todayData.answered >= 10) {
+    daily[today] = { answered: 0, correct: 0 };
+    saveDailyData(daily);
+  }
+
+  quizMode = 'daily';
+  quiz = {
+    year: null,
+    subjectCode: null,
+    subjectName: '매일 10문제',
+    questions: questions.map(q => ({
+      number: q.number,
+      question: q.question,
+      options: q.options,
+      answer: q.answer,
+      correctExplanation: q.correctExplanation,
+      wrongExplanations: q.wrongExplanations,
+      _year: q.year,
+      _code: q.code,
+      _subjectName: q.subjectName
+    })),
+    currentIndex: todayData && todayData.answered < 10 ? todayData.answered : 0,
+    answers: {},
+    correctCount: 0,
+    finished: false,
+    shuffleMap: {}
+  };
+
+  showQuizSolver('📅 오늘의 10문제');
+  renderQuestion();
+}
+
+// ===== CHAPTER QUIZ =====
+function renderChapterPanel() {
+  const list = document.getElementById('chapterQuizList');
+  const solved = getSolvedData();
+
+  // Group by subject name across all years
+  const subjectMap = {};
+  for (const year of YEARS) {
+    const data = allData[year];
+    if (!data) continue;
+    for (const subj of data.subjects) {
+      if (!subjectMap[subj.name]) subjectMap[subj.name] = { questions: [], entries: [] };
+      for (const q of subj.questions) {
+        subjectMap[subj.name].questions.push({ year, code: subj.code, ...q });
+      }
+      subjectMap[subj.name].entries.push({ year, code: subj.code, count: subj.questions.length });
+    }
+  }
+
+  const subjectNames = Object.keys(subjectMap);
+  list.innerHTML = subjectNames.map((name, si) => {
+    const color = SUBJECT_COLORS[si % SUBJECT_COLORS.length];
+    const totalQ = subjectMap[name].questions.length;
+    let solvedQ = 0;
+    for (const entry of subjectMap[name].entries) {
+      const key = `${entry.year}_${entry.code}`;
+      if (solved[key]) solvedQ += Object.keys(solved[key]).length;
+    }
+    const pct = totalQ > 0 ? Math.round(solvedQ / totalQ * 100) : 0;
+    const circumference = 2 * Math.PI * 18;
+    const dashoffset = circumference - (pct / 100 * circumference);
+    const isExpanded = chapterExpandedSubject === name;
+    const initial = name.substring(0, 2);
+
+    // Build chapter items grouped by year
+    let yearItems = '';
+    for (const year of YEARS) {
+      const data = allData[year];
+      if (!data) continue;
+      const subj = data.subjects.find(s => s.name === name);
+      if (!subj) continue;
+      const key = `${year}_${subj.code}`;
+      const sc = solved[key] ? Object.keys(solved[key]).length : 0;
+      const qc = subj.questions.length;
+      const done = sc >= qc && qc > 0;
+      yearItems += `
+        <div class="chapter-quiz-chapter-item" onclick="event.stopPropagation(); startQuizFromChapter(${year}, '${subj.code}', '${name} (${year})')">
+          <div class="chapter-quiz-chapter-num" style="background:${color}">${year % 100}</div>
+          <div class="chapter-quiz-chapter-title">${year}년 · ${qc}문제</div>
+          <div class="chapter-quiz-chapter-badge ${done ? 'done' : ''}">${done ? '완료' : `${sc}/${qc}`}</div>
+        </div>`;
+    }
+
+    return `
+      <div class="chapter-quiz-subject">
+        <div class="chapter-quiz-subject-header" onclick="toggleChapterSubject('${name}')">
+          <div class="chapter-quiz-subject-icon" style="background:${color}">${initial}</div>
+          <div class="chapter-quiz-subject-info">
+            <div class="chapter-quiz-subject-name">${name}</div>
+            <div class="chapter-quiz-subject-meta">${totalQ}문제 · ${solvedQ}문제 풀이</div>
+          </div>
+          <div class="chapter-quiz-subject-progress">
+            <svg viewBox="0 0 40 40">
+              <circle class="progress-ring-bg" cx="20" cy="20" r="18"/>
+              <circle class="progress-ring-fg" cx="20" cy="20" r="18" style="stroke:${color};stroke-dasharray:${circumference};stroke-dashoffset:${dashoffset}"/>
+            </svg>
+            <div class="progress-text-center">${pct}%</div>
+          </div>
+        </div>
+        <div class="chapter-quiz-expand ${isExpanded ? 'show' : ''}" id="chapterExpand_${name.replace(/\s/g,'_')}">
+          ${yearItems}
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function toggleChapterSubject(name) {
+  chapterExpandedSubject = chapterExpandedSubject === name ? null : name;
+  renderChapterPanel();
+}
+
+function startQuizFromChapter(year, code, title) {
+  quizMode = 'chapter';
+  startQuizInternal(year, code, title);
+}
+
+// ===== MOCK EXAM =====
+function renderMockPanel() {
+  const list = document.getElementById('mockExamList');
+  const solved = getSolvedData();
+  const bgColors = ['#6366f1','#8b5cf6','#ec4899','#f59e0b','#10b981','#06b6d4','#f97316','#ef4444','#14b8a6','#a855f7'];
+
+  list.innerHTML = YEARS.slice().reverse().map((year, yi) => {
+    const data = allData[year];
+    if (!data) return '';
+    let totalQ = 0, solvedQ = 0, completedSubjects = 0;
+    const subjChips = data.subjects.map((subj, si) => {
+      const key = `${year}_${subj.code}`;
+      const qc = subj.questions.length;
+      const sc = solved[key] ? Object.keys(solved[key]).length : 0;
+      totalQ += qc;
+      solvedQ += sc;
+      const done = sc >= qc && qc > 0;
+      if (done) completedSubjects++;
+      return `<div class="mock-exam-subj-chip ${done ? 'done' : ''}">${subj.name.substring(0,3)}</div>`;
+    }).join('');
+
+    const pct = totalQ > 0 ? Math.round(solvedQ / totalQ * 100) : 0;
+    const allDone = completedSubjects >= data.subjects.length && data.subjects.length > 0;
+    let statusCls = 'not-started';
+    let statusText = '미응시';
+    if (allDone) { statusCls = 'completed'; statusText = `${pct}%`; }
+    else if (solvedQ > 0) { statusCls = 'in-progress'; statusText = `${pct}%`; }
+    const bg = bgColors[yi % bgColors.length];
+
+    return `
+      <div class="mock-exam-card" onclick="openMockExam(${year})">
+        <div class="mock-exam-header">
+          <div class="mock-exam-year-badge" style="background:${bg}">${year}<small>년도</small></div>
+          <div class="mock-exam-info">
+            <div class="mock-exam-title">${year}년 모의고사</div>
+            <div class="mock-exam-meta">${data.subjects.length}과목 · ${totalQ}문제 · ${completedSubjects}/${data.subjects.length}과목 완료</div>
+          </div>
+          <div class="mock-exam-status ${statusCls}">${statusText}</div>
+        </div>
+        <div class="mock-exam-progress">
+          <div class="mock-exam-progress-bar"><div class="mock-exam-progress-fill" style="width:${pct}%;background:${bg}"></div></div>
+        </div>
+        <div class="mock-exam-subjects">${subjChips}</div>
+      </div>`;
+  }).join('');
+}
+
+function openMockExam(year) {
+  const data = allData[year];
+  if (!data) return;
+  const solved = getSolvedData();
+
+  const overlay = document.getElementById('mockSubjectOverlay');
+  document.getElementById('mockSubjectTitle').textContent = `${year}년 모의고사`;
+  const body = document.getElementById('mockSubjectBody');
+
+  body.innerHTML = data.subjects.map((subj, i) => {
+    const key = `${year}_${subj.code}`;
+    const qc = subj.questions.length;
+    const sc = solved[key] ? Object.keys(solved[key]).length : 0;
+    const done = sc >= qc && qc > 0;
+    const color = SUBJECT_COLORS[i % SUBJECT_COLORS.length];
+    return `
+      <div class="subject-item" onclick="closeMockSubjectOverlay(); startQuizFromMock(${year}, '${subj.code}', '${year}년 ${subj.name}')">
+        <div class="subject-icon" style="background:${color}">${subj.name.substring(0,2)}</div>
+        <div class="subject-info">
+          <div class="subject-name">${subj.name}</div>
+          <div class="subject-meta">${qc}문제 · ${done ? '✅ 완료' : `${sc}/${qc} 풀이`}</div>
+        </div>
+        <div class="subject-arrow"><i class="fas fa-chevron-right"></i></div>
+      </div>`;
+  }).join('') + `
+    <div style="padding:.75rem 0">
+      <button class="btn-primary" style="width:100%;justify-content:center" onclick="closeMockSubjectOverlay(); startMockAll(${year})">
+        <i class="fas fa-play"></i> 전 과목 순서대로 풀기
+      </button>
+    </div>`;
+
+  overlay.classList.add('show');
+}
+
+function closeMockSubjectOverlay() {
+  document.getElementById('mockSubjectOverlay').classList.remove('show');
+}
+document.getElementById('mockSubjectOverlay').addEventListener('click', (e) => {
+  if (e.target === e.currentTarget) closeMockSubjectOverlay();
+});
+
+function startQuizFromMock(year, code, title) {
+  quizMode = 'mock';
+  startQuizInternal(year, code, title);
+}
+
+function startMockAll(year) {
+  const data = allData[year];
+  if (!data || data.subjects.length === 0) return;
+  // Combine all questions from all subjects
+  quizMode = 'mock';
+  const allQ = [];
+  for (const subj of data.subjects) {
+    for (const q of subj.questions) {
+      allQ.push({ ...q, _subjectName: subj.name, _code: subj.code });
+    }
+  }
+  quiz = {
+    year,
+    subjectCode: 'all',
+    subjectName: `${year}년 전 과목`,
+    questions: allQ,
+    currentIndex: 0,
+    answers: {},
+    correctCount: 0,
+    finished: false,
+    shuffleMap: {}
+  };
+  showQuizSolver(`🏆 ${year}년 전 과목 (${allQ.length}문제)`);
+  renderQuestion();
+}
+
+// ===== CORE QUIZ ENGINE =====
+function startQuizInternal(year, subjectCode, title) {
   const data = allData[year];
   if (!data) return;
 
   const subject = data.subjects.find(s => String(s.code) === String(subjectCode));
-  if (!subject || subject.questions.length === 0) {
-    showToast('문제가 없습니다');
-    return;
-  }
+  if (!subject || subject.questions.length === 0) return;
 
   quiz = {
     year,
@@ -1599,21 +2415,7 @@ function startQuiz(year, subjectCode) {
     shuffleMap: {}
   };
 
-  // Populate selects
-  const ys = document.getElementById('quizYearSelect');
-  ys.innerHTML = YEARS.map(y => `<option value="${y}" ${y === year ? 'selected' : ''}>${y}년</option>`).join('');
-  updateQuizSubjectSelect(year, subjectCode);
-
-  ys.onchange = () => {
-    const ny = parseInt(ys.value);
-    const nd = allData[ny];
-    if (nd && nd.subjects.length > 0) {
-      updateQuizSubjectSelect(ny, nd.subjects[0].code);
-      startQuiz(ny, nd.subjects[0].code);
-    }
-  };
-
-  switchPage('pageQuiz');
+  showQuizSolver(title || `${year}년 ${subject.name}`);
   renderQuestion();
 
   // Save to history
@@ -1630,14 +2432,18 @@ function startQuiz(year, subjectCode) {
   saveHistory(history);
 }
 
-function updateQuizSubjectSelect(year, selectedCode) {
-  const data = allData[year];
-  if (!data) return;
-  const ss = document.getElementById('quizSubjectSelect');
-  ss.innerHTML = data.subjects.map(s =>
-    `<option value="${s.code}" ${String(s.code) === String(selectedCode) ? 'selected' : ''}>${s.name}</option>`
-  ).join('');
-  ss.onchange = () => startQuiz(year, ss.value);
+// Legacy startQuiz (for backward compat with summary page etc)
+function startQuiz(year, subjectCode) {
+  quizMode = 'direct';
+  switchPage('pageQuiz');
+  startQuizInternal(year, subjectCode, null);
+}
+
+// Direct quiz start (from home recent history)
+function startQuizDirect(year, code) {
+  quizMode = 'direct';
+  switchPage('pageQuiz');
+  startQuizInternal(year, code, null);
 }
 
 function renderQuestion() {
@@ -1718,15 +2524,19 @@ function renderQuestion() {
     `;
   }
 
+  const bkYear = q._year || quiz.year || 0;
+  const bkCode = q._code || quiz.subjectCode || '';
+  const qLabel = q._subjectName ? `${q._subjectName} · ${q.number}번` : `문제 ${q.number}번`;
+
   area.innerHTML = `
     <div class="question-card">
       <div class="q-number-bar">
         <div class="q-number">
           <i class="fas fa-circle-question"></i>
-          문제 ${q.number}번
+          ${qLabel}
         </div>
-        <button class="q-bookmark ${isBookmarked(quiz.year, quiz.subjectCode, q.number) ? 'active' : ''}"
-          onclick="toggleBookmark(${quiz.year}, '${quiz.subjectCode}', ${q.number}, this)">
+        <button class="q-bookmark ${isBookmarked(bkYear, bkCode, q.number) ? 'active' : ''}"
+          onclick="toggleBookmark(${bkYear}, '${bkCode}', ${q.number}, this)">
           <i class="fas fa-star"></i>
         </button>
       </div>
@@ -1757,16 +2567,48 @@ function selectOption(num) {
     const isCorrect = num === q.answer;
     if (isCorrect) quiz.correctCount++;
 
-    // Save solved data
-    const solved = getSolvedData();
-    const key = `${quiz.year}_${quiz.subjectCode}`;
-    if (!solved[key]) solved[key] = {};
-    solved[key][q.number] = { correct: isCorrect, selected: num, answer: q.answer };
-    saveSolvedData(solved);
+    // Save solved data (skip for daily mode - daily has its own tracking)
+    if (quizMode !== 'daily') {
+      const yr = q._year || quiz.year;
+      const cd = q._code || quiz.subjectCode;
+      if (yr && cd && cd !== 'all') {
+        const solved = getSolvedData();
+        const key = `${yr}_${cd}`;
+        if (!solved[key]) solved[key] = {};
+        solved[key][q.number] = { correct: isCorrect, selected: num, answer: q.answer };
+        saveSolvedData(solved);
+      } else if (cd === 'all') {
+        // Mock all mode - save per subject
+        const yr2 = quiz.year;
+        const cd2 = q._code;
+        if (yr2 && cd2) {
+          const solved = getSolvedData();
+          const key = `${yr2}_${cd2}`;
+          if (!solved[key]) solved[key] = {};
+          solved[key][q.number] = { correct: isCorrect, selected: num, answer: q.answer };
+          saveSolvedData(solved);
+        }
+      }
+    }
 
     // Save wrong note if incorrect
     if (!isCorrect) {
-      addWrongNote(quiz.year, quiz.subjectCode, quiz.subjectName, q, num);
+      const yr = q._year || quiz.year;
+      const cd = q._code || quiz.subjectCode;
+      const sn = q._subjectName || quiz.subjectName;
+      if (yr && cd && cd !== 'all') {
+        addWrongNote(yr, cd, sn, q, num);
+      }
+    }
+
+    // Daily quiz tracking
+    if (quizMode === 'daily') {
+      const daily = getDailyData();
+      const today = getTodayKey();
+      if (!daily[today]) daily[today] = { answered: 0, correct: 0 };
+      daily[today].answered = Object.keys(quiz.answers).length;
+      daily[today].correct = quiz.correctCount;
+      saveDailyData(daily);
     }
 
     renderQuestion();
@@ -1808,6 +2650,8 @@ function showResults() {
   else if (rate < 60) { emoji = '📚'; msg = '조금만 더 힘내요!'; }
   else if (rate < 80) { emoji = '👍'; msg = '잘하고 있어요!'; }
 
+  const subtitle = quiz.year ? `${quiz.year}년 ${quiz.subjectName}` : quiz.subjectName;
+
   resultArea.innerHTML = `
     <div class="result-screen">
       <div class="result-circle-wrap">
@@ -1818,7 +2662,7 @@ function showResults() {
         </div>
       </div>
       <div class="result-title">${emoji} ${msg}</div>
-      <div class="result-subtitle">${quiz.year}년 ${quiz.subjectName}</div>
+      <div class="result-subtitle">${subtitle}</div>
       <div class="result-stats">
         <div class="result-stat">
           <div class="result-stat-num" style="color:var(--primary)">${total}</div>
@@ -1835,7 +2679,7 @@ function showResults() {
       </div>
       <div class="result-buttons">
         <button class="btn-outline" onclick="reviewQuiz()"><i class="fas fa-eye"></i> 문제 다시보기</button>
-        <button class="btn-primary" onclick="startQuiz(${quiz.year}, '${quiz.subjectCode}')"><i class="fas fa-redo"></i> 다시 풀기</button>
+        <button class="btn-primary" onclick="backToQuizHub()"><i class="fas fa-list"></i> 목록으로</button>
       </div>
     </div>
   `;
@@ -1844,12 +2688,14 @@ function showResults() {
   setTimeout(() => drawResultCircle(rate), 100);
 
   // Update history with score
-  const history = getHistory();
-  const hIdx = history.findIndex(h => h.year === quiz.year && h.code === quiz.subjectCode);
-  if (hIdx >= 0) {
-    history[hIdx].score = `${correct}/${total} (${rate}%)`;
-    history[hIdx].date = new Date().toLocaleDateString('ko');
-    saveHistory(history);
+  if (quiz.year && quiz.subjectCode && quiz.subjectCode !== 'all') {
+    const history = getHistory();
+    const hIdx = history.findIndex(h => h.year === quiz.year && h.code === quiz.subjectCode);
+    if (hIdx >= 0) {
+      history[hIdx].score = `${correct}/${total} (${rate}%)`;
+      history[hIdx].date = new Date().toLocaleDateString('ko');
+      saveHistory(history);
+    }
   }
 }
 
@@ -2336,9 +3182,11 @@ function resetAllData() {
   localStorage.removeItem(STORAGE_HISTORY);
   localStorage.removeItem(STORAGE_SOLVED);
   localStorage.removeItem(STORAGE_BOOKMARKS);
+  localStorage.removeItem(STORAGE_DAILY);
   updateWrongBadge();
   updateBookmarkBadge();
   refreshHomeStats();
+  renderHomeBoxes();
   showToast('모든 데이터가 초기화되었습니다');
 }
 
@@ -3387,9 +4235,8 @@ async function init() {
   updateBookmarkBadge();
   renderDday();
   await loadAllData();
-  renderYearChips();
-  renderSubjectList();
   refreshHomeStats();
+  renderHomeBoxes();
   renderSummary();
 
   // Hide loading

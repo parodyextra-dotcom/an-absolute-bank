@@ -757,6 +757,214 @@ body {
 }
 @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
 
+/* ===== SUMMARY (요점정리) ===== */
+.summary-page .page-header {
+  background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+}
+.summary-breadcrumb {
+  display: flex; align-items: center; gap: .4rem;
+  padding: .75rem 1rem;
+  background: #fff;
+  border-bottom: 1px solid var(--gray-100);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.summary-breadcrumb::-webkit-scrollbar { display: none; }
+.summary-breadcrumb-item {
+  font-size: .78rem; font-weight: 500; color: var(--gray-400);
+  white-space: nowrap; cursor: pointer;
+  transition: color .15s;
+}
+.summary-breadcrumb-item:hover { color: var(--primary); }
+.summary-breadcrumb-item.current { color: var(--gray-800); font-weight: 700; cursor: default; }
+.summary-breadcrumb-sep { color: var(--gray-300); font-size: .7rem; }
+
+.summary-subject-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: .75rem; padding: 1rem;
+}
+.summary-subject-card {
+  background: #fff; border-radius: var(--radius);
+  padding: 1.25rem; box-shadow: var(--shadow);
+  cursor: pointer; transition: all .2s;
+  position: relative; overflow: hidden;
+  border: 1.5px solid transparent;
+}
+.summary-subject-card:active { transform: scale(.98); }
+.summary-subject-card:hover { border-color: var(--primary-light); }
+.summary-subject-card .subject-emoji {
+  font-size: 1.8rem; margin-bottom: .5rem; display: block;
+}
+.summary-subject-card .subject-title {
+  font-size: .88rem; font-weight: 700; color: var(--gray-800);
+  margin-bottom: .25rem;
+}
+.summary-subject-card .subject-count {
+  font-size: .72rem; color: var(--gray-400); font-weight: 500;
+}
+
+.summary-chapter-list {
+  padding: .5rem 1rem 1rem;
+}
+.summary-chapter-card {
+  background: #fff; border-radius: var(--radius);
+  box-shadow: var(--shadow); margin-bottom: .75rem;
+  overflow: hidden;
+}
+.summary-chapter-header {
+  display: flex; align-items: center; gap: .75rem;
+  padding: 1rem 1.25rem; cursor: pointer;
+  transition: background .15s;
+}
+.summary-chapter-header:active { background: var(--gray-50); }
+.summary-chapter-num {
+  width: 36px; height: 36px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .82rem; font-weight: 800; color: #fff;
+  flex-shrink: 0;
+}
+.summary-chapter-info { flex: 1; min-width: 0; }
+.summary-chapter-title {
+  font-size: .88rem; font-weight: 700; color: var(--gray-800);
+}
+.summary-chapter-sub {
+  font-size: .72rem; color: var(--gray-400); margin-top: 2px;
+}
+.summary-chapter-arrow {
+  color: var(--gray-300); font-size: .8rem;
+  transition: transform .2s;
+}
+
+.summary-sub-list {
+  padding: .5rem 1rem 1rem;
+}
+.summary-sub-card {
+  background: #fff; border-radius: var(--radius-sm);
+  box-shadow: var(--shadow); margin-bottom: .6rem;
+  overflow: hidden; cursor: pointer;
+  border: 1.5px solid transparent;
+  transition: all .2s;
+}
+.summary-sub-card:hover { border-color: var(--primary-light); }
+.summary-sub-card:active { transform: scale(.99); }
+.summary-sub-header {
+  display: flex; align-items: center; gap: .75rem;
+  padding: .85rem 1rem;
+}
+.summary-sub-icon {
+  width: 32px; height: 32px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .75rem; font-weight: 700; color: #fff;
+  flex-shrink: 0;
+}
+.summary-sub-title {
+  font-size: .84rem; font-weight: 600; color: var(--gray-700);
+  flex: 1;
+}
+.summary-sub-arrow {
+  color: var(--gray-300); font-size: .75rem;
+}
+
+/* Summary Content (소단원 상세) */
+.summary-content-area {
+  padding: 1rem;
+}
+.summary-content-card {
+  background: #fff; border-radius: var(--radius);
+  box-shadow: var(--shadow); overflow: hidden;
+}
+.summary-content-header {
+  padding: 1rem 1.25rem;
+  background: linear-gradient(135deg, var(--primary-bg), #f5f3ff);
+  border-bottom: 1px solid rgba(99,102,241,.1);
+}
+.summary-content-header h3 {
+  font-size: .95rem; font-weight: 700; color: var(--primary);
+  display: flex; align-items: center; gap: .4rem;
+}
+.summary-content-header p {
+  font-size: .75rem; color: var(--gray-400); margin-top: .2rem;
+}
+.summary-content-body {
+  padding: 1.25rem;
+}
+.summary-point {
+  padding: .75rem 0;
+  border-bottom: 1px solid var(--gray-50);
+}
+.summary-point:last-child { border-bottom: none; }
+.summary-point-title {
+  font-size: .85rem; font-weight: 700; color: var(--gray-800);
+  margin-bottom: .4rem;
+  display: flex; align-items: flex-start; gap: .4rem;
+}
+.summary-point-title i {
+  color: var(--warning); font-size: .75rem; margin-top: 2px;
+}
+.summary-point-text {
+  font-size: .82rem; line-height: 1.7; color: var(--gray-600);
+  padding-left: 1.1rem;
+}
+.summary-point-text ul {
+  margin: .3rem 0; padding-left: 1rem;
+}
+.summary-point-text li {
+  margin-bottom: .2rem;
+}
+
+.summary-nav-buttons {
+  display: flex; gap: .75rem; padding: 0 1rem 1rem;
+}
+.summary-nav-buttons button {
+  flex: 1; padding: .85rem; border: none; border-radius: var(--radius-sm);
+  font-size: .85rem; font-weight: 600; cursor: pointer;
+  font-family: inherit; transition: all .15s;
+  display: flex; align-items: center; justify-content: center; gap: .4rem;
+}
+
+.summary-empty {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 3rem 2rem; text-align: center;
+}
+.summary-empty i {
+  font-size: 2.5rem; color: var(--warning); margin-bottom: 1rem;
+  opacity: .6;
+}
+.summary-empty p {
+  font-size: .88rem; color: var(--gray-500); font-weight: 500;
+  line-height: 1.6;
+}
+
+/* Related Questions Section */
+.summary-related {
+  margin-top: 1rem;
+}
+.summary-related-title {
+  font-size: .82rem; font-weight: 700; color: var(--gray-600);
+  padding: .75rem 1.25rem;
+  background: var(--gray-50);
+  border-top: 1px solid var(--gray-100);
+  display: flex; align-items: center; gap: .4rem;
+}
+.summary-related-item {
+  padding: .75rem 1.25rem;
+  border-bottom: 1px solid var(--gray-50);
+  cursor: pointer; transition: background .15s;
+}
+.summary-related-item:active { background: var(--gray-50); }
+.summary-related-item:last-child { border-bottom: none; }
+.summary-related-meta {
+  font-size: .7rem; color: var(--gray-400); font-weight: 500;
+  margin-bottom: .25rem;
+}
+.summary-related-q {
+  font-size: .8rem; line-height: 1.5; color: var(--gray-700);
+  display: -webkit-box; -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical; overflow: hidden;
+}
+
 /* Custom scrollbar for question card area */
 .quiz-content { overflow-y: auto; }
 </style>
@@ -936,6 +1144,16 @@ body {
 
 
 
+<!-- ===== PAGE: SUMMARY (요점정리) ===== -->
+<div class="page summary-page" id="pageSummary">
+  <div class="page-header">
+    <h1>📖 요점정리</h1>
+    <p>과목별 핵심 내용을 한눈에 확인하세요</p>
+  </div>
+  <div class="summary-breadcrumb" id="summaryBreadcrumb"></div>
+  <div id="summaryContent"></div>
+</div>
+
 <!-- ===== PAGE: SETTINGS ===== -->
 <div class="page" id="pageSettings">
   <div class="page-header">
@@ -1031,6 +1249,9 @@ body {
   <div class="nav-item active" data-page="pageHome">
     <i class="fas fa-home"></i><span>홈</span>
   </div>
+  <div class="nav-item" data-page="pageSummary">
+    <i class="fas fa-book-bookmark"></i><span>요점정리</span>
+  </div>
   <div class="nav-item" data-page="pageQuiz">
     <i class="fas fa-pen-to-square"></i><span>문제풀기</span>
   </div>
@@ -1046,16 +1267,16 @@ body {
 <script>
 // ===== GLOBAL STATE =====
 const DATA_URLS = {
-  2016: 'data/2016.json.txt',
-  2017: 'data/2017.json.txt',
-  2018: 'data/2018.json.txt',
-  2019: 'data/2019.json.txt',
-  2020: 'data/2020.json.txt',
-  2021: 'data/2021.json.txt',
-  2022: 'data/2022.json.txt',
-  2023: 'data/2023.json.txt',
-  2024: 'data/2024.json.txt',
-  2025: 'data/2025.json.txt'
+  2016: 'data/2016.json',
+  2017: 'data/2017.json',
+  2018: 'data/2018.json',
+  2019: 'data/2019.json',
+  2020: 'data/2020.json',
+  2021: 'data/2021.json',
+  2022: 'data/2022.json',
+  2023: 'data/2023.json',
+  2024: 'data/2024.json',
+  2025: 'data/2025.json'
 };
 const YEARS = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025];
 const SUBJECT_COLORS = ['#6366f1','#8b5cf6','#ec4899','#f59e0b','#10b981','#06b6d4','#f97316'];
@@ -1256,6 +1477,7 @@ function switchPage(pageId) {
     else renderBookmarks();
   }
   if (pageId === 'pageHome') refreshHomeStats();
+  if (pageId === 'pageSummary') renderSummary();
   window.scrollTo(0, 0);
 }
 
@@ -2207,6 +2429,957 @@ document.getElementById('wrongModal').addEventListener('click', (e) => {
   if (e.target === e.currentTarget) closeWrongModal();
 });
 
+// ===== SUMMARY (요점정리) =====
+const CURRICULUM = {
+  "스포츠교육학": {
+    emoji: "📚",
+    color: "#6366f1",
+    chapters: [
+      {
+        title: "스포츠교육의 배경과 개념",
+        subs: [
+          { title: "스포츠교육의 역사", points: [
+            { t: "체육교육의 발전 과정", d: "고대 그리스·로마의 체육교육 → 근대 체육교육의 시작(독일 체조, 스웨덴 체조, 영국 스포츠) → 현대 체육교육으로의 전환. 한국은 개화기 서양 체육 도입, 일제강점기 군사체조 중심, 광복 후 민주적 체육교육으로 발전." },
+            { t: "체육교육 사조의 변화", d: "체육을 통한 교육(physical education through the physical) → 인간 움직임 교육(movement education) → 스포츠교육학(sport pedagogy)으로 변천. 놀이교육, 동작교육, 체력교육 등 다양한 접근법이 발전." }
+          ]},
+          { title: "스포츠교육의 개념", points: [
+            { t: "스포츠교육의 정의", d: "스포츠 현상과 관련된 교육 전반을 연구하는 학문으로, 학교체육·생활체육·전문체육 등 다양한 영역에서의 교육적 문제를 다룬다. 스포츠교육학(Sport Pedagogy)은 스포츠지도·학습의 원리와 방법을 체계적으로 연구." },
+            { t: "스포츠교육의 목적과 가치", d: "신체적 발달(체력, 운동기능), 정의적 발달(태도, 가치관, 사회성), 인지적 발달(지식, 이해력) 등 전인적 발달을 목적으로 한다. 스포츠 리터러시(sport literacy) 함양이 핵심." }
+          ]},
+          { title: "스포츠교육의 현재", points: [
+            { t: "현대 스포츠교육의 동향", d: "학교체육진흥법 시행, 학교스포츠클럽 활성화, 체육교육과정 개정 등이 이루어지고 있다. 통합교육, 인성교육, 건강체력교실 등 새로운 접근이 확대." },
+            { t: "스포츠교육의 과제", d: "학교체육의 정상화, 체육수업 시수 확보, 체육전담교사 배치, 스포츠교육 전문인력 양성, 디지털 기술 활용 등이 주요 과제." }
+          ]}
+        ]
+      },
+      {
+        title: "스포츠교육의 정책과 제도",
+        subs: [
+          { title: "학교체육", points: [
+            { t: "학교체육진흥법", d: "학교체육 활성화를 위한 법적 근거. 학교스포츠클럽 운영(제10조), 학생선수 최저학력 보장(제11조), 건강체력교실 운영(제8조) 등을 규정. 학교체육진흥위원회 설치, 스포츠강사 배치 등." },
+            { t: "체육교육과정", d: "국가수준 교육과정에 따른 체육과 교육목표 설정. 건강, 도전, 경쟁, 표현, 안전의 5개 영역(2015 개정). 핵심역량: 건강관리, 신체수련, 경기수행, 신체표현." },
+            { t: "학교스포츠클럽", d: "모든 학생의 체육활동 참여 기회 확대를 위한 제도. 정규수업 외 스포츠 활동, 학교스포츠클럽 리그 대회 운영. 교내·지역·전국 대회 체계." }
+          ]},
+          { title: "생활체육", points: [
+            { t: "생활체육 정책", d: "스포츠비전 2018('언제나, 어디서나, 함께'), 스포츠 7330(주 3회, 30분 이상 운동), 신체활동 7560+(주 5일, 60분 이상). 국민체력100 인증제도 운영." },
+            { t: "생활체육 지도체계", d: "대한체육회-시·도체육회-시·군·구체육회 체계. 생활체육지도자 배치, 스포츠강좌이용권 등 정책 시행." }
+          ]},
+          { title: "전문체육", points: [
+            { t: "전문체육 정책", d: "엘리트 선수 육성 및 국제대회 대비. 한국체육진흥공단, 대한체육회, 각 종목별 경기단체 중심으로 운영. 선수권리보호 강화, 스포츠공정위원회 등." }
+          ]}
+        ]
+      },
+      {
+        title: "스포츠교육의 참여자 이해론",
+        subs: [
+          { title: "스포츠교육 지도자", points: [
+            { t: "효과적인 체육교사/지도자의 특성", d: "전문적 지식(내용지식, 교수내용지식 PCK), 교수기술(수업관리, 피드백), 인성적 자질(열정, 배려, 공정성). 전문성 = 지식 + 기술 + 태도." },
+            { t: "체육지도자 자격체계", d: "스포츠지도사(전문/생활/장애인/유소년/노인), 건강운동관리사 등. 국가자격 필기·실기·구술시험 및 연수과정." }
+          ]},
+          { title: "스포츠교육 학습자", points: [
+            { t: "학습자 특성 이해", d: "발달단계(유아기·아동기·청소년기·성인기·노년기)에 따른 특성. 신체적·인지적·사회심리적 발달수준 고려. 개인차(성별, 체력, 경험 등)에 따른 차별화된 지도." },
+            { t: "학습자 동기와 참여", d: "내적 동기(즐거움, 성취감) vs 외적 동기(보상, 인정). 자기결정성이론(자율성·유능감·관계성), 성취목표이론(과제지향·자아지향) 적용." }
+          ]},
+          { title: "스포츠교육 행정가", points: [
+            { t: "체육행정의 역할", d: "교육과정 편성·운영, 시설 관리, 예산 확보, 프로그램 기획. 체육부장교사, 학교장의 역할. 체육행정 조직: 교육부-시도교육청-학교." }
+          ]}
+        ]
+      },
+      {
+        title: "스포츠교육의 프로그램론",
+        subs: [
+          { title: "학교체육 프로그램 개발 및 실천", points: [
+            { t: "교육과정 개발 모형", d: "타일러(Tyler) 모형: 목표설정→학습경험선정→학습경험조직→평가. 타바(Taba) 모형: 진단→목표설정→내용선정→조직→방법→평가. 주제중심 통합 교육과정, 백워드 설계(understanding by design) 등." },
+            { t: "체육수업 설계", d: "단원계획(연간·학기·단원별), 수업지도안 작성, 학습목표 설정(행동목표, 과정목표). 체육수업의 구조: 도입-전개-정리." }
+          ]},
+          { title: "생활체육 프로그램 개발 및 실천", points: [
+            { t: "생활체육 프로그램 구성", d: "대상별(유아, 청소년, 성인, 노인), 목적별(건강증진, 여가, 재활) 프로그램 개발. 수요분석→목표설정→내용구성→운영→평가 절차." }
+          ]},
+          { title: "전문체육 프로그램 개발 및 실천", points: [
+            { t: "전문선수 훈련프로그램", d: "장기선수육성모델(LTAD), 주기화 훈련, 기술·체력·심리·전술 통합 프로그램. 과학적 훈련 지원(스포츠과학센터)." }
+          ]}
+        ]
+      },
+      {
+        title: "스포츠교육의 지도방법론",
+        subs: [
+          { title: "스포츠지도를 위한 교육모형", points: [
+            { t: "직접교수모형(Direct Instruction)", d: "교사 주도적 수업. 구조화된 과제 제시, 단계적 연습, 즉각적 피드백. 기능 습득에 효과적. 교사 설명→시범→연습→피드백 단계." },
+            { t: "스포츠교육모형(Sport Education Model)", d: "시든탑(Siedentop) 개발. 시즌, 팀 소속, 역할분담(선수, 코치, 심판 등), 축제화. 진정한 스포츠 경험 제공이 목적. 유능하고, 교양있고, 열정적인 스포츠인 양성." },
+            { t: "동료교수모형(Peer Teaching)", d: "학습자 간 상호 가르침. 튜터-튜티 관계 설정. 사회적 기술 발달, 책임감 증진." },
+            { t: "협동학습모형(Cooperative Learning)", d: "긍정적 상호의존성, 개인적 책무성, 대면적 상호작용, 사회적 기술, 집단과정. 직소(Jigsaw), STAD 등 다양한 전략." },
+            { t: "탐구수업모형/이해중심게임모형(TGfU)", d: "게임 이해 중심 접근. 수정된 게임→전술적 인식→의사결정→기술연습. 번커와 소프(Bunker & Thorpe)가 개발." },
+            { t: "개별화수업모형(PSI)", d: "켈러(Keller)의 개별화교수체제. 자기주도학습, 숙달기준, 개인별 진도." },
+            { t: "하나로수업모형", d: "최의창 개발. 직접체험(하기)과 간접체험(읽기, 쓰기, 보기, 듣기)을 통합. 체육일기, 감상문 활용." }
+          ]},
+          { title: "스포츠지도를 위한 교수기법", points: [
+            { t: "모스턴(Mosston)의 교수스타일 스펙트럼", d: "A(지시형)→B(연습형)→C(상호학습형)→D(자기점검형)→E(포괄형)→F(유도발견형)→G(수렴발견형)→H(확산생산형)→I(개인프로그램형)→J(자기주도형)→K(자기교수형). 재생산 클러스터(A~E)와 생산 클러스터(F~K)로 구분." },
+            { t: "효과적인 피드백", d: "교정적 피드백(수정), 긍정적 피드백(칭찬), 구체적 피드백(구체적 행동 언급). 즉각적/지연적, 언어적/비언어적, 전체/개인 피드백 유형." },
+            { t: "수업관리 전략", d: "학습시간 극대화(ALT-PE: Academic Learning Time in Physical Education), 체육수업 시간구조(관리시간, 교수시간, 연습시간, 대기시간). 규칙과 루틴 설정, 신호체계 확립." }
+          ]},
+          { title: "세부지도목적에 따른 교수기법", points: [
+            { t: "목적별 교수기법", d: "체력향상(서킷트레이닝, 인터벌), 기술습득(분습법/전습법, 시범), 전술이해(전술적 접근, 게임수정), 정의적 영역(협동학습, 책임감 모형 TPSR)." }
+          ]}
+        ]
+      },
+      {
+        title: "스포츠교육의 평가론",
+        subs: [
+          { title: "평가의 이론적 측면", points: [
+            { t: "평가의 유형", d: "진단평가(사전 수준 파악), 형성평가(과정 중 피드백), 총괄평가(최종 성취도). 규준참조평가(상대평가) vs 준거참조평가(절대평가). 과정중심평가 강조." },
+            { t: "평가의 타당도와 신뢰도", d: "내용타당도(교육과정 반영), 구인타당도(측정 개념 정확성), 준거타당도(준거와 상관). 검사-재검사 신뢰도, 평가자간 신뢰도." }
+          ]},
+          { title: "평가의 실천적 측면", points: [
+            { t: "체육과 평가 방법", d: "실기평가(기능검사), 지필평가(인지), 관찰평가(태도·참여), 포트폴리오 평가, 자기평가/동료평가. 루브릭(채점기준표) 활용. 과정중심 수행평가 확대." },
+            { t: "체력평가", d: "PAPS(학생건강체력평가): 심폐지구력, 유연성, 근력·근지구력, 순발력, 체지방률 측정. 건강체력등급(1~5등급) 산출." }
+          ]}
+        ]
+      },
+      {
+        title: "스포츠교육자의 전문적 성장",
+        subs: [
+          { title: "스포츠교육전문인의 전문역량", points: [
+            { t: "전문역량 구성요소", d: "전문적 지식(교과내용, 교수법, 교육과정), 전문적 기술(수업 설계·실행·평가, 의사소통), 전문적 태도(사명감, 윤리의식, 자기개발). 교수내용지식(PCK)의 중요성." }
+          ]},
+          { title: "장기적 전문인 성장 및 발달", points: [
+            { t: "교사/지도자 발달단계", d: "생존기→안정기→실험기→성숙기(풀러 Fuller 모형). 초임교사에서 전문교사로의 성장과정. 반성적 실천(reflective practice), 수업연구, 학습공동체 참여 등." },
+            { t: "전문성 개발 방법", d: "연수·워크숍, 대학원 진학, 수업장학(동료코칭), 멘토링, 실행연구(action research), 전문적 학습공동체(PLC)." }
+          ]}
+        ]
+      }
+    ]
+  },
+  "스포츠사회학": {
+    emoji: "🌐",
+    color: "#8b5cf6",
+    chapters: [
+      {
+        title: "스포츠 사회학의 이해",
+        subs: [
+          { title: "스포츠사회학의 의미", points: [
+            { t: "스포츠사회학의 정의", d: "스포츠 현장의 사회구조와 사회과정을 설명하는 학문. 사회학의 하위분야로 스포츠 현장의 인간행동을 예측하고 이해한다. 사회적 맥락에서 스포츠 현상을 분석. 거시적(사회제도: 정치, 경제, 교육), 중범위(조직, 집단), 미시적(상호작용, 사회화) 수준의 연구." },
+            { t: "놀이·게임·스포츠의 개념", d: "놀이(play): 자발적, 즐거움 목적, 규칙 최소. 게임(game): 놀이보다 규칙적, 경쟁적 요소. 스포츠(sport): 제도화된 규칙, 공식적 경쟁, 신체활동. 놀이→게임→스포츠로 제도화 수준이 높아진다." }
+          ]},
+          { title: "스포츠의 사회적 기능", points: [
+            { t: "사회적 순기능", d: "사회화 기능(규범·가치 학습), 사회통합 기능(집단 결속), 사회정서적 기능(감정 해소, 카타르시스). 사회이동 기능, 건강증진 기능." },
+            { t: "사회적 역기능", d: "사회통제 기능(정치적 도구), 상업화, 승리지상주의, 폭력, 차별, 도핑 등." },
+            { t: "파슨즈(Parsons)의 AGIL 모형", d: "적응(A: Adaptation) - 환경 적응, 목표성취(G: Goal attainment) - 목표 달성, 사회통합(I: Integration) - 구성원 결합, 체제유지 및 관리(L: Latency) - 가치·규범 유지와 학습. 사고·감정·행동양식 학습, 체력·건강증진 = L(체제유지)." }
+          ]}
+        ]
+      },
+      {
+        title: "스포츠와 정치",
+        subs: [
+          { title: "스포츠와 정치의 결합", points: [
+            { t: "정치 개입 목적", d: "홀리한(Houlihan)의 정부 스포츠 개입 목적: 시민 건강·체력 유지, 사회적 평등(양성평등, Title IX), 공공질서 보호, 국가 위신, 경제적 발전 등." }
+          ]},
+          { title: "스포츠와 국내정치", points: [
+            { t: "스포츠의 정치적 활용", d: "국민 통합, 정권 홍보, 사회통제 수단. 스포츠 외교, 메가이벤트 유치의 정치적 의미." }
+          ]},
+          { title: "스포츠와 국제정치", points: [
+            { t: "국제 스포츠와 정치", d: "올림픽 보이콧(1980 모스크바, 1984 LA), 핑퐁외교, 남북체육교류. 스포츠를 통한 국가 이미지 제고, 소프트파워." }
+          ]}
+        ]
+      },
+      {
+        title: "스포츠와 경제",
+        subs: [
+          { title: "상업주의와 스포츠", points: [
+            { t: "스포츠 상업화", d: "프로스포츠의 발달, 스포츠 마케팅, 스폰서십, 미디어 중계권료. 상업화의 순기능(경제 활성화, 고용 창출)과 역기능(지나친 상업주의, 선수 상품화)." }
+          ]},
+          { title: "스포츠 메가이벤트의 경제", points: [
+            { t: "메가이벤트 경제효과", d: "올림픽, 월드컵 등의 경제적 효과. 직접효과(관광, 소비), 간접효과(인프라, 고용), 유발효과(국가이미지). 경제적 부담과 시설 사후활용 문제." }
+          ]}
+        ]
+      },
+      {
+        title: "스포츠와 교육",
+        subs: [
+          { title: "스포츠의 교육적 기능", points: [
+            { t: "교육적 순기능", d: "학교와 지역사회의 통합, 평생체육의 연계, 학업활동의 격려, 사회성 발달, 건강증진. 스포츠를 통한 전인교육." },
+            { t: "교육적 역기능", d: "승리지상주의, 참여기회의 제한, 스포츠의 상업화, 학업 소홀, 학교체육의 엘리트 중심 운영." }
+          ]},
+          { title: "한국의 학원스포츠", points: [
+            { t: "학원스포츠의 현실과 과제", d: "학생선수의 학습권 보장(최저학력제), 체육특기자 제도, 학교운동부 운영. 인권보호, 학업-운동 병행 체계 구축." }
+          ]}
+        ]
+      },
+      {
+        title: "스포츠와 미디어",
+        subs: [
+          { title: "스포츠와 미디어의 이해", points: [
+            { t: "스포츠미디어 개념", d: "인쇄미디어, 전파미디어, 뉴미디어(인터넷, SNS, OTT). 미디어 스포츠의 발달과 스포츠 중계의 변화." }
+          ]},
+          { title: "스포츠와 미디어의 상호관계", points: [
+            { t: "공생관계", d: "스포츠→미디어: 콘텐츠 제공, 시청률. 미디어→스포츠: 중계권료, 홍보, 규칙 변경 영향. 미디어가 스포츠에 미치는 긍정적·부정적 영향." }
+          ]}
+        ]
+      },
+      {
+        title: "스포츠와 사회계급/계층",
+        subs: [
+          { title: "사회계층의 이해", points: [
+            { t: "사회계층 이론", d: "마르크스(경제적 계급), 베버(계급·지위·권력). 사회계층의 결정요인: 소득, 교육, 직업, 재산 등." }
+          ]},
+          { title: "사회계층과 스포츠 참가", points: [
+            { t: "계층별 스포츠 참여", d: "상류층: 골프, 승마, 요트 등. 중산층: 테니스, 스키 등. 하류층: 축구, 복싱, 격투기 등. 경제적 자본, 문화적 자본(부르디외)이 스포츠 참여에 영향." }
+          ]},
+          { title: "스포츠와 계층이동", points: [
+            { t: "스포츠를 통한 계층이동", d: "스포츠가 사회적 상승이동의 통로가 될 수 있다. 그러나 실제 확률은 낮으며, 프로선수 성공 사례는 극소수. 스포츠 참여가 사회적 네트워크 확대에 기여." }
+          ]}
+        ]
+      },
+      {
+        title: "스포츠와 사회화",
+        subs: [
+          { title: "스포츠사회화의 의미와 과정", points: [
+            { t: "사회화의 개념", d: "사회의 규범, 가치, 역할을 학습하는 과정. 1차 사회화(가족), 2차 사회화(학교, 또래), 3차 사회화(미디어, 직장). 사회화 주관자(가족, 친구, 교사, 미디어)." }
+          ]},
+          { title: "스포츠로의 사회화와 스포츠를 통한 사회화", points: [
+            { t: "스포츠와의 사회화", d: "스포츠로의 사회화(socialization into sport): 스포츠 참여를 시작하게 되는 과정. 스포츠를 통한 사회화(socialization through sport): 스포츠 참여를 통해 사회적 가치·규범 학습. 스포츠에서의 사회화(socialization in sport): 스포츠 내 특정 역할 학습." }
+          ]},
+          { title: "스포츠 탈사회화와 재사회화", points: [
+            { t: "탈사회화와 재사회화", d: "스포츠 탈사회화: 선수 은퇴 등으로 스포츠에서 이탈. 사회적 죽음(social death), 정체성 위기. 재사회화: 새로운 사회적 역할 적응(지도자, 해설위원 등)." }
+          ]}
+        ]
+      },
+      {
+        title: "스포츠와 일탈",
+        subs: [
+          { title: "스포츠일탈의 이해", points: [
+            { t: "일탈의 이론", d: "절대주의적 관점, 상대주의적 관점. 아노미이론(머턴 Merton): 문화적 목표와 제도적 수단의 괴리. 차별접촉이론, 낙인이론(사회적 반응). 사회유대이론(허쉬 Hirschi): 애착·관여·참여·신념." }
+          ]},
+          { title: "스포츠일탈의 유형", points: [
+            { t: "일탈 유형", d: "과소동조 일탈(규범 거부: 출전거부, 태업), 과잉동조 일탈(스포츠 윤리 과도한 수용: 무리한 경기, 약물사용, 극한 훈련). 도핑, 승부조작, 폭력, 부정행위 등." }
+          ]}
+        ]
+      },
+      {
+        title: "미래사회의 스포츠",
+        subs: [
+          { title: "스포츠 변화에 영향을 미치는 요인", points: [
+            { t: "변화 요인", d: "기술발전(AI, VR, 웨어러블), 인구구조 변화(고령화), 여가시간 증가, 환경문제, 미디어 변화(OTT, SNS), 가치관 변화." }
+          ]},
+          { title: "스포츠 세계화", points: [
+            { t: "세계화의 영향", d: "스포츠의 국제적 확산, 글로벌 스포츠 시장 형성. 문화제국주의 논쟁, 글로컬라이제이션(glocalization). e스포츠, 익스트림스포츠 등 새로운 스포츠 문화." }
+          ]}
+        ]
+      }
+    ]
+  },
+  "스포츠심리학": {
+    emoji: "🧠",
+    color: "#ec4899",
+    chapters: [
+      {
+        title: "스포츠심리학의 개관",
+        subs: [
+          { title: "스포츠심리학의 정의 및 의미", points: [
+            { t: "정의", d: "스포츠 상황에서 인간의 행동과 심리과정을 연구하는 학문. 수행심리학(경기력 향상), 운동심리학(건강·운동참여), 발달심리학적 접근을 포함." }
+          ]},
+          { title: "스포츠심리학의 역사", points: [
+            { t: "발전과정", d: "트리플렛(Triplett, 1898): 최초의 사회심리학 실험(사회적 촉진). 그리피스(Griffith): 스포츠심리학의 아버지. 1965년 국제스포츠심리학회(ISSP) 설립. 한국: 1986년 한국스포츠심리학회 창립." }
+          ]},
+          { title: "스포츠심리학의 영역과 역할", points: [
+            { t: "연구 영역", d: "운동학습/제어, 수행심리(성격, 동기, 불안, 자신감), 사회심리(집단역학, 리더십), 운동심리(운동참여, 심리적 효과), 스포츠심리상담. 스포츠심리학자는 연구, 교육, 상담, 현장적용 역할." }
+          ]}
+        ]
+      },
+      {
+        title: "인간운동행동의 이해",
+        subs: [
+          { title: "운동제어", points: [
+            { t: "운동제어 이론", d: "폐쇄회로이론(Adams): 감각피드백 활용. 개방회로이론(Schmidt): 운동프로그램, 일반화운동프로그램(GMP). 동적체계이론: 자기조직화, 자유도 문제. 생태학적 접근: 행위유도성(affordance)." },
+            { t: "운동 프로그래밍", d: "기억기반: 운동프로그램에 저장된 정보로 동작 수행. 피드백: 고유수용감각, 시각, 청각 정보 활용. 반응시간, 선택반응시간, 피츠의 법칙(속도-정확성 교환관계)." }
+          ]},
+          { title: "운동학습", points: [
+            { t: "운동학습의 원리", d: "연습조건: 분산연습 vs 집중연습, 전습법 vs 분습법. 연습스케줄: 차단연습(blocked) vs 무선연습(random) - 맥락간섭효과(무선연습이 전이에 효과적). 피드백: 결과지식(KR) vs 수행지식(KP), 대역폭 피드백." },
+            { t: "학습의 단계", d: "피츠와 포스너(Fitts & Posner): 인지단계→연합단계→자동화단계. 젠타일(Gentile): 운동 개념 파악 단계→고정/다양화 단계." },
+            { t: "전이(Transfer)", d: "양의 전이(유사 기술 촉진), 부의 전이(간섭), 영(0)의 전이(무관). 양측성 전이(좌→우)." }
+          ]},
+          { title: "운동발달", points: [
+            { t: "발달 단계", d: "반사운동기→초보운동기→기본운동기(안정성·이동·조작)→전문운동기. 갈라휴(Gallahue)의 모래시계 모형. 운동발달의 결정적 시기(critical period)." }
+          ]}
+        ]
+      },
+      {
+        title: "스포츠수행의 심리적 요인",
+        subs: [
+          { title: "성격", points: [
+            { t: "성격 이론과 스포츠", d: "특성이론(Eysenck: 외향성·신경증, Cattell: 16PF), 상황론, 상호작용론. 스포츠 참여와 성격의 관계. 빙산 프로파일(Morgan): 우수선수는 활력이 높고 긴장·우울·분노·피로·혼란이 낮은 패턴." }
+          ]},
+          { title: "정서와 시합불안", points: [
+            { t: "불안 이론", d: "상태불안 vs 특성불안. 인지불안(걱정) vs 신체불안(생리적 각성). 역U자 가설(Yerkes-Dodson), 적정기능수역 이론(ZOF, Hanin), 카타스트로피 모형(Hardy), 역전이론(Kerr). CSAI-2(경쟁상태불안척도)." }
+          ]},
+          { title: "동기", points: [
+            { t: "동기이론", d: "내적동기(흥미, 즐거움) vs 외적동기(보상, 인정). 자기결정성이론(Deci & Ryan): 자율성·유능감·관계성. 성취동기이론(Atkinson), 귀인이론(Weiner): 원인의 위치·안정성·통제성. 성취목표이론: 과제지향(학습목표) vs 자아지향(수행목표)." }
+          ]},
+          { title: "목표설정", points: [
+            { t: "효과적인 목표설정", d: "SMART 원칙: 구체적(Specific), 측정가능(Measurable), 달성가능(Attainable), 현실적(Realistic), 시간제한(Time-bound). 결과목표·수행목표·과정목표의 조합 사용. 장기·중기·단기 목표 체계." }
+          ]},
+          { title: "자신감", points: [
+            { t: "자기효능감(Bandura)", d: "성공경험(가장 강력), 대리경험(모델링), 언어적 설득, 정서적 각성. 스포츠 자신감: 빌리(Vealey)의 스포츠자신감모형. 자신감 향상 전략: 성공경험 축적, 긍정적 자기대화, 심상훈련." }
+          ]},
+          { title: "심상", points: [
+            { t: "심상 훈련", d: "심상(imagery/visualization): 마음속으로 동작을 그려보는 것. 내적 심상(1인칭) vs 외적 심상(3인칭). 심리신경근 이론, 상징학습이론, 주의-각성설. PETTLEP 모형. 수행향상, 불안감소, 자신감 증진, 부상재활에 활용." }
+          ]},
+          { title: "주의집중", points: [
+            { t: "주의집중 유형", d: "나이데퍼(Nideffer)의 주의집중 유형: 넓은-좁은(폭) × 외적-내적(방향) → 4가지 유형. 선택적 주의(관련 자극에 집중), 주의용량이론. 집중력 훈련: 자기대화, 루틴, 촛점기법." }
+          ]},
+          { title: "루틴", points: [
+            { t: "경기 루틴", d: "수행 전 루틴(pre-performance routine): 일정한 사고·행동 패턴 반복. 최적 수행상태 유도, 집중력 향상, 불안 감소. 경기 전 루틴, 경기 중 루틴, 경기 후 루틴." }
+          ]}
+        ]
+      },
+      {
+        title: "스포츠수행의 사회 심리적 요인",
+        subs: [
+          { title: "집단 응집력", points: [
+            { t: "팀 응집력", d: "캐런(Carron)의 응집력 모형: 과제응집력(목표달성) + 사회응집력(인간관계). 환경적 요인, 개인적 요인, 팀요인, 리더십요인이 영향. 응집력이 수행에 미치는 영향(상호작용 과제에서 더 중요)." }
+          ]},
+          { title: "리더십", points: [
+            { t: "리더십 이론", d: "특성이론(리더의 특성), 행동이론(리더의 행동), 상황이론(피들러 Fiedler). 다차원적 리더십 모형(Chelladurai): 상황특성·리더특성·구성원특성 → 요구된 행동·실제 행동·선호된 행동 → 수행·만족." }
+          ]},
+          { title: "사회적 촉진", points: [
+            { t: "사회적 촉진과 억제", d: "자종(Zajonc)의 이론: 타인의 존재 → 각성 수준 상승 → 주반응 강화. 잘 학습된 기술(우세반응) = 수행 향상, 새로운 기술(비우세반응) = 수행 저하. 사회적 태만(Ringelmann effect, 무임승차)." }
+          ]},
+          { title: "사회성 발달", points: [
+            { t: "스포츠와 사회성", d: "스포츠 참여를 통한 협동심, 리더십, 의사소통능력, 갈등해결 능력 발달. 헬리슨(Hellison)의 개인적·사회적 책임감 모형(TPSR): 5수준(무책임→자기통제→참여→자기주도→배려)." }
+          ]}
+        ]
+      },
+      {
+        title: "운동심리학",
+        subs: [
+          { title: "운동의 심리적 효과", points: [
+            { t: "심리적 이점", d: "불안·우울 감소, 자존감 향상, 인지기능 향상, 수면의 질 개선, 스트레스 관리. 엔도르핀 가설, 모노아민 가설, 주의분산 가설, 자기효능감 가설 등." }
+          ]},
+          { title: "운동심리 이론", points: [
+            { t: "운동참여 이론", d: "건강신념모형(HBM), 합리적행위이론(TRA)/계획된행동이론(TPB), 범이론적 모형(TTM, Prochaska): 전숙고-숙고-준비-행동-유지 5단계. 자기결정성이론, 사회생태학적 모형." }
+          ]},
+          { title: "운동실천 중재전략", points: [
+            { t: "중재 전략", d: "목표설정, 자기모니터링(운동일지), 사회적지지, 의사결정균형, 자극통제, 강화전략, 재발방지전략. 인지행동적 접근, 동기면담(MI)." }
+          ]}
+        ]
+      },
+      {
+        title: "스포츠심리상담",
+        subs: [
+          { title: "스포츠심리상담의 개념", points: [
+            { t: "심리상담의 정의", d: "선수의 심리적 문제 해결과 경기력 향상을 위한 전문적 상담. 심리기술훈련(PST: Psychological Skills Training)과 구분. 교육적 상담 vs 임상적 상담." }
+          ]},
+          { title: "스포츠심리상담의 적용", points: [
+            { t: "심리기술 훈련 프로그램", d: "교육단계→습득단계→실전단계. 이완훈련(점진적 근이완, 호흡법), 심상훈련, 인지재구성, 자기대화, 주의집중훈련, 루틴 개발. 슬럼프, 번아웃, 부상 재활 심리상담." }
+          ]}
+        ]
+      }
+    ]
+  },
+  "스포츠윤리": {
+    emoji: "⚖️",
+    color: "#f59e0b",
+    chapters: [
+      {
+        title: "스포츠와 윤리",
+        subs: [
+          { title: "스포츠의 윤리적 기초", points: [
+            { t: "스포츠 윤리의 필요성", d: "스포츠의 본질적 가치(공정성, 존중, 탁월성) 보존. 스포츠 내 비윤리적 행위(폭력, 도핑, 차별 등) 방지. 스포츠 참여자 모두의 권리 보호." }
+          ]},
+          { title: "스포츠윤리의 이해", points: [
+            { t: "스포츠윤리학", d: "스포츠 상황에서의 도덕적 문제를 철학적으로 탐구. 규범윤리학적 접근과 메타윤리학적 접근. 스포츠의 내재적 가치(과정)와 외재적 가치(결과)." }
+          ]},
+          { title: "윤리이론", points: [
+            { t: "주요 윤리이론", d: "의무론(칸트): 보편적 도덕법칙, 정언명령, 의무에 의한 행위. 공리주의(벤담/밀): 최대다수의 최대행복. 덕윤리(아리스토텔레스): 덕의 실천, 중용, 행위자의 품성. 계약론(롤스): 공정으로서의 정의, 무지의 베일. 배려윤리(나딩스): 관계 중심." }
+          ]}
+        ]
+      },
+      {
+        title: "경쟁과 페어플레이",
+        subs: [
+          { title: "스포츠경기의 목적", points: [
+            { t: "경쟁의 의미", d: "경쟁(competition): 라틴어 'competitio'(함께 추구함). 경쟁은 상호 탁월성 추구의 과정. 내재적 목적(탁월성, 즐거움)과 외재적 목적(승리, 보상)." }
+          ]},
+          { title: "스포츠맨십", points: [
+            { t: "스포츠맨십의 개념", d: "공정한 경기, 상대 존중, 규칙 준수, 최선의 노력, 겸손. 승리와 패배를 품위있게 수용. 좋은 패배자(good loser)이면서 좋은 승리자(good winner)." }
+          ]},
+          { title: "페어플레이", points: [
+            { t: "페어플레이 원칙", d: "형식적 페어플레이: 명문화된 규칙 준수. 비형식적 페어플레이: 규칙 이상의 도덕적 행동(부상 선수 배려, 자기 반칙 인정). 전략적 규칙위반(gamesmanship)은 페어플레이에 위배." }
+          ]}
+        ]
+      },
+      {
+        title: "스포츠와 불평등",
+        subs: [
+          { title: "성차별", points: [
+            { t: "스포츠에서의 성차별", d: "여성 스포츠 참여 기회 불균등, 미디어 보도 불균형, 임금 격차. 타이틀 나인(Title IX, 1972): 미국 교육 분야 성차별 금지법. 여성체육 활성화 노력." }
+          ]},
+          { title: "인종차별", points: [
+            { t: "스포츠에서의 인종차별", d: "스태킹(stacking): 인종에 따른 포지션 배치. 인종적 스테레오타입. 흑인 선수의 중앙 포지션(쿼터백 등) 배제 현상. 관중의 인종차별적 행위." }
+          ]},
+          { title: "장애차별", points: [
+            { t: "장애인과 스포츠", d: "장애인의 스포츠 참여권 보장. 패럴림픽, 스페셜올림픽, 데플림픽. 통합체육(inclusion) 추구. 장애인스포츠지도사 자격제도." }
+          ]}
+        ]
+      },
+      {
+        title: "스포츠에서 환경과 동물윤리",
+        subs: [
+          { title: "스포츠와 환경윤리", points: [
+            { t: "환경 문제", d: "스포츠 시설 건설로 인한 자연환경 파괴, 메가이벤트의 환경 부담. 지속가능한 스포츠 개발. IOC 환경위원회, 그린올림픽." }
+          ]},
+          { title: "스포츠와 동물윤리", points: [
+            { t: "동물 관련 스포츠 윤리", d: "투견, 투우, 경마 등의 윤리적 문제. 동물권리론 vs 동물복지론. 동물을 이용한 스포츠의 도덕적 정당성 논쟁." }
+          ]}
+        ]
+      },
+      {
+        title: "스포츠와 폭력",
+        subs: [
+          { title: "스포츠 폭력", points: [
+            { t: "스포츠 폭력의 유형", d: "신체적 폭력, 언어적 폭력, 심리적 폭력, 성폭력. 합법적 폭력(규칙 내 신체접촉)과 비합법적 폭력의 경계." }
+          ]},
+          { title: "선수 폭력", points: [
+            { t: "선수 간 폭력", d: "경기 중 의도적 반칙, 보복, 위협 행위. 과잉동조 일탈(극한의 승리 추구). 학교운동부 내 선후배 폭력(기합, 구타). 폭력 예방 교육 필요." }
+          ]},
+          { title: "관중 폭력", points: [
+            { t: "관중 폭력과 훌리거니즘", d: "훌리거니즘(hooliganism): 축구 관중 폭력. 원인: 탈개인화, 군중심리, 알코올, 편파적 심판에 대한 불만 등. 관중 폭력 예방 대책." }
+          ]}
+        ]
+      },
+      {
+        title: "경기력 향상과 공정성",
+        subs: [
+          { title: "도핑", points: [
+            { t: "도핑의 문제", d: "도핑: 경기력 향상을 위한 금지약물 사용. WADA(세계반도핑기구) 설립(1999). 금지약물(근육강화제, 흥분제, 이뇨제 등), 금지방법(혈액도핑, 유전자도핑). 도핑의 비윤리성: 공정성 훼손, 건강 위험, 강요 가능성." }
+          ]},
+          { title: "유전자 조작", points: [
+            { t: "유전자 도핑", d: "유전자 치료 기술의 스포츠 악용. 유전자 편집(CRISPR 등)을 통한 능력 향상. 윤리적 문제: 자연성 훼손, 건강 위험, 공정성 문제." }
+          ]},
+          { title: "용기구와 생체 공학 기술 활용", points: [
+            { t: "기술 도핑", d: "첨단 장비의 공정성 논란. 전신수영복, 의족 러너(피스토리우스), 나이키 기록 돌파 운동화 등. 기술의 한계와 규제 문제. 운동기록의 순수성 논쟁." }
+          ]}
+        ]
+      },
+      {
+        title: "스포츠와 인권",
+        subs: [
+          { title: "학생선수의 인권", points: [
+            { t: "학생선수 보호", d: "학습권 보장(최저학력제, 수업참여), 합숙소 인권보호, 폭력·성폭력으로부터 보호. 선수인권보호센터 운영. 학생선수의 진로 다양화." }
+          ]},
+          { title: "스포츠지도자 윤리", points: [
+            { t: "지도자 윤리강령", d: "선수에 대한 존중과 보호, 공정한 지도, 폭력·성폭력 금지, 전문성 유지. 체육지도자 윤리강령, 스포츠4대 악(폭력·성폭력·승부조작·도핑) 근절." }
+          ]},
+          { title: "스포츠와 인성교육", points: [
+            { t: "인성교육", d: "스포츠를 통한 인성교육: 존중, 배려, 정직, 책임, 공정. 인성교육진흥법. 스포츠 활동을 통한 사회적 역량, 도덕적 판단력 발달." }
+          ]}
+        ]
+      },
+      {
+        title: "스포츠 조직과 윤리",
+        subs: [
+          { title: "스포츠와 정책윤리", points: [
+            { t: "스포츠 정책의 윤리성", d: "스포츠 정책의 공정한 수립과 집행. 자원배분의 형평성, 정책결정 과정의 투명성. 스포츠 기본법." }
+          ]},
+          { title: "심판의 윤리", points: [
+            { t: "심판 윤리", d: "공정한 판정, 편파판정 금지, 전문성 유지. 비디오판독(VAR 등)의 도입. 심판의 권위와 책임." }
+          ]},
+          { title: "스포츠조직의 윤리경영", points: [
+            { t: "윤리경영", d: "스포츠 조직(IOC, FIFA, KOC 등)의 투명한 운영. 부패방지, 거버넌스(지배구조) 개선, 윤리위원회 운영. 승부조작 방지, 스폰서십 윤리." }
+          ]}
+        ]
+      }
+    ]
+  },
+  "운동생리학": {
+    emoji: "🫀",
+    color: "#10b981",
+    chapters: [
+      {
+        title: "운동생리학의 개관",
+        subs: [
+          { title: "주요 용어", points: [
+            { t: "기본 개념", d: "항상성(homeostasis), 대사(metabolism), 이화작용(catabolism)/동화작용(anabolism). 과부하의 원리, 특이성의 원리, 가역성의 원리. VO₂max(최대산소섭취량), HR(심박수), SV(일회박출량), Q(심박출량=HR×SV)." }
+          ]},
+          { title: "운동생리학의 개념", points: [
+            { t: "정의와 영역", d: "운동 시 인체의 기능적 변화와 적응을 연구하는 학문. 운동에 대한 급성 반응(response)과 만성 적응(adaptation)을 구분. 세포-조직-기관-기관계 수준에서 연구." }
+          ]}
+        ]
+      },
+      {
+        title: "에너지 대사와 운동",
+        subs: [
+          { title: "에너지의 개념과 대사작용", points: [
+            { t: "에너지 기본", d: "ATP(아데노신 삼인산): 생체 에너지 화폐. ATP → ADP + Pi + 에너지. 에너지 대사의 기본 원리." }
+          ]},
+          { title: "인체의 에너지 대사", points: [
+            { t: "3대 에너지 시스템", d: "①ATP-PC 시스템(인원질): 무산소, 0~10초, 고강도 단시간(100m 달리기). ②무산소성 해당과정(젖산시스템): 무산소, 10초~2분, 포도당→젖산+2ATP. ③유산소 시스템: 산소 이용, 2분 이상, 해당과정→TCA회로(크렙스)→전자전달계, 36~38ATP. 탄수화물, 지방, 단백질 대사." },
+            { t: "젖산 역치(LT)", d: "운동 강도 증가 시 혈중 젖산이 급격히 증가하는 시점. OBLA(4mmol/L). 젖산 역치가 높을수록 유산소 능력 우수. 젖산 = 에너지원으로도 활용(셔틀 가설)." }
+          ]},
+          { title: "트레이닝에 의한 대사적 적응", points: [
+            { t: "대사 적응", d: "유산소 훈련: 미토콘드리아 증가, 산화효소 활성 증가, 지방 이용률 증가, 글리코겐 절약. 무산소 훈련: ATP-PC 저장량 증가, 해당과정 효소 활성 증가, 젖산 완충능력 향상." }
+          ]}
+        ]
+      },
+      {
+        title: "신경조절과 운동",
+        subs: [
+          { title: "신경계의 구조와 기능, 특성", points: [
+            { t: "신경계 구조", d: "중추신경계(뇌+척수)와 말초신경계(체성신경+자율신경). 뉴런: 세포체-수상돌기-축삭. 시냅스 전달(신경전달물질: 아세틸콜린 등). 운동신경원(motor neuron)과 운동단위(motor unit)." }
+          ]},
+          { title: "신경계의 특성", points: [
+            { t: "신경 특성", d: "전부 또는 전무의 법칙(all-or-none). 운동단위 동원(size principle): 작은 운동단위→큰 운동단위 순서로 동원. 흥분-억제 조절." }
+          ]},
+          { title: "신경계의 운동기능 조절", points: [
+            { t: "운동 조절", d: "대뇌피질(운동영역), 소뇌(협응, 균형), 기저핵(운동 시작·종료), 척수(반사). 고유수용감각(근방추, 골지건기관). 근방추: 근육 길이 감지(신전반사). 골지건기관: 장력 감지(역신전반사, 보호기능)." }
+          ]}
+        ]
+      },
+      {
+        title: "골격근과 운동",
+        subs: [
+          { title: "골격근의 구조와 기능", points: [
+            { t: "근육 구조", d: "근섬유(근세포)→근원섬유(myofibril)→근절(sarcomere): 근수축의 기본단위. 액틴(가는 필라멘트)과 미오신(굵은 필라멘트). 활주설(sliding filament theory): 근수축 시 액틴이 미오신 위로 미끄러짐." },
+            { t: "근섬유 유형", d: "지근(Type I, 적근, 느린수축근): 유산소, 미토콘드리아 풍부, 지구력. 속근(Type II): IIa(중간형, 유·무산소 겸용), IIx(빠른수축근, 무산소, 고강도). 근섬유 비율은 유전적 결정." }
+          ]},
+          { title: "골격근과 운동", points: [
+            { t: "근수축 유형", d: "등장성 수축: 구심성(단축, concentric) vs 원심성(신장, eccentric). 등척성 수축(isometric): 근육 길이 불변. 등속성 수축(isokinetic): 일정 속도. 원심성 수축이 가장 큰 힘 발휘, DOMS(지연성 근육통) 유발." },
+            { t: "근비대와 트레이닝", d: "근비대(hypertrophy): 근섬유 크기 증가. 근력 트레이닝 적응: 신경적 적응(초기) → 근비대(장기). 초과회복(supercompensation) 원리." }
+          ]}
+        ]
+      },
+      {
+        title: "내분비계와 운동",
+        subs: [
+          { title: "내분비계", points: [
+            { t: "주요 호르몬", d: "성장호르몬(GH): 근성장, 지방분해. 인슐린: 혈당 감소(포도당 흡수 촉진). 글루카곤: 혈당 증가. 에피네프린/노르에피네프린: 교감신경, 혈당·심박수 증가. 코르티솔: 스트레스 호르몬, 이화작용. 테스토스테론: 근비대, 단백질 합성." }
+          ]},
+          { title: "운동과 호르몬 조절", points: [
+            { t: "운동 시 호르몬 반응", d: "운동 → 에피네프린·노르에피네프린 분비 증가 → 심박수↑, 혈당↑, 기관지 확장. 성장호르몬 분비 증가(고강도 운동). 인슐린 감소, 글루카곤 증가(운동 중). 장기 훈련 → 인슐린 감수성 향상." }
+          ]}
+        ]
+      },
+      {
+        title: "호흡·순환계와 운동",
+        subs: [
+          { title: "호흡계의 구조와 기능", points: [
+            { t: "호흡 구조", d: "비강→인두→후두→기관→기관지→세기관지→폐포. 외호흡(폐포 가스교환)과 내호흡(조직 가스교환). 호흡근: 횡격막, 외늑간근(흡기), 내늑간근(호기). 폐활량(VC), 일회호흡량(TV), 잔기량(RV), 총폐용량(TLC)." }
+          ]},
+          { title: "운동에 대한 호흡계의 반응과 적응", points: [
+            { t: "호흡 반응", d: "운동 시: 환기량(VE) 증가 = 일회호흡량(TV) × 호흡수(f). 환기 역치(ventilatory threshold). 장기 훈련 → 호흡근 강화, 효율적 환기, 폐확산능력 향상." }
+          ]},
+          { title: "순환계의 구조와 기능", points: [
+            { t: "순환계 구조", d: "심장: 4개 방(좌심방·좌심실·우심방·우심실). 체순환(대순환)과 폐순환(소순환). 심박출량(Q) = 일회박출량(SV) × 심박수(HR). 혈압 = 심박출량 × 말초저항." }
+          ]},
+          { title: "운동에 대한 순환계의 반응과 적응", points: [
+            { t: "순환 반응과 적응", d: "운동 시: 심박수↑, 일회박출량↑, 심박출량↑, 수축기혈압↑. 혈류 재분배(근육으로 집중). 장기 유산소 훈련 → 안정시 서맥(심박수 감소), 일회박출량 증가, 심장비대(스포츠 심장), 모세혈관 밀도 증가, VO₂max 향상." }
+          ]}
+        ]
+      },
+      {
+        title: "환경과 운동",
+        subs: [
+          { title: "체온 조절과 운동", points: [
+            { t: "체온 조절", d: "시상하부가 체온 중추. 더운 환경: 발한(증발), 피부혈관 확장(대류·복사). 추운 환경: 떨림(shivering), 피부혈관 수축. 열사병, 열경련, 열탈진의 예방. 수분 보충의 중요성." }
+          ]},
+          { title: "인체 운동에 대한 환경 영향", points: [
+            { t: "환경 요인", d: "고지 환경: 산소분압 감소 → EPO 분비 증가 → 적혈구 증가(고지훈련). 수중 환경: 부력, 수압, 수온의 영향. 대기오염: 오존, 미세먼지의 운동 수행 영향." }
+          ]}
+        ]
+      }
+    ]
+  },
+  "운동역학": {
+    emoji: "⚙️",
+    color: "#06b6d4",
+    chapters: [
+      {
+        title: "운동역학 개요",
+        subs: [
+          { title: "운동역학의 정의", points: [
+            { t: "정의", d: "인체 움직임의 원인(힘)과 결과(운동)를 물리학적 원리로 분석하는 학문. 역학(mechanics)을 인체 움직임에 적용. 생체역학(biomechanics)과 유사하게 사용." }
+          ]},
+          { title: "운동역학의 목적과 내용", points: [
+            { t: "목적", d: "스포츠 기술의 과학적 분석, 경기력 향상, 부상 예방, 장비 개발. 운동학(kinematics: 힘 무시, 운동 기술)과 운동역학(kinetics: 힘 분석)으로 구분." }
+          ]}
+        ]
+      },
+      {
+        title: "운동역학의 이해",
+        subs: [
+          { title: "해부학적 기초", points: [
+            { t: "해부학적 용어", d: "해부학적 자세, 3개 기본면(시상면, 전두면/관상면, 수평면/횡단면)과 3개 축(좌우축/전두축, 전후축/시상축, 수직축/종축). 관절운동: 굴곡/신전, 외전/내전, 회전, 회외/회내." }
+          ]},
+          { title: "운동의 종류", points: [
+            { t: "운동 유형", d: "선운동(병진운동): 직선운동, 곡선운동. 각운동(회전운동): 고정축 주위 회전. 일반운동: 선운동+각운동의 조합. 인체 운동은 대부분 일반운동." }
+          ]}
+        ]
+      },
+      {
+        title: "인체역학",
+        subs: [
+          { title: "인체의 물리적 특성", points: [
+            { t: "물리적 특성", d: "질량, 무게, 관성(뉴턴 제1법칙). 무게중심(COG): 질량이 균등하게 분포된 점. 인체 무게중심은 약 배꼽 높이(전체 신장의 약 55~57%)." }
+          ]},
+          { title: "인체 평형과 안정성", points: [
+            { t: "안정성 요인", d: "기저면(지지면) 크기: 넓을수록 안정. 무게중심 높이: 낮을수록 안정. 무게중심 위치: 기저면 중앙에 가까울수록 안정. 질량: 무거울수록 안정. 마찰력: 클수록 안정." }
+          ]},
+          { title: "인체의 구조적 특성", points: [
+            { t: "지렛대 원리", d: "1종 지렛대(축-힘-저항: 시소, 머리 끄덕임), 2종 지렛대(축-저항-힘: 까치발 들기), 3종 지렛대(저항-힘-축: 팔꿈치 굽힘 - 인체에서 가장 많음). 역학적 이점(MA) = 힘팔/저항팔." }
+          ]}
+        ]
+      },
+      {
+        title: "운동학의 스포츠 적용",
+        subs: [
+          { title: "선운동의 운동학적 분석", points: [
+            { t: "선운동학", d: "거리(distance, 스칼라) vs 변위(displacement, 벡터). 속력(speed) vs 속도(velocity). 등가속도 운동, 자유낙하. 투사체 운동(projectile): 비거리 = (v²sin2θ)/g, 최대비거리 각도 45°(공기저항 무시 시)." }
+          ]},
+          { title: "각운동의 운동학적 분석", points: [
+            { t: "각운동학", d: "각변위(radian), 각속도(ω), 각가속도(α). 선속도 = 반경 × 각속도(v = rω). 회전 반경이 길수록 말단의 선속도가 크다(스윙, 킥 동작)." }
+          ]}
+        ]
+      },
+      {
+        title: "운동역학의 스포츠 적용",
+        subs: [
+          { title: "선운동의 운동역학적 분석", points: [
+            { t: "뉴턴의 운동법칙", d: "제1법칙(관성): 외력이 없으면 정지 또는 등속직선운동 유지. 제2법칙(가속도): F=ma, 힘=질량×가속도. 제3법칙(작용-반작용): 모든 작용에 동일한 크기의 반작용. 충격량(J)=힘×시간=운동량 변화(Δp). 운동량 보존법칙." }
+          ]},
+          { title: "각운동의 운동역학적 분석", points: [
+            { t: "회전 역학", d: "토크(τ)=힘×모멘트팔(τ=F×d). 관성모멘트(I): 회전 관성, I=mr². 각운동량(L)=I×ω, 각운동량 보존법칙. 피겨스케이팅: 팔 벌림(I↑,ω↓) → 팔 모음(I↓,ω↑)." }
+          ]}
+        ]
+      },
+      {
+        title: "일과 에너지",
+        subs: [
+          { title: "일과 일률", points: [
+            { t: "일과 파워", d: "일(W)=힘×거리(W=F×d). 일률/파워(P)=일/시간(P=W/t=F×v). 단위: 일(J, 줄), 일률(W, 와트)." }
+          ]},
+          { title: "에너지", points: [
+            { t: "에너지 유형", d: "운동에너지(KE=½mv²), 위치에너지(PE=mgh), 탄성에너지. 에너지 보존법칙: 에너지 총량은 보존된다. 스포츠에서의 에너지 전환(높이뛰기, 장대높이뛰기 등)." }
+          ]}
+        ]
+      },
+      {
+        title: "다양한 운동기술의 분석",
+        subs: [
+          { title: "동적분석", points: [
+            { t: "동작 분석", d: "영상분석(2D, 3D 모션캡처), 스틱피겨(stick figure). 관절 각도 변화, 속도, 가속도 분석. 스포츠 기술의 운동학적 분석." }
+          ]},
+          { title: "힘 분석", points: [
+            { t: "지면반력(GRF)", d: "지면반력(Ground Reaction Force) 분석: 힘판(force plate) 사용. 수직·전후·좌우 방향 힘 측정. 도약, 착지, 보행 분석에 활용." }
+          ]},
+          { title: "근전도 분석", points: [
+            { t: "EMG", d: "근전도(EMG: Electromyography): 근육의 전기적 활동 측정. 표면 EMG vs 침 EMG. 근활성도 분석, 근피로 분석, 운동 시 근육 활용 패턴 파악." }
+          ]}
+        ]
+      }
+    ]
+  },
+  "한국체육사": {
+    emoji: "🏯",
+    color: "#f97316",
+    chapters: [
+      {
+        title: "체육사의 의미",
+        subs: [
+          { title: "체육사 연구 분야", points: [
+            { t: "체육사학", d: "체육·스포츠의 역사적 사실을 연구하는 학문. 시대별 체육활동, 제도, 사상의 변천을 탐구. 사료 수집, 비판, 해석을 통한 체계적 연구. 체육사 연구의 목적: 체육의 본질 이해, 현재의 문제 해결, 미래 방향 제시." }
+          ]}
+        ]
+      },
+      {
+        title: "선사·삼국시대",
+        subs: [
+          { title: "선사 및 부족국가시대의 체육", points: [
+            { t: "원시시대 체육", d: "생존을 위한 신체활동(사냥, 전투, 채집). 부족국가의 제천행사: 부여(영고), 고구려(동맹), 동예(무천), 삼한(5월 수릿날, 10월 계절제). 제천행사에서 노래·춤·활쏘기 등 신체활동 수행." }
+          ]},
+          { title: "삼국 및 통일신라시대의 체육", points: [
+            { t: "삼국시대", d: "고구려: 무예 중시, 경당(평민 교육기관, 독서·활쏘기·말타기), 수박(무예), 씨름. 백제: 투호, 바둑, 장기, 기마술, 활쏘기. 신라: 화랑도(세속오계, 심신수련), 활쏘기, 말타기, 격구, 축국, 석전(돌팔매). 통일신라: 화랑도 발전, 격구, 축국, 수박 등 다양한 체육활동." },
+            { t: "화랑도", d: "신라의 청소년 교육단체. 세속오계(원광법사): 사군이충, 사친이효, 교우이신, 임전무퇴, 살생유택. 무술·음악·춤·유람 등을 통한 심신수련. 국가 인재 양성의 역할." }
+          ]}
+        ]
+      },
+      {
+        title: "고려·조선시대",
+        subs: [
+          { title: "고려시대의 체육", points: [
+            { t: "고려 체육", d: "무과(무관 선발 시험) 시행. 격구(마상 폴로, 왕족·귀족 중심), 수박(무예), 씨름, 그네, 널뛰기, 석전, 활쏘기. 무신정권 이후 무예 더욱 강조. 팔관회·연등회 등 축제에서 체육활동." }
+          ]},
+          { title: "조선시대의 체육", points: [
+            { t: "조선 체육", d: "문(文) 중시, 무(武) 경시 풍조. 무과(무관 선발): 초시·복시·전시 3단계. 무예도보통지(정조, 1790): 24기(24가지 무예) 수록, 최초의 체계적 무예서. 활쏘기(편사·보사), 격구, 마상무예, 씨름(민간), 그네, 널뛰기, 줄당기기, 차전놀이(동채싸움), 석전 등." },
+            { t: "무예도보통지", d: "정조 시대(1790년) 이덕무·박제가·백동수가 편찬. 24가지 무예(기창, 기검, 마상월도, 장창, 쌍검, 예도, 왜검 등)를 그림과 함께 정리. 한국 전통 무예의 체계적 집대성." }
+          ]}
+        ]
+      },
+      {
+        title: "한국 근·현대",
+        subs: [
+          { title: "개화기의 체육", points: [
+            { t: "근대 체육 도입", d: "1895년 소학교령에 '체조'과목 포함(최초의 근대 체육교육). 원산학사(1883): 최초의 근대 학교(무예 교육 포함). 배재학당(1885, 아펜젤러), 이화학당(1886) 등 선교 학교에서 서양 체육 도입. YMCA(1903) 설립: 농구, 배구, 야구 등 서양 스포츠 보급." },
+            { t: "근대 스포츠 대회", d: "1920년 제1회 전조선야구대회(조선체육회 주최). 1920년 조선체육회 설립(현 대한체육회 전신). 손기정 선수: 1936년 베를린 올림픽 마라톤 금메달." }
+          ]},
+          { title: "일제강점기의 체육", points: [
+            { t: "일제 체육 정책", d: "체육의 식민지 도구화: 군사체조, 황국신민화 수단. 조선인 체육활동 통제·탄압. 1938년 조선체육회 해산(조선체육진흥회로 강제 통합). 그러나 스포츠를 통한 민족의식 고취(손기정, 여운형 등)." }
+          ]},
+          { title: "광복 이후의 체육", points: [
+            { t: "현대 체육 발전", d: "1945년 광복 후 조선체육회(대한체육회) 재건. 1947년 IOC 가입. 1948년 런던 올림픽 최초 참가. 1986년 서울 아시안게임, 1988년 서울 올림픽(국위선양, 체육 발전의 전환점). 2002년 한일월드컵, 2018년 평창 동계올림픽. 생활체육 확대: 1991년 국민생활체육회 설립, 2016년 대한체육회와 통합." },
+            { t: "체육 관련 주요 법률", d: "국민체육진흥법(1962), 학교체육진흥법(2012), 스포츠기본법(2022). 태권도진흥재단법, 스포츠산업진흥법 등." }
+          ]}
+        ]
+      }
+    ]
+  }
+};
+
+// Summary navigation state
+let summaryState = {
+  level: 'subjects', // 'subjects' | 'chapters' | 'subs' | 'content'
+  subject: null,
+  chapterIdx: null,
+  subIdx: null
+};
+
+function renderSummary() {
+  const bc = document.getElementById('summaryBreadcrumb');
+  const content = document.getElementById('summaryContent');
+  
+  // Build breadcrumb
+  let breadcrumbHtml = `<span class="summary-breadcrumb-item ${summaryState.level === 'subjects' ? 'current' : ''}" onclick="goSummaryLevel('subjects')">전체 과목</span>`;
+  
+  if (summaryState.subject) {
+    breadcrumbHtml += `<i class="fas fa-chevron-right summary-breadcrumb-sep"></i>`;
+    breadcrumbHtml += `<span class="summary-breadcrumb-item ${summaryState.level === 'chapters' ? 'current' : ''}" onclick="goSummaryLevel('chapters')">${summaryState.subject}</span>`;
+  }
+  if (summaryState.chapterIdx !== null) {
+    const ch = CURRICULUM[summaryState.subject].chapters[summaryState.chapterIdx];
+    breadcrumbHtml += `<i class="fas fa-chevron-right summary-breadcrumb-sep"></i>`;
+    breadcrumbHtml += `<span class="summary-breadcrumb-item ${summaryState.level === 'subs' ? 'current' : ''}" onclick="goSummaryLevel('subs')">${ch.title}</span>`;
+  }
+  if (summaryState.subIdx !== null && summaryState.chapterIdx !== null) {
+    const ch = CURRICULUM[summaryState.subject].chapters[summaryState.chapterIdx];
+    const sub = ch.subs[summaryState.subIdx];
+    breadcrumbHtml += `<i class="fas fa-chevron-right summary-breadcrumb-sep"></i>`;
+    breadcrumbHtml += `<span class="summary-breadcrumb-item current">${sub.title}</span>`;
+  }
+  bc.innerHTML = breadcrumbHtml;
+  
+  // Render content based on level
+  switch(summaryState.level) {
+    case 'subjects': renderSummarySubjects(content); break;
+    case 'chapters': renderSummaryChapters(content); break;
+    case 'subs': renderSummarySubs(content); break;
+    case 'content': renderSummaryContent(content); break;
+  }
+}
+
+function renderSummarySubjects(container) {
+  const subjects = Object.entries(CURRICULUM);
+  container.innerHTML = `
+    <div class="summary-subject-grid">
+      ${subjects.map(([name, data]) => {
+        const chCount = data.chapters.length;
+        const subCount = data.chapters.reduce((s, c) => s + c.subs.length, 0);
+        return `
+          <div class="summary-subject-card" onclick="openSummaryChapters('${name}')">
+            <span class="subject-emoji">${data.emoji}</span>
+            <div class="subject-title">${name}</div>
+            <div class="subject-count">${chCount}단원 · ${subCount}소단원</div>
+          </div>
+        `;
+      }).join('')}
+    </div>
+  `;
+}
+
+function renderSummaryChapters(container) {
+  const data = CURRICULUM[summaryState.subject];
+  if (!data) return;
+  container.innerHTML = `
+    <div class="summary-chapter-list">
+      ${data.chapters.map((ch, i) => `
+        <div class="summary-chapter-card">
+          <div class="summary-chapter-header" onclick="openSummarySubs(${i})">
+            <div class="summary-chapter-num" style="background:${data.color}">${i + 1}</div>
+            <div class="summary-chapter-info">
+              <div class="summary-chapter-title">${ch.title}</div>
+              <div class="summary-chapter-sub">${ch.subs.length}개 소단원</div>
+            </div>
+            <div class="summary-chapter-arrow"><i class="fas fa-chevron-right"></i></div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+function renderSummarySubs(container) {
+  const data = CURRICULUM[summaryState.subject];
+  if (!data) return;
+  const ch = data.chapters[summaryState.chapterIdx];
+  if (!ch) return;
+  container.innerHTML = `
+    <div class="summary-sub-list">
+      ${ch.subs.map((sub, i) => `
+        <div class="summary-sub-card" onclick="openSummaryContent(${i})">
+          <div class="summary-sub-header">
+            <div class="summary-sub-icon" style="background:${data.color}">${summaryState.chapterIdx + 1}.${i + 1}</div>
+            <div class="summary-sub-title">${sub.title}</div>
+            <div class="summary-sub-arrow"><i class="fas fa-chevron-right"></i></div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+    <div style="padding:0 1rem .5rem">
+      <button class="btn-prev" style="width:100%;justify-content:center;border-radius:var(--radius-sm);border:none;padding:.85rem" onclick="goSummaryLevel('chapters')">
+        <i class="fas fa-chevron-left"></i> ${summaryState.subject} 전체 단원으로
+      </button>
+    </div>
+  `;
+}
+
+function renderSummaryContent(container) {
+  const data = CURRICULUM[summaryState.subject];
+  if (!data) return;
+  const ch = data.chapters[summaryState.chapterIdx];
+  if (!ch) return;
+  const sub = ch.subs[summaryState.subIdx];
+  if (!sub) return;
+
+  let pointsHtml = sub.points.map(p => `
+    <div class="summary-point">
+      <div class="summary-point-title"><i class="fas fa-check-circle"></i> ${escHtml(p.t)}</div>
+      <div class="summary-point-text">${escHtml(p.d)}</div>
+    </div>
+  `).join('');
+
+  // Find related questions from all data
+  let relatedHtml = '';
+  const keywords = sub.title.split(/[\s·,]+/).filter(k => k.length >= 2);
+  let relatedQuestions = [];
+  
+  for (const year of YEARS) {
+    const yearData = allData[year];
+    if (!yearData) continue;
+    for (const subj of yearData.subjects) {
+      if (subj.name !== summaryState.subject) continue;
+      for (const q of subj.questions) {
+        const qText = q.question + ' ' + q.options.map(o => o.text).join(' ');
+        const matchCount = keywords.filter(kw => qText.includes(kw)).length;
+        if (matchCount >= 1) {
+          relatedQuestions.push({ year, code: subj.code, qNum: q.number, question: q.question, matchCount });
+        }
+      }
+    }
+  }
+  
+  relatedQuestions.sort((a, b) => b.matchCount - a.matchCount);
+  relatedQuestions = relatedQuestions.slice(0, 8);
+  
+  if (relatedQuestions.length > 0) {
+    relatedHtml = `
+      <div class="summary-related">
+        <div class="summary-related-title"><i class="fas fa-link"></i> 관련 기출문제 (${relatedQuestions.length})</div>
+        ${relatedQuestions.map(rq => `
+          <div class="summary-related-item" onclick="startQuiz(${rq.year}, '${rq.code}')">
+            <div class="summary-related-meta">${rq.year}년 · ${rq.qNum}번</div>
+            <div class="summary-related-q">${escHtml(rq.question)}</div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  }
+
+  // Prev / Next navigation
+  const totalSubs = ch.subs.length;
+  const hasPrev = summaryState.subIdx > 0;
+  const hasNext = summaryState.subIdx < totalSubs - 1;
+
+  container.innerHTML = `
+    <div class="summary-content-area">
+      <div class="summary-content-card">
+        <div class="summary-content-header">
+          <h3><i class="fas fa-bookmark"></i> ${sub.title}</h3>
+          <p>${summaryState.subject} > ${ch.title} > ${sub.title}</p>
+        </div>
+        <div class="summary-content-body">
+          ${pointsHtml}
+        </div>
+        ${relatedHtml}
+      </div>
+    </div>
+    <div class="summary-nav-buttons">
+      <button class="btn-prev" onclick="prevSummaryContent()" ${!hasPrev ? 'disabled style="opacity:.4"' : ''}>
+        <i class="fas fa-chevron-left"></i> 이전
+      </button>
+      <button class="btn-next" onclick="nextSummaryContent()" ${!hasNext ? 'disabled style="opacity:.4"' : ''}>
+        다음 <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+  `;
+}
+
+function openSummaryChapters(subjectName) {
+  summaryState = { level: 'chapters', subject: subjectName, chapterIdx: null, subIdx: null };
+  renderSummary();
+  window.scrollTo(0, 0);
+}
+
+function openSummarySubs(chapterIdx) {
+  summaryState.level = 'subs';
+  summaryState.chapterIdx = chapterIdx;
+  summaryState.subIdx = null;
+  renderSummary();
+  window.scrollTo(0, 0);
+}
+
+function openSummaryContent(subIdx) {
+  summaryState.level = 'content';
+  summaryState.subIdx = subIdx;
+  renderSummary();
+  window.scrollTo(0, 0);
+}
+
+function goSummaryLevel(level) {
+  switch(level) {
+    case 'subjects':
+      summaryState = { level: 'subjects', subject: null, chapterIdx: null, subIdx: null };
+      break;
+    case 'chapters':
+      summaryState.level = 'chapters';
+      summaryState.chapterIdx = null;
+      summaryState.subIdx = null;
+      break;
+    case 'subs':
+      summaryState.level = 'subs';
+      summaryState.subIdx = null;
+      break;
+  }
+  renderSummary();
+  window.scrollTo(0, 0);
+}
+
+function prevSummaryContent() {
+  if (summaryState.subIdx > 0) {
+    summaryState.subIdx--;
+    renderSummary();
+    window.scrollTo(0, 0);
+  }
+}
+
+function nextSummaryContent() {
+  const data = CURRICULUM[summaryState.subject];
+  if (!data) return;
+  const ch = data.chapters[summaryState.chapterIdx];
+  if (!ch) return;
+  if (summaryState.subIdx < ch.subs.length - 1) {
+    summaryState.subIdx++;
+    renderSummary();
+    window.scrollTo(0, 0);
+  }
+}
+
 // ===== INIT =====
 async function init() {
   loadSettings();
@@ -2217,6 +3390,7 @@ async function init() {
   renderYearChips();
   renderSubjectList();
   refreshHomeStats();
+  renderSummary();
 
   // Hide loading
   setTimeout(() => {

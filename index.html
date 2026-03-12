@@ -1696,6 +1696,179 @@ body {
 .random-exam-title { font-size: .95rem; font-weight: 800; }
 .random-exam-meta { font-size: .75rem; opacity: .85; margin-top: .2rem; }
 .random-exam-arrow { font-size: .85rem; opacity: .7; }
+
+/* ===== UNSELECTED SUBJECT GRAYSCALE ===== */
+.subject-unselected {
+  filter: grayscale(100%);
+  opacity: .5;
+  position: relative;
+  cursor: pointer !important;
+}
+.subject-unselected * {
+  color: var(--gray-400) !important;
+}
+.subject-unselected .subject-icon,
+.subject-unselected .chapter-quiz-subject-icon,
+.subject-unselected .summary-chapter-num,
+.subject-unselected .subject-emoji {
+  filter: grayscale(100%);
+}
+.subject-unselected::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  cursor: pointer;
+}
+
+/* Summary subject card unselected */
+.summary-subject-card.subject-unselected {
+  border-color: var(--gray-200);
+  background: var(--gray-50);
+}
+.summary-subject-card.subject-unselected .subject-emoji {
+  filter: grayscale(100%) !important;
+}
+.summary-subject-card.subject-unselected .subject-title {
+  color: var(--gray-400) !important;
+}
+.summary-subject-card.subject-unselected .subject-count {
+  color: var(--gray-300) !important;
+}
+
+/* Chapter quiz subject unselected */
+.chapter-quiz-subject.subject-unselected {
+  background: var(--gray-50);
+}
+.chapter-quiz-subject.subject-unselected .chapter-quiz-subject-icon {
+  background: var(--gray-300) !important;
+}
+.chapter-quiz-subject.subject-unselected .chapter-quiz-subject-name {
+  color: var(--gray-400) !important;
+}
+.chapter-quiz-subject.subject-unselected .chapter-quiz-subject-meta {
+  color: var(--gray-300) !important;
+}
+.chapter-quiz-subject.subject-unselected .progress-ring-fg {
+  stroke: var(--gray-300) !important;
+}
+.chapter-quiz-subject.subject-unselected .progress-text-center {
+  color: var(--gray-300) !important;
+}
+
+/* Mock exam subject item unselected */
+.subject-item.subject-unselected {
+  opacity: .5;
+  filter: grayscale(100%);
+}
+.subject-item.subject-unselected .subject-icon {
+  background: var(--gray-300) !important;
+}
+.subject-item.subject-unselected .subject-name {
+  color: var(--gray-400) !important;
+}
+
+/* ===== CUSTOM CONFIRM DIALOG ===== */
+.custom-dialog-overlay {
+  position: fixed; inset: 0; z-index: 500;
+  background: rgba(0,0,0,.5);
+  backdrop-filter: blur(4px);
+  display: none; align-items: center; justify-content: center;
+  padding: 1.5rem;
+  animation: fadeIn .2s ease;
+}
+.custom-dialog-overlay.show { display: flex; }
+.custom-dialog {
+  background: #fff;
+  border-radius: var(--radius);
+  max-width: 340px; width: 100%;
+  box-shadow: var(--shadow-lg);
+  animation: dialogPop .25s ease;
+  overflow: hidden;
+}
+@keyframes dialogPop {
+  0% { transform: scale(.85); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+.custom-dialog-icon {
+  display: flex; align-items: center; justify-content: center;
+  padding: 1.5rem 1.5rem .5rem;
+}
+.custom-dialog-icon i {
+  font-size: 2.5rem;
+  color: var(--warning);
+}
+.custom-dialog-body {
+  padding: .5rem 1.5rem 1.25rem;
+  text-align: center;
+}
+.custom-dialog-title {
+  font-size: .95rem;
+  font-weight: 700;
+  color: var(--gray-800);
+  margin-bottom: .4rem;
+}
+.custom-dialog-msg {
+  font-size: .82rem;
+  color: var(--gray-500);
+  line-height: 1.6;
+}
+.custom-dialog-actions {
+  display: flex;
+  border-top: 1px solid var(--gray-100);
+}
+.custom-dialog-actions button {
+  flex: 1;
+  padding: .85rem;
+  border: none;
+  font-size: .88rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background .15s;
+}
+.custom-dialog-actions button:first-child {
+  background: var(--gray-50);
+  color: var(--gray-500);
+  border-right: 1px solid var(--gray-100);
+  border-radius: 0 0 0 var(--radius);
+}
+.custom-dialog-actions button:first-child:active {
+  background: var(--gray-100);
+}
+.custom-dialog-actions button:last-child {
+  background: #fff;
+  color: var(--primary);
+  border-radius: 0 0 var(--radius) 0;
+}
+.custom-dialog-actions button:last-child:active {
+  background: var(--primary-bg);
+}
+
+/* ===== TIMER UNDER TITLE (moved from top bar) ===== */
+.quiz-timer-inline {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  padding: .45rem 1rem;
+  background: linear-gradient(135deg, #f59e0b, #f97316);
+  color: #fff;
+  font-size: .78rem;
+  font-weight: 700;
+  margin: 0;
+  border-bottom: 1px solid rgba(245,158,11,.2);
+}
+.quiz-timer-inline.show { display: flex; }
+.quiz-timer-inline .timer-icon { font-size: .85rem; }
+.quiz-timer-inline .timer-text { flex: 0 0 auto; }
+.quiz-timer-inline .timer-time {
+  font-size: .95rem; font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+.quiz-timer-inline.warning {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+}
 </style>
 </head>
 <body>
@@ -1947,16 +2120,16 @@ body {
 
   <!-- Quiz Solver (문제 풀이 화면) -->
   <div id="quizSolver" style="display:none">
-    <div class="mock-timer-bar" id="mockTimerBar" style="display:none">
-      <span class="timer-icon"><i class="fas fa-clock"></i></span>
-      <span class="timer-text" id="mockTimerText">남은 시간</span>
-      <span class="timer-time" id="mockTimerTime">100:00</span>
-    </div>
     <div class="quiz-toolbar">
       <button class="btn-icon" onclick="backToQuizHub()" title="뒤로"><i class="fas fa-arrow-left"></i></button>
       <div id="quizSolverTitle" style="flex:1;font-size:.82rem;font-weight:600;color:var(--gray-700);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></div>
       <button class="btn-icon" id="btnGrid" title="문제 목록"><i class="fas fa-th"></i></button>
       <button class="btn-icon" id="btnShuffle" title="섞기"><i class="fas fa-shuffle"></i></button>
+    </div>
+    <div class="quiz-timer-inline" id="mockTimerBar">
+      <span class="timer-icon"><i class="fas fa-clock"></i></span>
+      <span class="timer-text" id="mockTimerText">남은 시간</span>
+      <span class="timer-time" id="mockTimerTime">100:00</span>
     </div>
     <div class="quiz-progress">
       <div class="progress-bar-bg"><div class="progress-bar-fill" id="quizProgressBar"></div></div>
@@ -2180,6 +2353,23 @@ body {
         <button class="dday-btn-cancel" onclick="closeDdaySetting()">취소</button>
         <button class="dday-btn-save" onclick="saveDdaySetting()">저장</button>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- Custom Confirm Dialog (미선택 과목) -->
+<div class="custom-dialog-overlay" id="customDialogOverlay">
+  <div class="custom-dialog">
+    <div class="custom-dialog-icon">
+      <i class="fas fa-exclamation-triangle"></i>
+    </div>
+    <div class="custom-dialog-body">
+      <div class="custom-dialog-title">선택하지 않은 과목입니다</div>
+      <div class="custom-dialog-msg" id="customDialogMsg">변경하시겠습니까?</div>
+    </div>
+    <div class="custom-dialog-actions">
+      <button onclick="closeCustomDialog()">아니오</button>
+      <button onclick="confirmCustomDialog()">예</button>
     </div>
   </div>
 </div>
@@ -2756,6 +2946,7 @@ function startDailyQuiz() {
 function renderChapterPanel() {
   const list = document.getElementById('chapterQuizList');
   const solved = getSolvedData();
+  const selected = getSelectedSubjects();
 
   // Group by subject name across all years
   const subjectMap = {};
@@ -2785,45 +2976,48 @@ function renderChapterPanel() {
     const dashoffset = circumference - (pct / 100 * circumference);
     const isExpanded = chapterExpandedSubject === name;
     const initial = name.substring(0, 2);
+    const isSel = selected.includes(name);
 
     // Build chapter items grouped by year
     let yearItems = '';
-    for (const year of YEARS) {
-      const data = allData[year];
-      if (!data) continue;
-      const subj = data.subjects.find(s => s.name === name);
-      if (!subj) continue;
-      const key = `${year}_${subj.code}`;
-      const sc = solved[key] ? Object.keys(solved[key]).length : 0;
-      const qc = subj.questions.length;
-      const done = sc >= qc && qc > 0;
-      yearItems += `
-        <div class="chapter-quiz-chapter-item" onclick="event.stopPropagation(); startQuizFromChapter(${year}, '${subj.code}', '${name} (${year})')">
-          <div class="chapter-quiz-chapter-num" style="background:${color}">${year % 100}</div>
-          <div class="chapter-quiz-chapter-title">${year}년 · ${qc}문제</div>
-          <div class="chapter-quiz-chapter-badge ${done ? 'done' : ''}">${done ? '완료' : `${sc}/${qc}`}</div>
-        </div>`;
+    if (isSel) {
+      for (const year of YEARS) {
+        const data = allData[year];
+        if (!data) continue;
+        const subj = data.subjects.find(s => s.name === name);
+        if (!subj) continue;
+        const key = `${year}_${subj.code}`;
+        const sc = solved[key] ? Object.keys(solved[key]).length : 0;
+        const qc = subj.questions.length;
+        const done = sc >= qc && qc > 0;
+        yearItems += `
+          <div class="chapter-quiz-chapter-item" onclick="event.stopPropagation(); startQuizFromChapter(${year}, '${subj.code}', '${name} (${year})')">
+            <div class="chapter-quiz-chapter-num" style="background:${color}">${year % 100}</div>
+            <div class="chapter-quiz-chapter-title">${year}년 · ${qc}문제</div>
+            <div class="chapter-quiz-chapter-badge ${done ? 'done' : ''}">${done ? '완료' : `${sc}/${qc}`}</div>
+          </div>`;
+      }
     }
 
     return `
-      <div class="chapter-quiz-subject">
-        <div class="chapter-quiz-subject-header" onclick="toggleChapterSubject('${name}')">
-          <div class="chapter-quiz-subject-icon" style="background:${color}">${initial}</div>
+      <div class="chapter-quiz-subject ${isSel ? '' : 'subject-unselected'}">
+        <div class="chapter-quiz-subject-header" onclick="${isSel ? `toggleChapterSubject('${name}')` : `handleUnselectedSubject('${name}')`}">
+          <div class="chapter-quiz-subject-icon" style="background:${isSel ? color : 'var(--gray-300)'}">${initial}</div>
           <div class="chapter-quiz-subject-info">
-            <div class="chapter-quiz-subject-name">${name}</div>
-            <div class="chapter-quiz-subject-meta">${totalQ}문제 · ${solvedQ}문제 풀이</div>
+            <div class="chapter-quiz-subject-name">${name}${isSel ? '' : ' <span style="font-size:.65rem;color:var(--gray-300)">(미선택)</span>'}</div>
+            <div class="chapter-quiz-subject-meta">${isSel ? `${totalQ}문제 · ${solvedQ}문제 풀이` : '미선택 과목'}</div>
           </div>
           <div class="chapter-quiz-subject-progress">
             <svg viewBox="0 0 40 40">
               <circle class="progress-ring-bg" cx="20" cy="20" r="18"/>
-              <circle class="progress-ring-fg" cx="20" cy="20" r="18" style="stroke:${color};stroke-dasharray:${circumference};stroke-dashoffset:${dashoffset}"/>
+              <circle class="progress-ring-fg" cx="20" cy="20" r="18" style="stroke:${isSel ? color : 'var(--gray-300)'};stroke-dasharray:${circumference};stroke-dashoffset:${isSel ? dashoffset : circumference}"/>
             </svg>
-            <div class="progress-text-center">${pct}%</div>
+            <div class="progress-text-center">${isSel ? pct + '%' : '-'}</div>
           </div>
         </div>
-        <div class="chapter-quiz-expand ${isExpanded ? 'show' : ''}" id="chapterExpand_${name.replace(/\s/g,'_')}">
+        ${isSel ? `<div class="chapter-quiz-expand ${isExpanded ? 'show' : ''}" id="chapterExpand_${name.replace(/\s/g,'_')}">
           ${yearItems}
-        </div>
+        </div>` : ''}
       </div>`;
   }).join('');
 }
@@ -2903,11 +3097,11 @@ function openMockExam(year) {
     const selectedSubjects = getSelectedSubjects();
     const isSelected = selectedSubjects.includes(subj.name);
     return `
-      <div class="subject-item" style="${!isSelected ? 'opacity:.5' : ''}" onclick="${isSelected ? `closeMockSubjectOverlay(); startQuizFromMock(${year}, '${subj.code}', '${year}년 ${subj.name}')` : 'alert(\'설정에서 선택한 5과목만 풀 수 있습니다.\')'}">
-        <div class="subject-icon" style="background:${color}">${subj.name.substring(0,2)}</div>
+      <div class="subject-item ${!isSelected ? 'subject-unselected' : ''}" onclick="${isSelected ? `closeMockSubjectOverlay(); startQuizFromMock(${year}, '${subj.code}', '${year}년 ${subj.name}')` : `closeMockSubjectOverlay(); handleUnselectedSubject('${subj.name}')`}">
+        <div class="subject-icon" style="background:${isSelected ? color : 'var(--gray-300)'}">${subj.name.substring(0,2)}</div>
         <div class="subject-info">
-          <div class="subject-name">${subj.name} ${!isSelected ? '<span style="font-size:.65rem;color:var(--gray-400)">(미선택)</span>' : ''}</div>
-          <div class="subject-meta">${Math.min(qc, 20)}문제 · ${done ? '✅ 완료' : `${sc}/${qc} 풀이`}</div>
+          <div class="subject-name">${subj.name} ${!isSelected ? '<span style="font-size:.65rem;color:var(--gray-300)">(미선택)</span>' : ''}</div>
+          <div class="subject-meta">${isSelected ? `${Math.min(qc, 20)}문제 · ${done ? '✅ 완료' : `${sc}/${qc} 풀이`}` : '미선택 과목'}</div>
         </div>
         <div class="subject-arrow"><i class="fas fa-chevron-right"></i></div>
       </div>`;
@@ -4696,16 +4890,18 @@ function renderSummary() {
 
 function renderSummarySubjects(container) {
   const subjects = Object.entries(CURRICULUM);
+  const selected = getSelectedSubjects();
   container.innerHTML = `
     <div class="summary-subject-grid">
       ${subjects.map(([name, data]) => {
         const chCount = data.chapters.length;
         const subCount = data.chapters.reduce((s, c) => s + c.subs.length, 0);
+        const isSel = selected.includes(name);
         return `
-          <div class="summary-subject-card" onclick="openSummaryChapters('${name}')">
+          <div class="summary-subject-card ${isSel ? '' : 'subject-unselected'}" onclick="${isSel ? `openSummaryChapters('${name}')` : `handleUnselectedSubject('${name}')`}">
             <span class="subject-emoji">${data.emoji}</span>
             <div class="subject-title">${name}</div>
-            <div class="subject-count">${chCount}단원 · ${subCount}소단원</div>
+            <div class="subject-count">${isSel ? `${chCount}단원 · ${subCount}소단원` : '미선택 과목'}</div>
           </div>
         `;
       }).join('')}
@@ -4945,6 +5141,51 @@ function saveSelectedSubjects(subjects) {
   localStorage.setItem(STORAGE_SELECTED_SUBJECTS, JSON.stringify(subjects));
 }
 
+// ===== CUSTOM CONFIRM DIALOG =====
+let customDialogResolve = null;
+
+function showCustomDialog(subjectName) {
+  return new Promise((resolve) => {
+    customDialogResolve = resolve;
+    const msg = document.getElementById('customDialogMsg');
+    msg.textContent = '변경하시겠습니까?';
+    document.getElementById('customDialogOverlay').classList.add('show');
+  });
+}
+
+function closeCustomDialog() {
+  document.getElementById('customDialogOverlay').classList.remove('show');
+  if (customDialogResolve) {
+    customDialogResolve(false);
+    customDialogResolve = null;
+  }
+}
+
+function confirmCustomDialog() {
+  document.getElementById('customDialogOverlay').classList.remove('show');
+  if (customDialogResolve) {
+    customDialogResolve(true);
+    customDialogResolve = null;
+  }
+  // Open subject selection modal
+  openSubjectModal();
+}
+
+// Click overlay to close
+document.getElementById('customDialogOverlay').addEventListener('click', (e) => {
+  if (e.target === e.currentTarget) closeCustomDialog();
+});
+
+// Check if a subject is selected
+function isSubjectSelected(name) {
+  return getSelectedSubjects().includes(name);
+}
+
+// Handle click on unselected subject - show dialog
+async function handleUnselectedSubject(subjectName) {
+  showCustomDialog(subjectName);
+}
+
 // Render preview tags in settings page
 function renderSubjectPreview() {
   const preview = document.getElementById('subjectSelectPreview');
@@ -5012,6 +5253,15 @@ function saveSubjectModal() {
   saveSelectedSubjects(tempSelectedSubjects);
   renderSubjectPreview();
   closeSubjectModal();
+  // Refresh views that depend on selected subjects
+  const activePage = document.querySelector('.page.active');
+  if (activePage) {
+    if (activePage.id === 'pageSummary') renderSummary();
+    if (activePage.id === 'pageQuiz') {
+      if (currentQuizHubTab === 'chapter') renderChapterPanel();
+      if (currentQuizHubTab === 'mock') renderMockPanel();
+    }
+  }
 }
 
 // Close on overlay click
@@ -5037,7 +5287,7 @@ function startMockTimer(totalMinutes) {
   stopMockTimer();
   mockTimerSeconds = totalMinutes * 60;
   mockTimerRunning = true;
-  document.getElementById('mockTimerBar').style.display = 'flex';
+  document.getElementById('mockTimerBar').classList.add('show');
   updateTimerDisplay();
   mockTimer = setInterval(() => {
     if (!mockTimerRunning) return;
@@ -5056,7 +5306,7 @@ function stopMockTimer() {
     mockTimer = null;
   }
   mockTimerRunning = false;
-  document.getElementById('mockTimerBar').style.display = 'none';
+  document.getElementById('mockTimerBar').classList.remove('show');
 }
 function updateTimerDisplay() {
   const mins = Math.floor(mockTimerSeconds / 60);

@@ -2,139 +2,156 @@
 
 2급 전문스포츠지도사 필기시험 대비 문제은행 웹앱 (PWA)
 
-## 📋 주요 기능
+## 📌 프로젝트 개요
 
-### ✅ 현재 완성된 기능
+- **목표**: 2016~2025년 기출문제 기반 스포츠지도사 필기시험 학습 도구
+- **7과목**: 스포츠사회학, 스포츠교육학, 스포츠심리학, 한국체육사, 운동생리학, 운동역학, 스포츠윤리
+- **기출문제**: 10개 연도 × 7과목 × 20문항 = 약 1,400+ 문항
 
-1. **홈 화면**
-   - D-Day 카운트다운 (시험일 설정 가능)
-   - ⚔️ **배틀 모드 진입 배너** (애니메이션 글로우 효과)
-   - 요점정리 학습 진행률 표시 (소단원 읽음 추적)
-   - 매일 10문제 진행률
-   - 단원별 문제풀기 진행률
-   - 연도별 모의고사 진행률
-   - 실전 랜덤 모의고사 진행률 (응시 횟수, 합격률, 평균 점수)
-   - 전체 통계 (전체 문제, 풀은 문제, 정답률, 오답 수)
-   - 최근 학습 이력
+---
 
-2. **⚔️ 배틀 모드 (NEW)**
-   - 최대 4명 익명 실시간 문제 대결
-   - 방 만들기 / 방 코드로 참가
-   - 닉네임 & 아바타 선택
-   - 방장이 7과목 중 1과목 선택
-   - 10개년 기출문제 풀에서 랜덤 20문제 생성
-   - 문제당 60초 제한시간 (원형 타이머)
-   - 시간 초과 시 자동 오답 처리 → 다음 문제 이동
-   - 실시간 미니 스코어보드 (플레이어별 점수/응답 상태)
-   - 게임 종료 후 순위/결과 화면 (평균 응답시간 기반 타이브레이커)
-   - RESTful Table API 기반 방/플레이어 데이터 관리 (polling 방식)
+## ✅ 구현 완료 기능
 
-3. **문제풀기**
-   - 매일 10문제: 매일 랜덤으로 10문제 출제
-   - 단원별 문제풀기: 과목·단원별 집중 학습
-   - 연도별 모의고사: 실전처럼 연도별 전 과목 풀기 (100문제, 100분 타이머)
-   - 실전 랜덤 모의고사: 10개 연도 랜덤 추출 100문제
+### 1. 메인 문제풀이 (index.html)
+- 연도별/과목별 기출문제 풀이
+- 오답노트, 요점정리 보기
+- 학습 진도 관리 (localStorage)
+- PWA 지원 (홈 화면 추가 가능)
 
-4. **오답노트/북마크**
-   - 오답 자동 저장 및 관리
-   - 북마크 기능
-   - 과목별 필터링
-   - 상세 해설 보기
+### 2. ⚔️ 배틀 모드 (battle.html) - Firebase 연동 완료
+- **Firebase Firestore 실시간 동기화**
+  - 방 만들기 / 참가하기 (4자리 코드)
+  - 최대 4인 동시 대결
+  - `onSnapshot` 리스너로 실시간 플레이어 상태 동기화
+  - 실시간 점수판 업데이트
+- **게임 흐름**
+  - 방장: 과목 선택 → 문제 수 선택 (5/10/15/20) → 게임 시작
+  - 참가자: 방 코드 입력 → 실시간 대기 → 자동 게임 시작
+  - 카운트다운 (3-2-1) 후 게임 시작
+  - 문항당 60초 타이머
+  - 정답/오답 즉시 피드백 + 해설 표시
+- **결과 화면**
+  - 점수 기반 랭킹 (동점 시 평균 응답시간 기준)
+  - 1등: 역도 스내치 마스코트 / 하위: 실패 마스코트
+  - "한판 더!" 기능 (방장)
 
-5. **요점정리**
-   - 7과목 전과목 핵심 요약 (커리큘럼 기반)
-   - 과목 → 단원 → 소단원 → 상세 내용 네비게이션
-   - 관련 기출문제 연결
-   - **읽음 추적**: 소단원별 학습 완료 표시 (체크 아이콘, 진행률 백분율)
+---
 
-6. **설정**
-   - 즉시 채점 / 해설 자동 표시 / 보기 섞기 토글
-   - 5과목 선택 관리
-   - 글자 크기 조절
-   - 학습 기록 초기화 (커스텀 확인 다이얼로그)
-
-7. **커스텀 다이얼로그**
-   - 전체삭제 (오답/북마크) 버튼: 아이콘 + 경고 메시지 + 확인/취소
-   - 학습 기록 초기화 버튼: 아이콘 + 경고 메시지 + 확인/취소
-   - 브라우저 기본 confirm() 대신 앱 디자인에 맞는 커스텀 UI
-
-8. **PWA 지원**
-   - 홈 화면에 추가 가능
-   - manifest.json 설정 완료
-   - 모바일 최적화 (portrait, no-scale)
-
-## 📁 파일 구조
+## 📂 프로젝트 구조
 
 ```
-index.html          - 메인 앱 (SPA)
-battle.html         - ⚔️ 배틀 모드 페이지 (멀티플레이어)
-manifest.json       - PWA 매니페스트
-images/
-  ├── knsu-mascot.png   - 앱 아이콘/마스코트/로딩화면 (영~차 역도 캐릭터)
-  ├── knsu-logo.png     - KNSU 한국체육대학교 로고 캐릭터
-  └── knsu-fail.png     - 오답 애니메이션 이미지 (돌대가리 역도)
+index.html              # 메인 문제풀이 앱
+battle.html             # 배틀모드 (Firebase 실시간 대전)
+manifest.json           # PWA 매니페스트
 data/
-  ├── 2016.json ~ 2025.json  - 연도별 기출문제 데이터 (10개년)
-  └── 요점정리.txt             - 전과목 요점정리 원본 텍스트
+  ├── 2016.json         # 2016년 기출문제
+  ├── 2017.json
+  ├── 2018.json
+  ├── 2019.json
+  ├── 2020.json
+  ├── 2021.json
+  ├── 2022.json
+  ├── 2023.json
+  ├── 2024.json
+  ├── 2025.json         # 2025년 기출문제
+  └── 요점정리.txt       # 전과목 요점정리
+images/
+  ├── knsu-mascot.png           # KNSU 마스코트 (메인)
+  ├── knsu-mascot-snatch.png    # 역도 스내치 (승리 시)
+  └── knsu-mascot-fail.png      # 실패 포즈 (패배 시)
 ```
 
-## 🔗 기능 진입 URI
+---
 
-| 기능 | 경로 | 설명 |
-|------|------|------|
-| 홈 | `index.html` | 메인 대시보드 |
-| ⚔️ 배틀 모드 | `battle.html` | 멀티플레이어 문제 대결 |
-| 요점정리 | 하단 네비 "요점정리" 탭 | 과목별 핵심 정리 |
-| 문제풀기 | 하단 네비 "문제풀기" 탭 | 4가지 풀이 모드 |
-| 오답노트 | 하단 네비 "오답노트" 탭 | 오답/북마크 관리 |
-| 설정 | 하단 네비 "설정" 탭 | 앱 설정 |
+## 🔗 URI 경로
 
-## 💾 데이터 저장
+| 경로 | 설명 |
+|------|------|
+| `/index.html` | 메인 페이지 (문제풀이, 요점정리, 학습 관리) |
+| `/battle.html` | 배틀모드 (Firebase 실시간 대전) |
+| `/data/{year}.json` | 연도별 기출문제 JSON 데이터 |
+| `/manifest.json` | PWA 매니페스트 |
 
-### localStorage (클라이언트)
+---
 
-| 키 | 용도 |
-|----|------|
-| `sportsQuiz_wrong` | 오답 노트 |
-| `sportsQuiz_history` | 학습 이력 |
-| `sportsQuiz_solved` | 풀이 기록 |
-| `sportsQuiz_bookmarks` | 북마크 |
-| `sportsQuiz_dday` | D-Day 설정 |
-| `sportsQuiz_daily` | 매일 10문제 기록 |
-| `sportsQuiz_settings` | 앱 설정 |
-| `sportsQuiz_fontSize` | 글자 크기 |
-| `sportsQuiz_selectedSubjects` | 선택 과목 |
-| `sportsQuiz_randomHistory` | 랜덤 모의 기록 |
-| `sportsQuiz_summaryRead` | 요점정리 읽음 추적 |
-| `battle_nickname` | 배틀 모드 닉네임 |
-| `battle_avatar` | 배틀 모드 아바타 |
+## 🔥 Firebase 설정
 
-### RESTful Table API (서버)
+### 사용 서비스
+- **Firebase Firestore**: 실시간 배틀 데이터 동기화
 
-| 테이블 | 용도 | 주요 필드 |
-|--------|------|-----------|
-| `battle_rooms` | 배틀 방 관리 | room_code, host_id, subject, status, questions, current_question |
-| `battle_players` | 배틀 참가자 | room_code, nickname, avatar, is_host, score, answers |
+### Firestore 데이터 구조
 
-## 🔄 최근 업데이트
+```
+rooms (컬렉션)
+  └── {roomId} (문서)
+      ├── room_code: string (4자리 방코드)
+      ├── host_id: string (방장 플레이어 ID)
+      ├── subject: string (선택 과목)
+      ├── status: "waiting" | "playing" | "finished"
+      ├── questions: array (문제 배열)
+      ├── question_count: number (5/10/15/20)
+      ├── max_players: 4
+      ├── created_at: timestamp
+      ├── started_at: timestamp
+      ├── finished_at: timestamp
+      └── players (서브컬렉션)
+          └── {playerId} (문서)
+              ├── player_id: string
+              ├── nickname: string
+              ├── avatar: string (이모지)
+              ├── is_host: boolean
+              ├── score: number
+              ├── answers: array
+              ├── is_connected: boolean
+              ├── joined_at: timestamp
+              └── last_ping: timestamp
+```
 
-### v3.0 (2026-03-13)
-- ✨ **⚔️ 배틀 모드 추가** - 최대 4명 실시간 문제 대결
-  - 방 생성/참가 (4자리 코드)
-  - 닉네임 & 아바타 시스템
-  - 과목 선택 → 랜덤 20문제 생성
-  - 문제당 60초 타이머
-  - 실시간 스코어보드
-  - 순위 결과 화면
-- ✨ 홈 화면 상단에 배틀 모드 배너 추가 (글로우 애니메이션)
+### ⚠️ Firestore 보안 규칙 (반드시 설정 필요!)
 
-### v2.1
-- ✨ 전체삭제/초기화 버튼에 커스텀 확인 다이얼로그 적용
-- ✨ 홈화면 D-Day 아래 요점정리 학습 진행률 박스 추가
-- ✨ 연도별 모의고사 아래 실전 랜덤 모의고사 진행률 박스 추가
-- ✨ 요점정리 소단원별 읽음 추적 기능 (진행 표시)
-- ✨ 요점정리 과목/단원/소단원에 읽음 상태 표시
+Firebase 콘솔 > Firestore Database > Rules 에서 다음 규칙을 설정하세요:
 
-## 🚀 배포
+```javascript
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 배틀 방 - 누구나 읽기/쓰기 가능 (공개 게임)
+    match /rooms/{roomId} {
+      allow read, write: if true;
+      
+      // 플레이어 서브컬렉션
+      match /players/{playerId} {
+        allow read, write: if true;
+      }
+    }
+  }
+}
+```
 
-Publish 탭에서 원클릭 배포 가능
+> **참고**: 프로덕션 환경에서는 더 엄격한 보안 규칙을 적용하는 것이 좋습니다.
+
+### Firebase 프로젝트 정보
+- **Project ID**: `battle-4975c`
+- **Auth Domain**: `battle-4975c.firebaseapp.com`
+
+---
+
+## 🛠️ 기술 스택
+
+- **HTML5 / CSS3 / Vanilla JavaScript**
+- **Firebase Firestore** (실시간 데이터 동기화)
+- **Firebase Compat SDK** v10.12.2 (CDN)
+- **Font Awesome** 6.5.0 (아이콘)
+- **Google Fonts** - Noto Sans KR
+- **PWA** (Service Worker, Manifest)
+
+---
+
+## 🔮 향후 개발 추천 사항
+
+1. **Firebase Authentication** 도입 - 사용자 인증 및 보안 규칙 강화
+2. **전적 시스템** - 배틀 결과 영구 저장 및 통계
+3. **오래된 방 자동 정리** - Cloud Functions로 일정 시간 후 방 삭제
+4. **채팅 기능** - 배틀 중 간단한 이모지 채팅
+5. **관전 모드** - 진행 중인 배틀 관전
+6. **Service Worker** - 오프라인 지원 강화

@@ -1964,6 +1964,75 @@ body {
 .exb::before{content:'';position:absolute;top:-30%;right:-15%;width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,.1)}
 .exb h3{font-size:.92rem;font-weight:800;position:relative;z-index:1}
 .exb p{font-size:.75rem;opacity:.85;margin-top:.2rem;position:relative;z-index:1;line-height:1.5}
+
+/* ===== CUSTOM CONFIRM DIALOG ===== */
+.custom-dialog-overlay {
+  position: fixed; inset: 0; z-index: 9000;
+  background: rgba(0,0,0,.5); backdrop-filter: blur(6px);
+  display: none; align-items: center; justify-content: center;
+  padding: 1.5rem;
+  animation: fadeIn .2s ease;
+}
+.custom-dialog-overlay.show { display: flex; }
+.custom-dialog {
+  background: #fff; border-radius: var(--radius);
+  max-width: 340px; width: 100%;
+  box-shadow: 0 20px 60px rgba(0,0,0,.2);
+  animation: dialogPop .3s cubic-bezier(.34,1.56,.64,1);
+  overflow: hidden;
+}
+@keyframes dialogPop {
+  0% { transform: scale(.8); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+.custom-dialog-icon {
+  display: flex; align-items: center; justify-content: center;
+  padding: 1.5rem 1.5rem .75rem;
+}
+.custom-dialog-icon-circle {
+  width: 64px; height: 64px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.6rem;
+}
+.custom-dialog-icon-circle.warning { background: var(--danger-bg); color: var(--danger); }
+.custom-dialog-icon-circle.info { background: var(--primary-bg); color: var(--primary); }
+.custom-dialog-body {
+  padding: 0 1.5rem 1.25rem;
+  text-align: center;
+}
+.custom-dialog-title {
+  font-size: 1rem; font-weight: 800; color: var(--gray-900);
+  margin-bottom: .4rem;
+}
+.custom-dialog-message {
+  font-size: .82rem; line-height: 1.65; color: var(--gray-500);
+  font-weight: 400;
+}
+.custom-dialog-actions {
+  display: flex; border-top: 1px solid var(--gray-100);
+}
+.custom-dialog-actions button {
+  flex: 1; padding: .9rem; border: none;
+  font-size: .88rem; font-weight: 700; cursor: pointer;
+  font-family: inherit; transition: all .15s;
+}
+.custom-dialog-actions button:first-child {
+  background: var(--gray-50); color: var(--gray-500);
+  border-right: 1px solid var(--gray-100);
+}
+.custom-dialog-actions button:first-child:active { background: var(--gray-100); }
+.custom-dialog-actions button:last-child {
+  background: #fff; color: var(--danger);
+}
+.custom-dialog-actions button:last-child:active { background: var(--danger-bg); }
+.custom-dialog-actions button.confirm-primary:last-child { color: var(--primary); }
+.custom-dialog-actions button.confirm-primary:last-child:active { background: var(--primary-bg); }
+
+/* ===== HOME: SUMMARY PROGRESS BOX ===== */
+.home-mode-icon.summary { background: linear-gradient(135deg, #f59e0b, #eab308); color: #fff; }
+.home-mode-progress-fill.summary { background: linear-gradient(90deg, #f59e0b, #eab308); }
+.home-mode-icon.random { background: linear-gradient(135deg, #ec4899, #8b5cf6); color: #fff; }
+.home-mode-progress-fill.random { background: linear-gradient(90deg, #ec4899, #8b5cf6); }
 </style>
 </head>
 <body>
@@ -2059,6 +2128,22 @@ body {
     </div>
   </div>
 
+  <!-- 요점정리 진행율 -->
+  <div class="home-mode-box" onclick="switchPage('pageSummary')">
+    <div class="home-mode-header">
+      <div class="home-mode-icon summary"><i class="fas fa-book-open"></i></div>
+      <div class="home-mode-info">
+        <div class="home-mode-title">요점정리</div>
+        <div class="home-mode-desc" id="homeSummaryDesc">과목별 핵심 내용을 학습하세요</div>
+      </div>
+      <div class="home-mode-arrow"><i class="fas fa-chevron-right"></i></div>
+    </div>
+    <div class="home-mode-progress">
+      <div class="home-mode-progress-bar"><div class="home-mode-progress-fill summary" id="homeSummaryFill" style="width:0%"></div></div>
+      <div class="home-mode-progress-text"><span id="homeSummaryText">0/0 소단원 읽음</span><span id="homeSummaryPct">0%</span></div>
+    </div>
+  </div>
+
   <!-- 매일 10문제 풀기 -->
   <div class="home-mode-box" id="homeDailyBox" onclick="openQuizTab('daily')">
     <div class="home-mode-header">
@@ -2104,6 +2189,22 @@ body {
     <div class="home-mode-progress">
       <div class="home-mode-progress-bar"><div class="home-mode-progress-fill mock" id="homeMockFill" style="width:0%"></div></div>
       <div class="home-mode-progress-text"><span id="homeMockText">0/10 연도 완료</span><span id="homeMockPct">0%</span></div>
+    </div>
+  </div>
+
+  <!-- 실전 랜덤 모의고사 -->
+  <div class="home-mode-box" onclick="openQuizTab('random')">
+    <div class="home-mode-header">
+      <div class="home-mode-icon random"><i class="fas fa-dice"></i></div>
+      <div class="home-mode-info">
+        <div class="home-mode-title">실전 랜덤 모의고사</div>
+        <div class="home-mode-desc" id="homeRandomDesc">전 연도 랜덤 100문제 · 100분</div>
+      </div>
+      <div class="home-mode-arrow"><i class="fas fa-chevron-right"></i></div>
+    </div>
+    <div class="home-mode-progress">
+      <div class="home-mode-progress-bar"><div class="home-mode-progress-fill random" id="homeRandomFill" style="width:0%"></div></div>
+      <div class="home-mode-progress-text"><span id="homeRandomText">0회 응시</span><span id="homeRandomPct">-</span></div>
     </div>
   </div>
 
@@ -2494,6 +2595,25 @@ body {
   </div>
 </div>
 
+<!-- General Custom Confirm Dialog -->
+<div class="custom-dialog-overlay" id="generalConfirmOverlay">
+  <div class="custom-dialog">
+    <div class="custom-dialog-icon">
+      <div class="custom-dialog-icon-circle warning" id="generalConfirmIconCircle">
+        <i class="fas fa-triangle-exclamation" id="generalConfirmIcon"></i>
+      </div>
+    </div>
+    <div class="custom-dialog-body">
+      <div class="custom-dialog-title" id="generalConfirmTitle">확인</div>
+      <div class="custom-dialog-message" id="generalConfirmMessage">진행하시겠습니까?</div>
+    </div>
+    <div class="custom-dialog-actions">
+      <button onclick="closeGeneralConfirm()">취소</button>
+      <button id="generalConfirmBtn" onclick="executeGeneralConfirm()">확인</button>
+    </div>
+  </div>
+</div>
+
 <nav class="bottom-nav">
   <div class="nav-item active" data-page="pageHome">
     <i class="fas fa-home"></i><span>홈</span>
@@ -2561,6 +2681,31 @@ const STORAGE_DAILY = 'sportsQuiz_daily';
 const STORAGE_FONTSIZE = 'sportsQuiz_fontSize';
 const STORAGE_SELECTED_SUBJECTS = 'sportsQuiz_selectedSubjects';
 const STORAGE_RANDOM_HISTORY = 'sportsQuiz_randomHistory';
+const STORAGE_SUMMARY_READ = 'sportsQuiz_summaryRead';
+
+// ===== GENERAL CUSTOM CONFIRM DIALOG =====
+let generalConfirmCallback = null;
+function showCustomConfirm({ title, message, confirmText, icon, iconType, onConfirm }) {
+  document.getElementById('generalConfirmTitle').textContent = title || '확인';
+  document.getElementById('generalConfirmMessage').textContent = message || '진행하시겠습니까?';
+  const btn = document.getElementById('generalConfirmBtn');
+  btn.textContent = confirmText || '확인';
+  btn.className = iconType === 'info' ? 'confirm-primary' : '';
+  const iconCircle = document.getElementById('generalConfirmIconCircle');
+  iconCircle.className = 'custom-dialog-icon-circle ' + (iconType === 'info' ? 'info' : 'warning');
+  document.getElementById('generalConfirmIcon').className = 'fas ' + (icon || 'fa-triangle-exclamation');
+  generalConfirmCallback = onConfirm || null;
+  document.getElementById('generalConfirmOverlay').classList.add('show');
+}
+function closeGeneralConfirm() {
+  document.getElementById('generalConfirmOverlay').classList.remove('show');
+  generalConfirmCallback = null;
+}
+function executeGeneralConfirm() {
+  const cb = generalConfirmCallback;
+  closeGeneralConfirm();
+  if (cb) cb();
+}
 
 const ALL_SUBJECTS = [
   '스포츠사회학', '스포츠교육학', '스포츠심리학',
@@ -2908,6 +3053,12 @@ function renderHomeBoxes() {
   document.getElementById('homeMockFill').style.width = mockPct + '%';
   document.getElementById('homeMockText').textContent = `${mockCompleted}/${YEARS.length} 연도 완료`;
   document.getElementById('homeMockPct').textContent = mockPct + '%';
+
+  // Summary (요점정리) box
+  renderHomeSummaryProgress();
+
+  // Random exam box
+  renderHomeRandomProgress();
 }
 
 function openQuizTab(tab) {
@@ -4002,10 +4153,18 @@ function deleteBookmark(id) {
 }
 
 function clearAllBookmarks() {
-  if (!confirm('모든 북마크를 삭제하시겠습니까?')) return;
-  saveBookmarks([]);
-  renderBookmarks();
-  showToast('모든 북마크가 삭제되었습니다');
+  showCustomConfirm({
+    title: '북마크 전체 삭제',
+    message: '저장된 모든 북마크가 삭제됩니다.\n이 작업은 되돌릴 수 없습니다.',
+    confirmText: '전체 삭제',
+    icon: 'fa-trash-can',
+    iconType: 'warning',
+    onConfirm: () => {
+      saveBookmarks([]);
+      renderBookmarks();
+      showToast('모든 북마크가 삭제되었습니다');
+    }
+  });
 }
 
 // ===== WRONG NOTES =====
@@ -4178,10 +4337,18 @@ function retryWrongNote(id) {
 }
 
 function clearAllWrong() {
-  if (!confirm('모든 오답을 삭제하시겠습니까?')) return;
-  saveWrongNotes([]);
-  renderWrongNotes();
-  showToast('모든 오답이 삭제되었습니다');
+  showCustomConfirm({
+    title: '오답 전체 삭제',
+    message: '저장된 모든 오답 기록이 삭제됩니다.\n이 작업은 되돌릴 수 없습니다.',
+    confirmText: '전체 삭제',
+    icon: 'fa-trash-can',
+    iconType: 'warning',
+    onConfirm: () => {
+      saveWrongNotes([]);
+      renderWrongNotes();
+      showToast('모든 오답이 삭제되었습니다');
+    }
+  });
 }
 
 // ===== SETTINGS =====
@@ -4206,17 +4373,27 @@ function updateSettingsUI() {
 }
 
 function resetAllData() {
-  if (!confirm('모든 학습 기록, 오답노트, 북마크가 삭제됩니다.\n계속하시겠습니까?')) return;
-  localStorage.removeItem(STORAGE_WRONG);
-  localStorage.removeItem(STORAGE_HISTORY);
-  localStorage.removeItem(STORAGE_SOLVED);
-  localStorage.removeItem(STORAGE_BOOKMARKS);
-  localStorage.removeItem(STORAGE_DAILY);
-  updateWrongBadge();
-  updateBookmarkBadge();
-  refreshHomeStats();
-  renderHomeBoxes();
-  showToast('모든 데이터가 초기화되었습니다');
+  showCustomConfirm({
+    title: '학습 기록 초기화',
+    message: '모든 학습 기록, 오답노트, 북마크, 요점정리 진행상황이 삭제됩니다.\n이 작업은 되돌릴 수 없습니다.',
+    confirmText: '초기화',
+    icon: 'fa-rotate-left',
+    iconType: 'warning',
+    onConfirm: () => {
+      localStorage.removeItem(STORAGE_WRONG);
+      localStorage.removeItem(STORAGE_HISTORY);
+      localStorage.removeItem(STORAGE_SOLVED);
+      localStorage.removeItem(STORAGE_BOOKMARKS);
+      localStorage.removeItem(STORAGE_DAILY);
+      localStorage.removeItem(STORAGE_SUMMARY_READ);
+      localStorage.removeItem(STORAGE_RANDOM_HISTORY);
+      updateWrongBadge();
+      updateBookmarkBadge();
+      refreshHomeStats();
+      renderHomeBoxes();
+      showToast('모든 데이터가 초기화되었습니다');
+    }
+  });
 }
 
 // ===== D-DAY =====
@@ -5054,17 +5231,21 @@ function renderSummary() {
 function renderSummarySubjects(container) {
   const subjects = Object.entries(CURRICULUM);
   const selected = getSelectedSubjects();
+  const read = getSummaryRead();
   container.innerHTML = `
     <div class="summary-subject-grid">
       ${subjects.map(([name, data]) => {
         const chCount = data.chapters.length;
         const subCount = data.chapters.reduce((s, c) => s + c.subs.length, 0);
         const isSel = selected.includes(name);
+        let readCount = 0;
+        data.chapters.forEach((ch, ci) => { ch.subs.forEach((sub, si) => { if (read[`${name}_${ci}_${si}`]) readCount++; }); });
+        const readPct = subCount > 0 ? Math.round(readCount / subCount * 100) : 0;
         return `
           <div class="summary-subject-card ${isSel ? '' : 'subject-unselected'}" onclick="${isSel ? `openSummaryChapters('${name}')` : `handleUnselectedSubject('${name}')`}">
             <span class="subject-emoji">${data.emoji}</span>
             <div class="subject-title">${name}</div>
-            <div class="subject-count">${isSel ? `${chCount}단원 · ${subCount}소단원` : '미선택 과목'}</div>
+            <div class="subject-count">${isSel ? `${readCount}/${subCount} 소단원 · ${readPct}%` : '미선택 과목'}</div>
           </div>
         `;
       }).join('')}
@@ -5075,20 +5256,25 @@ function renderSummarySubjects(container) {
 function renderSummaryChapters(container) {
   const data = CURRICULUM[summaryState.subject];
   if (!data) return;
+  const read = getSummaryRead();
   container.innerHTML = `
     <div class="summary-chapter-list">
-      ${data.chapters.map((ch, i) => `
+      ${data.chapters.map((ch, i) => {
+        const readCount = ch.subs.filter((_, si) => read[`${summaryState.subject}_${i}_${si}`]).length;
+        const total = ch.subs.length;
+        const done = readCount >= total;
+        return `
         <div class="summary-chapter-card">
           <div class="summary-chapter-header" onclick="openSummarySubs(${i})">
             <div class="summary-chapter-num" style="background:${data.color}">${i + 1}</div>
             <div class="summary-chapter-info">
               <div class="summary-chapter-title">${ch.title}</div>
-              <div class="summary-chapter-sub">${ch.subs.length}개 소단원</div>
+              <div class="summary-chapter-sub">${readCount}/${total}개 소단원 ${done ? '✅' : ''}</div>
             </div>
             <div class="summary-chapter-arrow"><i class="fas fa-chevron-right"></i></div>
           </div>
         </div>
-      `).join('')}
+      `}).join('')}
     </div>
   `;
 }
@@ -5098,17 +5284,20 @@ function renderSummarySubs(container) {
   if (!data) return;
   const ch = data.chapters[summaryState.chapterIdx];
   if (!ch) return;
+  const read = getSummaryRead();
   container.innerHTML = `
     <div class="summary-sub-list">
-      ${ch.subs.map((sub, i) => `
-        <div class="summary-sub-card" onclick="openSummaryContent(${i})">
+      ${ch.subs.map((sub, i) => {
+        const isRead = !!read[`${summaryState.subject}_${summaryState.chapterIdx}_${i}`];
+        return `
+        <div class="summary-sub-card" onclick="openSummaryContent(${i})" style="${isRead ? 'border-color: var(--success-bg); background: rgba(16,185,129,.03);' : ''}">
           <div class="summary-sub-header">
-            <div class="summary-sub-icon" style="background:${data.color}">${summaryState.chapterIdx + 1}.${i + 1}</div>
-            <div class="summary-sub-title">${sub.title}</div>
+            <div class="summary-sub-icon" style="background:${isRead ? 'var(--success)' : data.color}">${isRead ? '<i class="fas fa-check" style="font-size:.7rem"></i>' : `${summaryState.chapterIdx + 1}.${i + 1}`}</div>
+            <div class="summary-sub-title" style="${isRead ? 'color:var(--gray-500)' : ''}">${sub.title}</div>
             <div class="summary-sub-arrow"><i class="fas fa-chevron-right"></i></div>
           </div>
         </div>
-      `).join('')}
+      `}).join('')}
     </div>
     <div style="padding:0 1rem .5rem">
       <button class="btn-prev" style="width:100%;justify-content:center;border-radius:var(--radius-sm);border:none;padding:.85rem" onclick="goSummaryLevel('chapters')">
@@ -5228,6 +5417,8 @@ function openSummarySubs(chapterIdx) {
 function openSummaryContent(subIdx) {
   summaryState.level = 'content';
   summaryState.subIdx = subIdx;
+  // Mark as read
+  markSummaryRead(summaryState.subject, summaryState.chapterIdx, subIdx);
   renderSummary();
   window.scrollTo(0, 0);
 }
@@ -5254,6 +5445,7 @@ function goSummaryLevel(level) {
 function prevSummaryContent() {
   if (summaryState.subIdx > 0) {
     summaryState.subIdx--;
+    markSummaryRead(summaryState.subject, summaryState.chapterIdx, summaryState.subIdx);
     renderSummary();
     window.scrollTo(0, 0);
   }
@@ -5266,8 +5458,71 @@ function nextSummaryContent() {
   if (!ch) return;
   if (summaryState.subIdx < ch.subs.length - 1) {
     summaryState.subIdx++;
+    markSummaryRead(summaryState.subject, summaryState.chapterIdx, summaryState.subIdx);
     renderSummary();
     window.scrollTo(0, 0);
+  }
+}
+
+// ===== SUMMARY READ TRACKING =====
+function getSummaryRead() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_SUMMARY_READ)) || {}; } catch(e) { return {}; }
+}
+function saveSummaryRead(data) {
+  localStorage.setItem(STORAGE_SUMMARY_READ, JSON.stringify(data));
+}
+function markSummaryRead(subject, chapterIdx, subIdx) {
+  const read = getSummaryRead();
+  const key = `${subject}_${chapterIdx}_${subIdx}`;
+  if (!read[key]) {
+    read[key] = Date.now();
+    saveSummaryRead(read);
+  }
+}
+function getSummaryTotalAndRead() {
+  const selected = getSelectedSubjects();
+  let totalSubs = 0;
+  let readSubs = 0;
+  const read = getSummaryRead();
+  for (const [name, data] of Object.entries(CURRICULUM)) {
+    if (!selected.includes(name)) continue;
+    data.chapters.forEach((ch, ci) => {
+      ch.subs.forEach((sub, si) => {
+        totalSubs++;
+        const key = `${name}_${ci}_${si}`;
+        if (read[key]) readSubs++;
+      });
+    });
+  }
+  return { totalSubs, readSubs };
+}
+function renderHomeSummaryProgress() {
+  const { totalSubs, readSubs } = getSummaryTotalAndRead();
+  const pct = totalSubs > 0 ? Math.round(readSubs / totalSubs * 100) : 0;
+  document.getElementById('homeSummaryFill').style.width = pct + '%';
+  document.getElementById('homeSummaryText').textContent = `${readSubs}/${totalSubs} 소단원 읽음`;
+  document.getElementById('homeSummaryPct').textContent = pct + '%';
+  if (pct >= 100) {
+    document.getElementById('homeSummaryDesc').textContent = '✅ 모든 요점정리를 학습했습니다!';
+  } else if (readSubs > 0) {
+    document.getElementById('homeSummaryDesc').textContent = `${readSubs}개 소단원 학습 완료`;
+  } else {
+    document.getElementById('homeSummaryDesc').textContent = '과목별 핵심 내용을 학습하세요';
+  }
+}
+function renderHomeRandomProgress() {
+  const history = getRandomHistory();
+  const count = history.length;
+  const passCount = history.filter(h => h.rate >= 60).length;
+  const avgRate = count > 0 ? Math.round(history.reduce((s, h) => s + h.rate, 0) / count) : 0;
+  document.getElementById('homeRandomFill').style.width = (count > 0 ? Math.min(100, count * 10) : 0) + '%';
+  document.getElementById('homeRandomText').textContent = count > 0 ? `${count}회 응시 · ${passCount}회 합격` : '0회 응시';
+  document.getElementById('homeRandomPct').textContent = count > 0 ? `평균 ${avgRate}%` : '-';
+  if (count > 0) {
+    const lastRate = history[0].rate;
+    document.getElementById('homeRandomDesc').textContent = `최근 ${lastRate}% · 전 연도 랜덤 100문제`;
+  } else {
+    document.getElementById('homeRandomDesc').textContent = '전 연도 랜덤 100문제 · 100분';
   }
 }
 

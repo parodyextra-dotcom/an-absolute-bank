@@ -1,0 +1,1761 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
+<title>⚔️ 배틀모드 - 스포츠지도사 문제은행</title>
+<link rel="icon" type="image/png" href="images/knsu-mascot.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.0/css/all.min.css">
+<style>
+:root {
+  --primary: #6366f1;
+  --primary-dark: #4f46e5;
+  --primary-light: #a5b4fc;
+  --primary-bg: #eef2ff;
+  --success: #10b981;
+  --success-bg: #d1fae5;
+  --danger: #ef4444;
+  --danger-bg: #fee2e2;
+  --warning: #f59e0b;
+  --warning-bg: #fef3c7;
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --radius-xs: 6px;
+  --shadow: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+  --shadow-md: 0 4px 12px rgba(0,0,0,.07);
+  --shadow-lg: 0 10px 30px rgba(0,0,0,.1);
+  --battle-gradient: linear-gradient(135deg, #f97316, #ef4444, #ec4899);
+  --battle-primary: #f97316;
+  --battle-dark: #ea580c;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { font-size: 16px; }
+body {
+  font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--gray-50);
+  color: var(--gray-800);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--gray-300); border-radius: 4px; }
+
+/* ===== HEADER ===== */
+.battle-header {
+  background: var(--battle-gradient);
+  color: #fff;
+  padding: 1rem 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  box-shadow: 0 2px 12px rgba(249,115,22,.3);
+}
+.battle-header .back-btn {
+  background: rgba(255,255,255,.2);
+  border: none;
+  color: #fff;
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background .2s;
+}
+.battle-header .back-btn:hover { background: rgba(255,255,255,.3); }
+.battle-header h1 { font-size: 1.15rem; font-weight: 800; }
+.battle-header p { font-size: .72rem; opacity: .85; }
+
+/* ===== SCREENS ===== */
+.screen { display: none; padding: 1.2rem; max-width: 500px; margin: 0 auto; }
+.screen.active { display: block; }
+
+/* ===== LOBBY SCREEN ===== */
+.lobby-card {
+  background: #fff;
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-md);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+.lobby-icon {
+  font-size: 3rem;
+  margin-bottom: .8rem;
+}
+.lobby-card h2 {
+  font-size: 1.2rem;
+  font-weight: 800;
+  margin-bottom: .3rem;
+}
+.lobby-card p {
+  font-size: .82rem;
+  color: var(--gray-500);
+  line-height: 1.5;
+}
+.lobby-actions {
+  display: flex;
+  flex-direction: column;
+  gap: .8rem;
+  margin-top: 1.2rem;
+}
+.btn-battle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  padding: .9rem 1.5rem;
+  border-radius: var(--radius-sm);
+  font-size: .95rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  transition: all .2s;
+  font-family: inherit;
+}
+.btn-battle:active { transform: scale(.97); }
+.btn-create {
+  background: var(--battle-gradient);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(249,115,22,.3);
+}
+.btn-create:hover { box-shadow: 0 6px 20px rgba(249,115,22,.4); }
+.btn-join {
+  background: #fff;
+  color: var(--battle-primary);
+  border: 2px solid var(--battle-primary);
+}
+.btn-join:hover { background: #fff7ed; }
+
+/* Join form */
+.join-form {
+  display: none;
+  margin-top: 1rem;
+  animation: slideDown .3s ease;
+}
+.join-form.show { display: block; }
+@keyframes slideDown { from { opacity:0; transform:translateY(-10px); } to { opacity:1; transform:translateY(0); } }
+.input-group {
+  display: flex;
+  gap: .5rem;
+  margin-top: .5rem;
+}
+.input-group input {
+  flex: 1;
+  padding: .8rem 1rem;
+  border: 2px solid var(--gray-200);
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  font-family: inherit;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: .3rem;
+  text-transform: uppercase;
+  outline: none;
+  transition: border .2s;
+}
+.input-group input:focus { border-color: var(--battle-primary); }
+.input-group button {
+  padding: .8rem 1.2rem;
+  background: var(--battle-primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-size: .9rem;
+  cursor: pointer;
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+/* Nickname input */
+.nickname-section {
+  margin-top: 1rem;
+}
+.nickname-section label {
+  font-size: .82rem;
+  font-weight: 600;
+  color: var(--gray-600);
+  display: block;
+  margin-bottom: .4rem;
+}
+.nickname-input {
+  width: 100%;
+  padding: .8rem 1rem;
+  border: 2px solid var(--gray-200);
+  border-radius: var(--radius-sm);
+  font-size: .95rem;
+  font-family: inherit;
+  font-weight: 600;
+  text-align: center;
+  outline: none;
+  transition: border .2s;
+}
+.nickname-input:focus { border-color: var(--battle-primary); }
+
+/* Avatar Picker */
+.avatar-picker {
+  display: flex;
+  gap: .5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: .8rem;
+}
+.avatar-option {
+  width: 48px; height: 48px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 3px solid var(--gray-200);
+  transition: all .2s;
+  background: #fff;
+}
+.avatar-option.selected {
+  border-color: var(--battle-primary);
+  background: #fff7ed;
+  transform: scale(1.1);
+  box-shadow: 0 2px 8px rgba(249,115,22,.25);
+}
+
+/* ===== WAITING ROOM ===== */
+.room-header {
+  background: #fff;
+  border-radius: var(--radius);
+  padding: 1.2rem;
+  box-shadow: var(--shadow-md);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+.room-code-display {
+  font-size: 2rem;
+  font-weight: 900;
+  letter-spacing: .5rem;
+  color: var(--battle-primary);
+  margin: .5rem 0;
+  padding: .8rem;
+  background: #fff7ed;
+  border-radius: var(--radius-sm);
+  border: 2px dashed var(--battle-primary);
+}
+.room-code-label {
+  font-size: .78rem;
+  color: var(--gray-500);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .3rem;
+}
+.copy-btn {
+  background: none;
+  border: none;
+  color: var(--primary);
+  cursor: pointer;
+  font-size: .8rem;
+  font-weight: 600;
+  padding: .2rem .5rem;
+  border-radius: 4px;
+}
+.copy-btn:hover { background: var(--primary-bg); }
+
+.subject-selector {
+  background: #fff;
+  border-radius: var(--radius);
+  padding: 1.2rem;
+  box-shadow: var(--shadow-md);
+  margin-bottom: 1rem;
+}
+.subject-selector h3 {
+  font-size: .9rem;
+  font-weight: 700;
+  margin-bottom: .8rem;
+  color: var(--gray-700);
+}
+.subject-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: .5rem;
+}
+.subject-btn {
+  padding: .65rem .5rem;
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--gray-200);
+  background: #fff;
+  font-size: .78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .2s;
+  font-family: inherit;
+  color: var(--gray-600);
+  text-align: center;
+}
+.subject-btn.selected {
+  border-color: var(--battle-primary);
+  background: #fff7ed;
+  color: var(--battle-primary);
+}
+.subject-btn:not(.host-control) {
+  pointer-events: none;
+  opacity: .8;
+}
+.subject-btn.host-control {
+  pointer-events: auto;
+  opacity: 1;
+}
+
+.players-section {
+  background: #fff;
+  border-radius: var(--radius);
+  padding: 1.2rem;
+  box-shadow: var(--shadow-md);
+  margin-bottom: 1rem;
+}
+.players-section h3 {
+  font-size: .9rem;
+  font-weight: 700;
+  margin-bottom: .8rem;
+  color: var(--gray-700);
+}
+.player-list {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+.player-card {
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+  padding: .8rem;
+  border-radius: var(--radius-sm);
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  transition: all .3s;
+}
+.player-card.me {
+  background: #fff7ed;
+  border-color: var(--battle-primary);
+}
+.player-avatar {
+  font-size: 1.8rem;
+  width: 44px; height: 44px;
+  display: flex; align-items: center; justify-content: center;
+}
+.player-info { flex: 1; }
+.player-name {
+  font-weight: 700;
+  font-size: .88rem;
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+}
+.player-name .host-badge {
+  font-size: .65rem;
+  background: var(--battle-gradient);
+  color: #fff;
+  padding: .1rem .4rem;
+  border-radius: 4px;
+  font-weight: 700;
+}
+.player-name .me-badge {
+  font-size: .65rem;
+  background: var(--primary);
+  color: #fff;
+  padding: .1rem .4rem;
+  border-radius: 4px;
+  font-weight: 600;
+}
+.player-status {
+  font-size: .72rem;
+  color: var(--gray-400);
+  margin-top: .15rem;
+}
+.player-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  padding: .8rem;
+  border-radius: var(--radius-sm);
+  background: var(--gray-50);
+  border: 2px dashed var(--gray-200);
+  color: var(--gray-400);
+  font-size: .82rem;
+}
+
+.start-btn-area {
+  margin-top: .5rem;
+}
+.btn-start-game {
+  width: 100%;
+  padding: 1rem;
+  background: var(--battle-gradient);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 1.05rem;
+  font-weight: 800;
+  cursor: pointer;
+  font-family: inherit;
+  box-shadow: 0 4px 16px rgba(249,115,22,.3);
+  transition: all .2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+}
+.btn-start-game:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+.btn-start-game:not(:disabled):active { transform: scale(.98); }
+
+.waiting-text {
+  text-align: center;
+  padding: 1rem;
+  color: var(--gray-500);
+  font-size: .85rem;
+  animation: pulse 1.5s infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.5} }
+
+/* ===== GAME SCREEN ===== */
+.game-top-bar {
+  background: #fff;
+  border-radius: var(--radius);
+  padding: .8rem 1rem;
+  box-shadow: var(--shadow-md);
+  margin-bottom: .8rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.game-progress {
+  font-size: .82rem;
+  font-weight: 700;
+  color: var(--gray-700);
+}
+.game-subject-label {
+  font-size: .72rem;
+  color: var(--gray-500);
+  font-weight: 600;
+}
+
+/* Timer */
+.timer-container {
+  position: relative;
+  width: 60px; height: 60px;
+}
+.timer-svg {
+  transform: rotate(-90deg);
+  width: 60px; height: 60px;
+}
+.timer-bg { fill: none; stroke: var(--gray-200); stroke-width: 4; }
+.timer-ring {
+  fill: none;
+  stroke: var(--success);
+  stroke-width: 4;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1s linear, stroke .3s;
+}
+.timer-ring.warning { stroke: var(--warning); }
+.timer-ring.danger { stroke: var(--danger); }
+.timer-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+.timer-text.warning { color: var(--warning); }
+.timer-text.danger { color: var(--danger); animation: pulse .5s infinite; }
+
+/* Scoreboard mini */
+.mini-scoreboard {
+  display: flex;
+  gap: .4rem;
+  margin-bottom: .8rem;
+  flex-wrap: wrap;
+}
+.mini-player {
+  flex: 1;
+  min-width: 0;
+  background: #fff;
+  border-radius: var(--radius-xs);
+  padding: .4rem .5rem;
+  display: flex;
+  align-items: center;
+  gap: .3rem;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--gray-200);
+  transition: all .3s;
+}
+.mini-player.me { border-color: var(--battle-primary); background: #fff7ed; }
+.mini-player.answered { background: var(--success-bg); border-color: var(--success); }
+.mini-player .mp-avatar { font-size: 1.1rem; }
+.mini-player .mp-score { font-size: .75rem; font-weight: 800; color: var(--battle-primary); margin-left: auto; }
+.mini-player .mp-status { font-size: .6rem; margin-left: .2rem; }
+
+/* Question Card */
+.question-card {
+  background: #fff;
+  border-radius: var(--radius);
+  padding: 1.2rem;
+  box-shadow: var(--shadow-md);
+  margin-bottom: .8rem;
+  animation: fadeIn .3s ease;
+}
+@keyframes fadeIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+.q-number {
+  font-size: .72rem;
+  font-weight: 700;
+  color: var(--battle-primary);
+  margin-bottom: .5rem;
+  display: flex;
+  align-items: center;
+  gap: .3rem;
+}
+.q-text {
+  font-size: .9rem;
+  font-weight: 600;
+  line-height: 1.6;
+  color: var(--gray-800);
+  white-space: pre-line;
+  margin-bottom: 1rem;
+}
+.q-options {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+.q-option {
+  display: flex;
+  align-items: flex-start;
+  gap: .6rem;
+  padding: .75rem .9rem;
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--gray-200);
+  cursor: pointer;
+  transition: all .2s;
+  background: #fff;
+}
+.q-option:active { transform: scale(.98); }
+.q-option.selected { border-color: var(--primary); background: var(--primary-bg); }
+.q-option.correct { border-color: var(--success); background: var(--success-bg); }
+.q-option.wrong { border-color: var(--danger); background: var(--danger-bg); }
+.q-option.disabled { pointer-events: none; }
+.q-option-num {
+  min-width: 26px; height: 26px;
+  border-radius: 50%;
+  background: var(--gray-100);
+  display: flex; align-items: center; justify-content: center;
+  font-size: .78rem;
+  font-weight: 700;
+  color: var(--gray-600);
+  flex-shrink: 0;
+}
+.q-option.selected .q-option-num { background: var(--primary); color: #fff; }
+.q-option.correct .q-option-num { background: var(--success); color: #fff; }
+.q-option.wrong .q-option-num { background: var(--danger); color: #fff; }
+.q-option-text {
+  font-size: .84rem;
+  font-weight: 500;
+  line-height: 1.5;
+  padding-top: .1rem;
+}
+
+.timeout-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.6);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+}
+.timeout-overlay.show { display: flex; }
+.timeout-msg {
+  background: #fff;
+  border-radius: var(--radius);
+  padding: 2rem;
+  text-align: center;
+  animation: fadeIn .3s ease;
+  max-width: 300px;
+}
+.timeout-msg i { font-size: 2.5rem; margin-bottom: .8rem; }
+.timeout-msg h3 { font-size: 1.1rem; margin-bottom: .3rem; }
+.timeout-msg p { font-size: .82rem; color: var(--gray-500); }
+
+/* ===== RESULTS SCREEN ===== */
+.results-container {
+  text-align: center;
+}
+.results-trophy {
+  font-size: 4rem;
+  margin: 1rem 0;
+  animation: bounceIn .6s ease;
+}
+@keyframes bounceIn {
+  0% { transform: scale(0); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+.results-title {
+  font-size: 1.3rem;
+  font-weight: 900;
+  margin-bottom: .3rem;
+}
+.results-subtitle {
+  font-size: .85rem;
+  color: var(--gray-500);
+  margin-bottom: 1.5rem;
+}
+
+.ranking-list {
+  display: flex;
+  flex-direction: column;
+  gap: .6rem;
+  margin-bottom: 1.5rem;
+}
+.rank-card {
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+  padding: .9rem 1rem;
+  background: #fff;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+  border: 2px solid var(--gray-200);
+  transition: all .3s;
+}
+.rank-card.rank-1 { border-color: #f59e0b; background: linear-gradient(135deg, #fffbeb, #fef3c7); }
+.rank-card.rank-2 { border-color: #94a3b8; background: linear-gradient(135deg, #f8fafc, #f1f5f9); }
+.rank-card.rank-3 { border-color: #d97706; background: linear-gradient(135deg, #fffbeb, #fef9c3); }
+.rank-card.me { box-shadow: 0 0 0 2px var(--battle-primary), var(--shadow-md); }
+.rank-position {
+  font-size: 1.4rem;
+  font-weight: 900;
+  min-width: 36px;
+  text-align: center;
+}
+.rank-1 .rank-position { color: #f59e0b; }
+.rank-2 .rank-position { color: #94a3b8; }
+.rank-3 .rank-position { color: #d97706; }
+.rank-avatar { font-size: 1.8rem; }
+.rank-info { flex: 1; text-align: left; }
+.rank-name { font-weight: 700; font-size: .9rem; }
+.rank-detail { font-size: .72rem; color: var(--gray-500); margin-top: .1rem; }
+.rank-score {
+  font-size: 1.3rem;
+  font-weight: 900;
+  color: var(--battle-primary);
+}
+.rank-score span {
+  font-size: .72rem;
+  color: var(--gray-400);
+  font-weight: 600;
+}
+
+.results-actions {
+  display: flex;
+  flex-direction: column;
+  gap: .6rem;
+}
+.btn-result {
+  padding: .85rem;
+  border-radius: var(--radius-sm);
+  border: none;
+  font-size: .95rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .4rem;
+  transition: all .2s;
+}
+.btn-result:active { transform: scale(.97); }
+.btn-result-primary {
+  background: var(--battle-gradient);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(249,115,22,.3);
+}
+.btn-result-secondary {
+  background: #fff;
+  color: var(--gray-700);
+  border: 2px solid var(--gray-200);
+}
+
+/* Loading overlay */
+.loading-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.5);
+  z-index: 300;
+  align-items: center;
+  justify-content: center;
+}
+.loading-overlay.show { display: flex; }
+.loading-box {
+  background: #fff;
+  border-radius: var(--radius);
+  padding: 2rem;
+  text-align: center;
+  min-width: 200px;
+}
+.loading-spinner {
+  width: 36px; height: 36px;
+  border: 4px solid var(--gray-200);
+  border-top-color: var(--battle-primary);
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+  margin: 0 auto .8rem;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--gray-800);
+  color: #fff;
+  padding: .6rem 1.2rem;
+  border-radius: 20px;
+  font-size: .82rem;
+  font-weight: 600;
+  opacity: 0;
+  transition: all .3s;
+  z-index: 400;
+  white-space: nowrap;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* Responsive */
+@media (min-width: 768px) {
+  body { background: var(--gray-100); }
+  .screen { margin: 0 auto; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="battle-header">
+  <button class="back-btn" onclick="goHome()"><i class="fas fa-arrow-left"></i></button>
+  <div>
+    <h1>⚔️ 배틀 모드</h1>
+    <p>최대 4명 문제 대결</p>
+  </div>
+</div>
+
+<!-- SCREEN 1: LOBBY -->
+<div class="screen active" id="screenLobby">
+  <div class="lobby-card">
+    <div class="lobby-icon">⚔️</div>
+    <h2>실시간 문제 대결!</h2>
+    <p>친구들과 함께 문제를 풀고 실력을 겨뤄보세요.<br>최대 4명까지 참가할 수 있습니다.</p>
+  </div>
+
+  <div class="lobby-card">
+    <div class="nickname-section">
+      <label><i class="fas fa-user"></i> 닉네임</label>
+      <input type="text" class="nickname-input" id="nicknameInput" placeholder="닉네임 입력 (최대 8자)" maxlength="8">
+    </div>
+    <div class="nickname-section" style="margin-top:.8rem">
+      <label><i class="fas fa-face-smile"></i> 아바타 선택</label>
+      <div class="avatar-picker" id="avatarPicker"></div>
+    </div>
+  </div>
+
+  <div class="lobby-actions">
+    <button class="btn-battle btn-create" onclick="createRoom()">
+      <i class="fas fa-plus-circle"></i> 방 만들기
+    </button>
+    <button class="btn-battle btn-join" onclick="toggleJoinForm()">
+      <i class="fas fa-right-to-bracket"></i> 방 참가하기
+    </button>
+    <div class="join-form" id="joinForm">
+      <div class="input-group">
+        <input type="text" id="roomCodeInput" placeholder="방 코드" maxlength="4" autocomplete="off">
+        <button onclick="joinRoom()">참가</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN 2: WAITING ROOM -->
+<div class="screen" id="screenWaiting">
+  <div class="room-header">
+    <div class="room-code-label"><i class="fas fa-link"></i> 방 코드를 공유하세요</div>
+    <div class="room-code-display" id="roomCodeDisplay">----</div>
+    <button class="copy-btn" onclick="copyRoomCode()"><i class="fas fa-copy"></i> 코드 복사</button>
+  </div>
+
+  <div class="subject-selector" id="subjectSelector">
+    <h3><i class="fas fa-book" style="color:var(--battle-primary);margin-right:.3rem"></i> 과목 선택 (방장 전용)</h3>
+    <div class="subject-grid" id="subjectGrid"></div>
+  </div>
+
+  <div class="players-section">
+    <h3><i class="fas fa-users" style="color:var(--primary);margin-right:.3rem"></i> 참가자 <span id="playerCountLabel">(0/4)</span></h3>
+    <div class="player-list" id="playerList"></div>
+  </div>
+
+  <div class="start-btn-area" id="startBtnArea">
+    <button class="btn-start-game" id="startGameBtn" onclick="startGame()" disabled>
+      <i class="fas fa-play"></i> 게임 시작
+    </button>
+  </div>
+  <div class="waiting-text" id="waitingText" style="display:none">
+    <i class="fas fa-hourglass-half"></i> 방장이 게임을 시작할 때까지 대기 중...
+  </div>
+</div>
+
+<!-- SCREEN 3: GAME -->
+<div class="screen" id="screenGame">
+  <div class="game-top-bar">
+    <div>
+      <div class="game-progress" id="gameProgress">1 / 20</div>
+      <div class="game-subject-label" id="gameSubject">스포츠교육학</div>
+    </div>
+    <div class="timer-container">
+      <svg class="timer-svg" viewBox="0 0 36 36">
+        <circle class="timer-bg" cx="18" cy="18" r="15.91549430918954"></circle>
+        <circle class="timer-ring" id="timerRing" cx="18" cy="18" r="15.91549430918954"
+          stroke-dasharray="100" stroke-dashoffset="0"></circle>
+      </svg>
+      <div class="timer-text" id="timerText">60</div>
+    </div>
+  </div>
+
+  <div class="mini-scoreboard" id="miniScoreboard"></div>
+
+  <div class="question-card" id="questionCard">
+    <div class="q-number" id="qNumber"></div>
+    <div class="q-text" id="qText"></div>
+    <div class="q-options" id="qOptions"></div>
+  </div>
+</div>
+
+<!-- SCREEN 4: RESULTS -->
+<div class="screen" id="screenResults">
+  <div class="results-container">
+    <div class="results-trophy" id="resultsTrophy">🏆</div>
+    <div class="results-title" id="resultsTitle">대결 종료!</div>
+    <div class="results-subtitle" id="resultsSubtitle">20문제 대결 결과</div>
+    <div class="ranking-list" id="rankingList"></div>
+    <div class="results-actions">
+      <button class="btn-result btn-result-primary" onclick="goToLobby()">
+        <i class="fas fa-redo"></i> 새 게임
+      </button>
+      <button class="btn-result btn-result-secondary" onclick="goHome()">
+        <i class="fas fa-home"></i> 홈으로
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Loading Overlay -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loading-box">
+    <div class="loading-spinner"></div>
+    <div id="loadingMsg">처리 중...</div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ===== CONSTANTS =====
+const ALL_SUBJECTS = [
+  '스포츠사회학', '스포츠교육학', '스포츠심리학',
+  '한국체육사', '운동생리학', '운동역학', '스포츠윤리'
+];
+const AVATARS = ['🏋️','⚽','🏀','🎾','🏊','🚴','🤸','⛹️','🏃','🤾','🏌️','🤺'];
+const SUBJ_EMOJIS = {
+  '스포츠교육학':'📚','스포츠사회학':'🌐','스포츠심리학':'🧠',
+  '스포츠윤리':'⚖️','운동생리학':'🫀','운동역학':'⚙️','한국체육사':'🏛️'
+};
+const RANDOM_NAMES = ['호랑이','독수리','번개','태풍','용감한곰','파이터','챔피언','히어로'];
+const QUESTION_TIME = 60; // seconds per question
+const POLL_INTERVAL = 2000; // poll every 2s
+const DATA_URLS = {
+  2016: 'data/2016.json', 2017: 'data/2017.json', 2018: 'data/2018.json',
+  2019: 'data/2019.json', 2020: 'data/2020.json', 2021: 'data/2021.json',
+  2022: 'data/2022.json', 2023: 'data/2023.json', 2024: 'data/2024.json',
+  2025: 'data/2025.json'
+};
+const YEARS = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025];
+
+// Same BOGI_SUPPLEMENT as main app (abbreviated - we load questions dynamically)
+const BOGI_SUPPLEMENT = {};
+
+// ===== STATE =====
+let allData = {};
+let myPlayerId = null;
+let myNickname = '';
+let myAvatar = '🏋️';
+let currentRoom = null; // room record
+let isHost = false;
+let selectedSubject = '';
+let pollTimer = null;
+let gameTimer = null;
+let timeLeft = QUESTION_TIME;
+let currentQuestionIndex = 0;
+let questions = [];
+let myAnswers = []; // [{q, answer, correct, time}]
+let answerLocked = false;
+let questionStartTime = 0;
+let gameFinished = false;
+let players = []; // current player list
+
+// ===== INIT =====
+document.addEventListener('DOMContentLoaded', () => {
+  renderAvatarPicker();
+  loadNicknameFromStorage();
+  loadAllData();
+});
+
+function loadNicknameFromStorage() {
+  const saved = localStorage.getItem('battle_nickname');
+  const savedAvatar = localStorage.getItem('battle_avatar');
+  if (saved) {
+    document.getElementById('nicknameInput').value = saved;
+    myNickname = saved;
+  }
+  if (savedAvatar) {
+    myAvatar = savedAvatar;
+  }
+}
+
+function renderAvatarPicker() {
+  const picker = document.getElementById('avatarPicker');
+  picker.innerHTML = AVATARS.map(a => 
+    `<div class="avatar-option ${a === myAvatar ? 'selected' : ''}" onclick="selectAvatar('${a}')">${a}</div>`
+  ).join('');
+}
+
+function selectAvatar(a) {
+  myAvatar = a;
+  localStorage.setItem('battle_avatar', a);
+  renderAvatarPicker();
+}
+
+// ===== DATA LOADING =====
+async function loadAllData() {
+  showLoading('문제 데이터 로딩 중...');
+  let loaded = 0;
+  for (const year of YEARS) {
+    try {
+      const res = await fetch(DATA_URLS[year]);
+      const raw = await res.json();
+      allData[year] = normalizeData(year, raw);
+      loaded++;
+    } catch(e) { console.error(`Failed to load ${year}:`, e); }
+  }
+  hideLoading();
+  if (loaded === 0) {
+    showToast('⚠️ 데이터 로딩 실패');
+  }
+}
+
+function normalizeData(year, raw) {
+  const subjects = [];
+  const rawSubjects = raw.subjects || [];
+  for (const subj of rawSubjects) {
+    const subjectName = subj.subject_name || subj.name || '';
+    const subjectCode = String(subj.subject_code || subj.code || '');
+    const questions = [];
+    for (const q of (subj.questions || [])) {
+      const qNum = q.question_number || q.number || 0;
+      let qText = q.question || '';
+      // Handle 보기
+      if (q['보기']) { qText += '\n\n[보기]\n' + q['보기']; }
+      const answer = q.answer;
+      let options = [];
+      const rawOpts = q.options;
+      if (Array.isArray(rawOpts)) {
+        options = rawOpts.map((o, i) => ({ num: i + 1, text: String(o).replace(/^[①②③④⑤\d]+[\.\)]\s*/, '') }));
+      } else if (typeof rawOpts === 'object' && rawOpts !== null) {
+        const keys = Object.keys(rawOpts).sort((a, b) => parseInt(a) - parseInt(b));
+        options = keys.map(k => ({ num: parseInt(k), text: rawOpts[k] }));
+      }
+      // Explanation
+      let correctExpl = '';
+      if (typeof q.explanation === 'string') correctExpl = q.explanation;
+      else if (typeof q.explanation === 'object' && q.explanation !== null) correctExpl = q.explanation.correct_answer_explanation || q.explanation.correct || '';
+      if (q.correct_answer_explanation) correctExpl = q.correct_answer_explanation;
+      if (q.correct_explanation && !correctExpl) correctExpl = q.correct_explanation;
+      if (q.explanations) correctExpl = q.explanations.correct_answer_explanation || q.explanations.correct || correctExpl;
+
+      questions.push({
+        year, subjectName, subjectCode, number: qNum,
+        question: qText, options, answer, explanation: correctExpl
+      });
+    }
+    subjects.push({ name: subjectName, code: subjectCode, questions });
+  }
+  return { subjects };
+}
+
+// ===== GENERATE QUESTIONS =====
+function generateBattleQuestions(subjectName) {
+  const pool = [];
+  for (const year of YEARS) {
+    const data = allData[year];
+    if (!data) continue;
+    const subj = data.subjects.find(s => s.name === subjectName);
+    if (!subj) continue;
+    for (const q of subj.questions) {
+      pool.push(q);
+    }
+  }
+  // Shuffle
+  for (let i = pool.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [pool[i], pool[j]] = [pool[j], pool[i]];
+  }
+  return pool.slice(0, 20);
+}
+
+// ===== SCREEN MANAGEMENT =====
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+// ===== LOBBY =====
+function goHome() {
+  stopPolling();
+  stopGameTimer();
+  window.location.href = 'index.html';
+}
+
+function goToLobby() {
+  stopPolling();
+  stopGameTimer();
+  currentRoom = null;
+  isHost = false;
+  selectedSubject = '';
+  questions = [];
+  myAnswers = [];
+  gameFinished = false;
+  players = [];
+  showScreen('screenLobby');
+}
+
+function toggleJoinForm() {
+  const form = document.getElementById('joinForm');
+  form.classList.toggle('show');
+  if (form.classList.contains('show')) {
+    document.getElementById('roomCodeInput').focus();
+  }
+}
+
+function getNickname() {
+  let name = document.getElementById('nicknameInput').value.trim();
+  if (!name) {
+    name = RANDOM_NAMES[Math.floor(Math.random() * RANDOM_NAMES.length)] + Math.floor(Math.random()*100);
+  }
+  myNickname = name.substring(0, 8);
+  localStorage.setItem('battle_nickname', myNickname);
+  return myNickname;
+}
+
+function generateRoomCode() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let code = '';
+  for (let i = 0; i < 4; i++) code += chars[Math.floor(Math.random() * chars.length)];
+  return code;
+}
+
+function generatePlayerId() {
+  return 'p_' + Date.now() + '_' + Math.random().toString(36).substring(2, 8);
+}
+
+// ===== API HELPERS =====
+async function apiGet(table, params = '') {
+  const res = await fetch(`tables/${table}${params ? '?' + params : ''}`);
+  return await res.json();
+}
+async function apiGetOne(table, id) {
+  const res = await fetch(`tables/${table}/${id}`);
+  return await res.json();
+}
+async function apiCreate(table, data) {
+  const res = await fetch(`tables/${table}`, {
+    method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)
+  });
+  return await res.json();
+}
+async function apiUpdate(table, id, data) {
+  const res = await fetch(`tables/${table}/${id}`, {
+    method: 'PATCH', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)
+  });
+  return await res.json();
+}
+async function apiDelete(table, id) {
+  await fetch(`tables/${table}/${id}`, { method: 'DELETE' });
+}
+
+// ===== CREATE ROOM =====
+async function createRoom() {
+  const nickname = getNickname();
+  showLoading('방 생성 중...');
+  
+  try {
+    const roomCode = generateRoomCode();
+    myPlayerId = generatePlayerId();
+    
+    // Create room
+    const room = await apiCreate('battle_rooms', {
+      room_code: roomCode,
+      host_id: myPlayerId,
+      subject: '',
+      status: 'waiting',
+      questions: '[]',
+      current_question: 0,
+      question_start_time: 0,
+      max_players: 4,
+      player_count: 1
+    });
+    
+    currentRoom = room;
+    isHost = true;
+    
+    // Create player
+    await apiCreate('battle_players', {
+      room_code: roomCode,
+      nickname: nickname,
+      avatar: myAvatar,
+      is_host: true,
+      score: 0,
+      answers: '[]',
+      is_ready: true,
+      is_connected: true,
+      last_ping: Date.now()
+    });
+    
+    hideLoading();
+    enterWaitingRoom(roomCode);
+    
+  } catch(e) {
+    hideLoading();
+    showToast('❌ 방 생성 실패');
+    console.error(e);
+  }
+}
+
+// ===== JOIN ROOM =====
+async function joinRoom() {
+  const code = document.getElementById('roomCodeInput').value.trim().toUpperCase();
+  if (code.length !== 4) {
+    showToast('⚠️ 4자리 방 코드를 입력하세요');
+    return;
+  }
+  
+  const nickname = getNickname();
+  showLoading('방 참가 중...');
+  
+  try {
+    // Find room
+    const result = await apiGet('battle_rooms', `search=${code}&limit=10`);
+    const room = result.data.find(r => r.room_code === code && r.status !== 'finished');
+    
+    if (!room) {
+      hideLoading();
+      showToast('❌ 방을 찾을 수 없습니다');
+      return;
+    }
+    
+    if (room.status === 'playing') {
+      hideLoading();
+      showToast('❌ 이미 진행 중인 게임입니다');
+      return;
+    }
+    
+    // Check player count
+    const playersResult = await apiGet('battle_players', `search=${code}&limit=10`);
+    const activePlayers = playersResult.data.filter(p => p.room_code === code && p.is_connected);
+    
+    if (activePlayers.length >= 4) {
+      hideLoading();
+      showToast('❌ 방이 가득 찼습니다 (4/4)');
+      return;
+    }
+    
+    myPlayerId = generatePlayerId();
+    currentRoom = room;
+    isHost = false;
+    
+    // Create player
+    await apiCreate('battle_players', {
+      room_code: code,
+      nickname: nickname,
+      avatar: myAvatar,
+      is_host: false,
+      score: 0,
+      answers: '[]',
+      is_ready: true,
+      is_connected: true,
+      last_ping: Date.now()
+    });
+    
+    // Update player count
+    await apiUpdate('battle_rooms', room.id, {
+      player_count: activePlayers.length + 1
+    });
+    
+    hideLoading();
+    enterWaitingRoom(code);
+    
+  } catch(e) {
+    hideLoading();
+    showToast('❌ 참가 실패');
+    console.error(e);
+  }
+}
+
+// ===== WAITING ROOM =====
+function enterWaitingRoom(code) {
+  document.getElementById('roomCodeDisplay').textContent = code;
+  renderSubjectGrid();
+  showScreen('screenWaiting');
+  
+  // Show/hide host controls
+  if (isHost) {
+    document.getElementById('startBtnArea').style.display = 'block';
+    document.getElementById('waitingText').style.display = 'none';
+  } else {
+    document.getElementById('startBtnArea').style.display = 'none';
+    document.getElementById('waitingText').style.display = 'block';
+  }
+  
+  startPolling();
+}
+
+function renderSubjectGrid() {
+  const grid = document.getElementById('subjectGrid');
+  grid.innerHTML = ALL_SUBJECTS.map(name => {
+    const emoji = SUBJ_EMOJIS[name] || '📖';
+    const sel = selectedSubject === name ? 'selected' : '';
+    const hostCtrl = isHost ? 'host-control' : '';
+    return `<button class="subject-btn ${sel} ${hostCtrl}" onclick="selectSubject('${name}')">${emoji} ${name}</button>`;
+  }).join('');
+}
+
+function selectSubject(name) {
+  if (!isHost) return;
+  selectedSubject = name;
+  renderSubjectGrid();
+  updateStartButton();
+  
+  // Update room subject
+  if (currentRoom) {
+    apiUpdate('battle_rooms', currentRoom.id, { subject: name });
+  }
+}
+
+function updateStartButton() {
+  const btn = document.getElementById('startGameBtn');
+  const hasSubject = selectedSubject !== '';
+  const hasPlayers = players.length >= 1;
+  btn.disabled = !(hasSubject && hasPlayers);
+}
+
+function renderPlayerList() {
+  const list = document.getElementById('playerList');
+  const countLabel = document.getElementById('playerCountLabel');
+  countLabel.textContent = `(${players.length}/4)`;
+  
+  let html = '';
+  for (let i = 0; i < 4; i++) {
+    if (i < players.length) {
+      const p = players[i];
+      const isMe = p.nickname === myNickname && p.avatar === myAvatar;
+      const meClass = isMe ? 'me' : '';
+      html += `
+        <div class="player-card ${meClass}">
+          <div class="player-avatar">${p.avatar}</div>
+          <div class="player-info">
+            <div class="player-name">
+              ${escHtml(p.nickname)}
+              ${p.is_host ? '<span class="host-badge">👑 방장</span>' : ''}
+              ${isMe ? '<span class="me-badge">나</span>' : ''}
+            </div>
+            <div class="player-status">대기 중</div>
+          </div>
+        </div>`;
+    } else {
+      html += `<div class="player-empty"><i class="fas fa-user-plus"></i> 대기 중...</div>`;
+    }
+  }
+  list.innerHTML = html;
+}
+
+function copyRoomCode() {
+  const code = document.getElementById('roomCodeDisplay').textContent;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(code);
+    showToast('✅ 방 코드 복사됨: ' + code);
+  } else {
+    // Fallback
+    const ta = document.createElement('textarea');
+    ta.value = code;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    showToast('✅ 방 코드 복사됨: ' + code);
+  }
+}
+
+// ===== POLLING =====
+function startPolling() {
+  stopPolling();
+  pollRoom();
+  pollTimer = setInterval(pollRoom, POLL_INTERVAL);
+}
+
+function stopPolling() {
+  if (pollTimer) {
+    clearInterval(pollTimer);
+    pollTimer = null;
+  }
+}
+
+async function pollRoom() {
+  if (!currentRoom) return;
+  
+  try {
+    const code = currentRoom.room_code;
+    
+    // Fetch room
+    const roomResult = await apiGet('battle_rooms', `search=${code}&limit=5`);
+    const room = roomResult.data.find(r => r.room_code === code && r.status !== 'finished');
+    if (!room) {
+      // Room may have been deleted - but check for finished rooms too
+      const finishedRoom = roomResult.data.find(r => r.room_code === code);
+      if (finishedRoom) currentRoom = finishedRoom;
+      return;
+    }
+    currentRoom = room;
+    
+    // Fetch players
+    const playersResult = await apiGet('battle_players', `search=${code}&limit=10`);
+    players = playersResult.data.filter(p => p.room_code === code && p.is_connected);
+    
+    // Update subject from room (for non-host)
+    if (!isHost && room.subject) {
+      selectedSubject = room.subject;
+      renderSubjectGrid();
+    }
+    
+    renderPlayerList();
+    updateStartButton();
+    
+    // Check if game started
+    if (room.status === 'playing' && !gameFinished) {
+      const screenGame = document.getElementById('screenGame');
+      if (!screenGame.classList.contains('active')) {
+        // Game has started! Load questions and start
+        const qs = JSON.parse(room.questions || '[]');
+        if (qs.length > 0) {
+          questions = qs;
+          currentQuestionIndex = room.current_question || 0;
+          stopPolling();
+          startBattleGame();
+        }
+      } else {
+        // Already in game, update scoreboard
+        updateMiniScoreboard();
+      }
+    }
+    
+    // Check if game finished
+    if (room.status === 'finished' && !gameFinished) {
+      gameFinished = true;
+      stopGameTimer();
+      showResults();
+    }
+    
+    // Ping
+    const myPlayer = players.find(p => p.nickname === myNickname && p.avatar === myAvatar);
+    if (myPlayer) {
+      apiUpdate('battle_players', myPlayer.id, { last_ping: Date.now() });
+    }
+    
+  } catch(e) {
+    console.error('Poll error:', e);
+  }
+}
+
+// ===== START GAME (HOST) =====
+async function startGame() {
+  if (!isHost || !selectedSubject) return;
+  
+  showLoading('게임 시작 준비 중...');
+  
+  try {
+    // Generate questions
+    const qs = generateBattleQuestions(selectedSubject);
+    if (qs.length < 20) {
+      hideLoading();
+      showToast(`⚠️ 문제가 부족합니다 (${qs.length}문제)`);
+      return;
+    }
+    
+    // Update room
+    await apiUpdate('battle_rooms', currentRoom.id, {
+      status: 'playing',
+      questions: JSON.stringify(qs),
+      current_question: 0,
+      question_start_time: Date.now()
+    });
+    
+    questions = qs;
+    currentQuestionIndex = 0;
+    
+    hideLoading();
+    stopPolling();
+    startBattleGame();
+    
+  } catch(e) {
+    hideLoading();
+    showToast('❌ 게임 시작 실패');
+    console.error(e);
+  }
+}
+
+// ===== BATTLE GAME =====
+function startBattleGame() {
+  gameFinished = false;
+  myAnswers = [];
+  answerLocked = false;
+  showScreen('screenGame');
+  document.getElementById('gameSubject').textContent = selectedSubject;
+  
+  // Start polling for scoreboard updates
+  startPolling();
+  
+  showQuestion(0);
+}
+
+function showQuestion(index) {
+  if (index >= questions.length || index >= 20) {
+    finishGame();
+    return;
+  }
+  
+  currentQuestionIndex = index;
+  answerLocked = false;
+  questionStartTime = Date.now();
+  
+  const q = questions[index];
+  document.getElementById('gameProgress').textContent = `${index + 1} / 20`;
+  document.getElementById('qNumber').innerHTML = `<i class="fas fa-question-circle"></i> ${index + 1}번 문제 (${q.year}년)`;
+  document.getElementById('qText').textContent = q.question;
+  
+  const optionsHtml = q.options.map(opt => `
+    <div class="q-option" data-num="${opt.num}" onclick="selectAnswer(${opt.num})">
+      <div class="q-option-num">${opt.num}</div>
+      <div class="q-option-text">${escHtml(opt.text)}</div>
+    </div>
+  `).join('');
+  document.getElementById('qOptions').innerHTML = optionsHtml;
+  
+  updateMiniScoreboard();
+  startQuestionTimer();
+  window.scrollTo(0, 0);
+}
+
+function selectAnswer(num) {
+  if (answerLocked) return;
+  answerLocked = true;
+  
+  const q = questions[currentQuestionIndex];
+  const elapsed = Math.round((Date.now() - questionStartTime) / 1000);
+  const correct = num === q.answer;
+  
+  // Visual feedback
+  document.querySelectorAll('.q-option').forEach(el => {
+    el.classList.add('disabled');
+    const elNum = parseInt(el.dataset.num);
+    if (elNum === q.answer) el.classList.add('correct');
+    if (elNum === num && !correct) el.classList.add('wrong');
+    if (elNum === num) el.classList.add('selected');
+  });
+  
+  // Record answer
+  myAnswers.push({
+    q: currentQuestionIndex,
+    answer: num,
+    correct: correct,
+    time: elapsed
+  });
+  
+  // Update score on server
+  updateMyScore();
+  
+  // Move to next question after delay
+  setTimeout(() => {
+    showQuestion(currentQuestionIndex + 1);
+  }, 1500);
+}
+
+function timeoutQuestion() {
+  if (answerLocked) return;
+  answerLocked = true;
+  
+  const q = questions[currentQuestionIndex];
+  
+  // Show correct answer
+  document.querySelectorAll('.q-option').forEach(el => {
+    el.classList.add('disabled');
+    const elNum = parseInt(el.dataset.num);
+    if (elNum === q.answer) el.classList.add('correct');
+  });
+  
+  // Record as wrong (timeout)
+  myAnswers.push({
+    q: currentQuestionIndex,
+    answer: 0,
+    correct: false,
+    time: QUESTION_TIME
+  });
+  
+  updateMyScore();
+  
+  // Brief timeout message
+  showToast('⏰ 시간 초과!');
+  
+  setTimeout(() => {
+    showQuestion(currentQuestionIndex + 1);
+  }, 2000);
+}
+
+async function updateMyScore() {
+  try {
+    const code = currentRoom.room_code;
+    const playersResult = await apiGet('battle_players', `search=${code}&limit=10`);
+    const myPlayer = playersResult.data.find(p => 
+      p.room_code === code && p.nickname === myNickname && p.avatar === myAvatar
+    );
+    if (myPlayer) {
+      const score = myAnswers.filter(a => a.correct).length;
+      await apiUpdate('battle_players', myPlayer.id, {
+        score: score,
+        answers: JSON.stringify(myAnswers)
+      });
+    }
+  } catch(e) {
+    console.error('Score update error:', e);
+  }
+}
+
+// ===== TIMER =====
+function startQuestionTimer() {
+  stopGameTimer();
+  timeLeft = QUESTION_TIME;
+  updateTimerDisplay();
+  
+  gameTimer = setInterval(() => {
+    timeLeft--;
+    updateTimerDisplay();
+    
+    if (timeLeft <= 0) {
+      stopGameTimer();
+      timeoutQuestion();
+    }
+  }, 1000);
+}
+
+function stopGameTimer() {
+  if (gameTimer) {
+    clearInterval(gameTimer);
+    gameTimer = null;
+  }
+}
+
+function updateTimerDisplay() {
+  const text = document.getElementById('timerText');
+  const ring = document.getElementById('timerRing');
+  
+  text.textContent = timeLeft;
+  
+  // Update ring
+  const pct = (timeLeft / QUESTION_TIME) * 100;
+  ring.style.strokeDashoffset = 100 - pct;
+  
+  // Color classes
+  text.className = 'timer-text';
+  ring.className = 'timer-ring';
+  
+  if (timeLeft <= 10) {
+    text.classList.add('danger');
+    ring.classList.add('danger');
+  } else if (timeLeft <= 30) {
+    text.classList.add('warning');
+    ring.classList.add('warning');
+  }
+}
+
+// ===== MINI SCOREBOARD =====
+function updateMiniScoreboard() {
+  const sb = document.getElementById('miniScoreboard');
+  sb.innerHTML = players.map(p => {
+    const isMe = p.nickname === myNickname && p.avatar === myAvatar;
+    const answers = JSON.parse(p.answers || '[]');
+    const answeredCurrent = answers.length > currentQuestionIndex;
+    return `
+      <div class="mini-player ${isMe ? 'me' : ''} ${answeredCurrent ? 'answered' : ''}">
+        <span class="mp-avatar">${p.avatar}</span>
+        <span class="mp-score">${p.score || 0}</span>
+        ${answeredCurrent ? '<span class="mp-status">✓</span>' : ''}
+      </div>
+    `;
+  }).join('');
+}
+
+// ===== FINISH GAME =====
+async function finishGame() {
+  gameFinished = true;
+  stopGameTimer();
+  stopPolling();
+  
+  // Update score one final time
+  await updateMyScore();
+  
+  // If host, mark room as finished
+  if (isHost && currentRoom) {
+    try {
+      await apiUpdate('battle_rooms', currentRoom.id, { status: 'finished' });
+    } catch(e) { console.error(e); }
+  }
+  
+  // Short delay then show results
+  showLoading('결과 집계 중...');
+  await new Promise(r => setTimeout(r, 2000));
+  
+  // Refresh player data
+  try {
+    const code = currentRoom.room_code;
+    const playersResult = await apiGet('battle_players', `search=${code}&limit=10`);
+    players = playersResult.data.filter(p => p.room_code === code);
+  } catch(e) { console.error(e); }
+  
+  hideLoading();
+  showResults();
+}
+
+// ===== RESULTS =====
+function showResults() {
+  showScreen('screenResults');
+  
+  // Sort by score desc, then by avg time asc
+  const ranked = [...players].sort((a, b) => {
+    const scoreA = a.score || 0;
+    const scoreB = b.score || 0;
+    if (scoreB !== scoreA) return scoreB - scoreA;
+    // Tie-breaker: avg time
+    const answersA = JSON.parse(a.answers || '[]');
+    const answersB = JSON.parse(b.answers || '[]');
+    const avgA = answersA.length ? answersA.reduce((s, x) => s + x.time, 0) / answersA.length : 999;
+    const avgB = answersB.length ? answersB.reduce((s, x) => s + x.time, 0) / answersB.length : 999;
+    return avgA - avgB;
+  });
+  
+  // Find my rank
+  const myRank = ranked.findIndex(p => p.nickname === myNickname && p.avatar === myAvatar);
+  const trophies = ['🏆', '🥈', '🥉', '🏅'];
+  
+  // Title
+  if (myRank === 0) {
+    document.getElementById('resultsTrophy').textContent = '🏆';
+    document.getElementById('resultsTitle').textContent = '🎉 1등! 축하합니다!';
+  } else if (myRank === 1) {
+    document.getElementById('resultsTrophy').textContent = '🥈';
+    document.getElementById('resultsTitle').textContent = '잘했어요! 2등!';
+  } else if (myRank === 2) {
+    document.getElementById('resultsTrophy').textContent = '🥉';
+    document.getElementById('resultsTitle').textContent = '나쁘지 않아요! 3등!';
+  } else {
+    document.getElementById('resultsTrophy').textContent = '💪';
+    document.getElementById('resultsTitle').textContent = '다음엔 더 잘할 수 있어요!';
+  }
+  document.getElementById('resultsSubtitle').textContent = `${selectedSubject} · 20문제 대결`;
+  
+  const list = document.getElementById('rankingList');
+  list.innerHTML = ranked.map((p, i) => {
+    const isMe = p.nickname === myNickname && p.avatar === myAvatar;
+    const answers = JSON.parse(p.answers || '[]');
+    const score = p.score || 0;
+    const avgTime = answers.length ? (answers.reduce((s, x) => s + x.time, 0) / answers.length).toFixed(1) : '-';
+    const rankIcon = i < 4 ? trophies[i] : `${i + 1}`;
+    
+    return `
+      <div class="rank-card rank-${i + 1} ${isMe ? 'me' : ''}">
+        <div class="rank-position">${rankIcon}</div>
+        <div class="rank-avatar">${p.avatar}</div>
+        <div class="rank-info">
+          <div class="rank-name">${escHtml(p.nickname)} ${isMe ? '<span class="me-badge" style="font-size:.6rem;background:var(--primary);color:#fff;padding:.1rem .3rem;border-radius:3px">나</span>' : ''}</div>
+          <div class="rank-detail">평균 ${avgTime}초 · ${answers.length}문제 풀이</div>
+        </div>
+        <div class="rank-score">${score}<span>/20</span></div>
+      </div>
+    `;
+  }).join('');
+}
+
+// ===== UTILS =====
+function escHtml(str) {
+  if (!str) return '';
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function showLoading(msg) {
+  document.getElementById('loadingMsg').textContent = msg || '처리 중...';
+  document.getElementById('loadingOverlay').classList.add('show');
+}
+function hideLoading() {
+  document.getElementById('loadingOverlay').classList.remove('show');
+}
+
+let toastTimer = null;
+function showToast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 2500);
+}
+</script>
+</body>
+</html>

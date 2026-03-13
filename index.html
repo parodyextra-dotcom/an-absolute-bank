@@ -590,6 +590,43 @@ body {
 .result-stat-label { font-size: .72rem; color: var(--gray-400); font-weight: 500; }
 .result-buttons { display: flex; gap: .75rem; justify-content: center; flex-wrap: wrap; }
 
+/* ===== Battle Banner ===== */
+.battle-banner {
+  margin: 1rem 1rem 0;
+  background: linear-gradient(135deg, #f97316, #ef4444, #ec4899);
+  border-radius: var(--radius);
+  padding: 1rem 1.25rem;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(249,115,22,.3);
+  cursor: pointer;
+  transition: transform .2s, box-shadow .2s;
+}
+.battle-banner:active { transform: scale(.98); }
+.battle-banner:hover { box-shadow: 0 6px 20px rgba(249,115,22,.4); }
+.battle-banner-bg {
+  position: absolute; inset: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Ccircle cx='180' cy='20' r='60' fill='rgba(255,255,255,0.08)'/%3E%3Ccircle cx='20' cy='180' r='40' fill='rgba(255,255,255,0.05)'/%3E%3C/svg%3E") no-repeat center/cover;
+}
+.battle-banner-content {
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+  position: relative;
+  z-index: 1;
+}
+.battle-banner-icon { font-size: 2rem; }
+.battle-banner-info { flex: 1; }
+.battle-banner-title { font-size: 1.05rem; font-weight: 800; }
+.battle-banner-desc { font-size: .75rem; opacity: .9; margin-top: .1rem; }
+.battle-banner-arrow { font-size: .9rem; opacity: .7; }
+@keyframes battleGlow {
+  0%, 100% { box-shadow: 0 4px 15px rgba(249,115,22,.3); }
+  50% { box-shadow: 0 4px 25px rgba(249,115,22,.5); }
+}
+.battle-banner { animation: battleGlow 2s ease-in-out infinite; }
+
 /* ===== D-Day Box ===== */
 .dday-box {
   margin: 1rem 1rem 0;
@@ -2105,6 +2142,19 @@ body {
   <div class="page-header">
     <h1>🏋️ 스포츠지도사 문제은행</h1>
     <p>2급 전문스포츠지도사 필기시험 대비</p>
+  </div>
+
+  <!-- 🔥 배틀 모드 배너 -->
+  <div class="battle-banner" onclick="window.location.href='battle.html'">
+    <div class="battle-banner-bg"></div>
+    <div class="battle-banner-content">
+      <div class="battle-banner-icon">⚔️</div>
+      <div class="battle-banner-info">
+        <div class="battle-banner-title">배틀 모드</div>
+        <div class="battle-banner-desc">최대 4명과 실시간 문제 대결!</div>
+      </div>
+      <div class="battle-banner-arrow"><i class="fas fa-chevron-right"></i></div>
+    </div>
   </div>
 
   <!-- D-Day Box -->

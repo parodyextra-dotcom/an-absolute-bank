@@ -1893,12 +1893,64 @@ body {
 .stb.op{display:block;animation:fadeIn .3s ease}
 .stx{font-size:.84rem;line-height:1.85;color:var(--gray-600);word-break:keep-all}
 .htl{margin:.6rem 1rem;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
-.hth{padding:.85rem 1rem;background:linear-gradient(135deg,#fff7ed,#fef3c7);border-bottom:1px solid #fde68a;display:flex;align-items:center;gap:.5rem}
-.hth h3{font-size:.88rem;font-weight:800;color:#92400e}
-.hti{display:flex;align-items:center;gap:.65rem;padding:.6rem 1rem;border-bottom:1px solid var(--gray-50);font-size:.8rem;color:var(--gray-700)}
+.hth{padding:.85rem 1rem;background:linear-gradient(135deg,#fff7ed,#fef3c7);border-bottom:none;display:flex;align-items:center;gap:.5rem;cursor:pointer;transition:background .15s;user-select:none}
+.hth:active{background:linear-gradient(135deg,#fef3c7,#fde68a)}
+.hth h3{font-size:.88rem;font-weight:800;color:#92400e;flex:1}
+.ht-toggle{display:flex;align-items:center;gap:.3rem;font-size:.68rem;font-weight:700;color:#b45309;white-space:nowrap}
+.ht-toggle i{transition:transform .3s ease;font-size:.6rem}
+.ht-toggle.open i{transform:rotate(180deg)}
+.ht-body{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.4,0,.2,1)}
+.ht-body.open{max-height:3000px;border-top:1px solid #fde68a}
+.hti{display:flex;align-items:center;gap:.65rem;padding:.6rem 1rem;border-bottom:1px solid var(--gray-50);font-size:.8rem;color:var(--gray-700);cursor:pointer;transition:all .15s}
+.hti:hover{background:rgba(245,158,11,.06)}
+.hti:active{background:rgba(245,158,11,.12);transform:scale(.99)}
 .hti:last-child{border-bottom:none}
 .htr{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:800;flex-shrink:0}
 .htr.t{background:linear-gradient(135deg,#f59e0b,#f97316);color:#fff}.htr.m{background:#fef3c7;color:#92400e}.htr.l{background:var(--gray-100);color:var(--gray-500)}
+.hti-arrow{color:var(--gray-300);font-size:.6rem;flex-shrink:0;margin-left:auto}
+
+/* Hot Topic Detail Modal */
+.ht-modal-overlay{position:fixed;inset:0;z-index:360;background:rgba(0,0,0,.65);backdrop-filter:blur(5px);display:none;align-items:flex-end;justify-content:center}
+.ht-modal-overlay.show{display:flex}
+.ht-modal{background:#fff;width:100%;max-width:480px;max-height:92vh;border-radius:20px 20px 0 0;overflow:hidden;animation:slideUp .35s cubic-bezier(.2,.6,.3,1);display:flex;flex-direction:column}
+.ht-modal-header{padding:1.1rem 1.25rem;background:linear-gradient(135deg,#fff7ed,#fef3c7);border-bottom:1px solid #fde68a;display:flex;align-items:flex-start;gap:.75rem;flex-shrink:0}
+.ht-modal-rank{min-width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:900;flex-shrink:0}
+.ht-modal-rank.t{background:linear-gradient(135deg,#f59e0b,#f97316);color:#fff;box-shadow:0 3px 12px rgba(245,158,11,.4)}
+.ht-modal-rank.m{background:#fef3c7;color:#92400e;border:2px solid #fde68a}
+.ht-modal-rank.l{background:var(--gray-100);color:var(--gray-500);border:2px solid var(--gray-200)}
+.ht-modal-title-area{flex:1;min-width:0}
+.ht-modal-title{font-size:.92rem;font-weight:800;color:#92400e;line-height:1.4;word-break:keep-all}
+.ht-modal-stars{margin-top:3px;font-size:.65rem;font-weight:700;color:#b45309}
+.ht-modal-close{width:32px;height:32px;border-radius:50%;border:none;background:rgba(146,64,14,.1);cursor:pointer;display:flex;align-items:center;justify-content:center;color:#92400e;flex-shrink:0;transition:background .15s}
+.ht-modal-close:active{background:rgba(146,64,14,.2)}
+.ht-modal-scroll{overflow-y:auto;flex:1;overscroll-behavior:contain}
+.ht-modal-section{padding:1rem 1.25rem}
+.ht-modal-section-title{display:flex;align-items:center;gap:.4rem;font-size:.78rem;font-weight:800;color:var(--gray-800);margin-bottom:.75rem;padding-bottom:.5rem;border-bottom:2px solid var(--gray-100)}
+.ht-modal-section-title i{color:var(--primary);font-size:.72rem}
+.ht-modal-summary{font-size:.84rem;line-height:1.9;color:var(--gray-600);word-break:keep-all}
+.ht-modal-summary .hl-yellow,.ht-modal-summary .hl-blue,.ht-modal-summary .hl-pink{font-size:inherit}
+.ht-modal-no-match{padding:1.5rem;text-align:center;color:var(--gray-400);font-size:.8rem}
+.ht-modal-no-match i{font-size:1.5rem;display:block;margin-bottom:.5rem;color:var(--gray-300)}
+.ht-modal-quiz-section{padding:0 1.25rem 1.25rem;border-top:1px solid var(--gray-100);margin-top:.5rem}
+.ht-modal-quiz-title{display:flex;align-items:center;gap:.4rem;font-size:.78rem;font-weight:800;color:var(--gray-800);margin:1rem 0 .75rem;padding-bottom:.5rem;border-bottom:2px solid var(--gray-100)}
+.ht-modal-quiz-title i{color:#f59e0b;font-size:.72rem}
+.ht-modal-quiz-count{margin-left:auto;font-size:.65rem;font-weight:700;color:var(--primary);background:var(--primary-bg);padding:2px 8px;border-radius:50px}
+.ht-q-item{background:var(--gray-50);border-radius:var(--radius-sm);padding:1rem;margin-bottom:.75rem;border:1px solid var(--gray-100)}
+.ht-q-meta{font-size:.7rem;font-weight:600;color:var(--primary);margin-bottom:.5rem;display:flex;align-items:center;gap:.35rem}
+.ht-q-text{font-size:.82rem;line-height:1.7;color:var(--gray-700);margin-bottom:.7rem;white-space:pre-wrap;word-break:keep-all}
+.ht-q-opts{display:flex;flex-direction:column;gap:.3rem}
+.ht-q-opt{display:flex;align-items:flex-start;gap:.45rem;padding:.5rem .6rem;border-radius:8px;font-size:.79rem;line-height:1.5;color:var(--gray-600);background:#fff;border:1.5px solid var(--gray-100);cursor:pointer;transition:all .15s}
+.ht-q-opt:active{transform:scale(.98)}
+.ht-q-opt.answered{cursor:default}
+.ht-q-opt.correct-answer{border-color:var(--success);background:var(--success-bg);color:var(--success);font-weight:600}
+.ht-q-opt.wrong-selected{border-color:var(--danger);background:var(--danger-bg);color:var(--danger);font-weight:600}
+.ht-q-opt-num{font-weight:700;min-width:16px;flex-shrink:0}
+.ht-q-result{margin-top:.6rem;padding:.5rem .75rem;border-radius:8px;font-size:.76rem;font-weight:700;display:flex;align-items:center;gap:.35rem}
+.ht-q-result.correct{background:var(--success-bg);color:var(--success)}
+.ht-q-result.wrong{background:var(--danger-bg);color:var(--danger)}
+.ht-q-expl{margin-top:.5rem;padding:.6rem .75rem;background:#fff;border-radius:8px;border-left:3px solid var(--primary);font-size:.76rem;line-height:1.65;color:var(--gray-500)}
+.ht-q-expl-btn{margin-top:.4rem;padding:.35rem .65rem;border:1px solid var(--gray-200);border-radius:6px;background:#fff;font-size:.7rem;font-weight:600;cursor:pointer;font-family:inherit;color:var(--gray-400)}
+.ht-q-score{margin-top:.75rem;padding:.85rem;background:linear-gradient(135deg,var(--primary-bg),#e8e0ff);border-radius:var(--radius-sm);text-align:center}
 .exb{margin:.75rem 1rem;padding:1.1rem;background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:var(--radius);color:#fff;position:relative;overflow:hidden}
 .exb::before{content:'';position:absolute;top:-30%;right:-15%;width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,.1)}
 .exb h3{font-size:.92rem;font-weight:800;position:relative;z-index:1}
@@ -1915,6 +1967,30 @@ body {
 </div>
 
 <!-- Related Question Full Modal -->
+<!-- Hot Topic Detail Modal -->
+<div class="ht-modal-overlay" id="htModalOverlay">
+  <div class="ht-modal">
+    <div class="ht-modal-header">
+      <div class="ht-modal-rank" id="htModalRank"></div>
+      <div class="ht-modal-title-area">
+        <div class="ht-modal-title" id="htModalTitle"></div>
+        <div class="ht-modal-stars" id="htModalStars"></div>
+      </div>
+      <button class="ht-modal-close" onclick="closeHtModal()"><i class="fas fa-xmark"></i></button>
+    </div>
+    <div class="ht-modal-scroll">
+      <div class="ht-modal-section" id="htModalSummarySection">
+        <div class="ht-modal-section-title"><i class="fas fa-book-open"></i> 요약 설명</div>
+        <div class="ht-modal-summary" id="htModalSummary"></div>
+      </div>
+      <div class="ht-modal-quiz-section" id="htModalQuizSection">
+        <div class="ht-modal-quiz-title"><i class="fas fa-pen-to-square"></i> 관련 기출문제 <span class="ht-modal-quiz-count" id="htModalQuizCount"></span></div>
+        <div id="htModalQuizBody"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="related-q-modal-overlay" id="relatedQModalOverlay">
   <div class="related-q-modal">
     <div class="related-q-modal-header">
@@ -5676,9 +5752,14 @@ function _renderChapters(el){
   const s=SUMMARY_PARSED?.subjects.find(x=>x.name===summaryState.subject);if(!s)return;
   let ht='';
   if(s.hotTopics.length>0){
-    ht=`<div class="htl"><div class="hth"><h3>🔥 ${s.name} 빈출 TOP ${s.hotTopics.length}</h3></div>${s.hotTopics.map((h,i)=>{
-      const rc=i<3?'t':i<10?'m':'l';return `<div class="hti"><div class="htr ${rc}">${i+1}</div><div style="flex:1;line-height:1.4">${escHtml(h.text)}</div><span style="font-size:.7rem;flex-shrink:0">${'⭐'.repeat(Math.min(h.stars,3))}</span></div>`;
-    }).join('')}</div>`;
+    const isOpen=window._htListOpen&&window._htListOpen[summaryState.subject];
+    ht=`<div class="htl"><div class="hth" onclick="_toggleHtList('${summaryState.subject}')">
+      <h3>🔥 ${s.name} 빈출 TOP ${s.hotTopics.length}</h3>
+      <div class="ht-toggle ${isOpen?'open':''}"><span>${isOpen?'접기':'펼치기'}</span> <i class="fas fa-chevron-down"></i></div>
+    </div><div class="ht-body ${isOpen?'open':''}">${s.hotTopics.map((h,i)=>{
+      const rc=i<3?'t':i<10?'m':'l';
+      return `<div class="hti" onclick="openHtModal('${summaryState.subject}',${i})"><div class="htr ${rc}">${i+1}</div><div style="flex:1;line-height:1.4">${escHtml(h.text)}</div><span style="font-size:.7rem;flex-shrink:0">${'⭐'.repeat(Math.min(h.stars,3))}</span><i class="fas fa-chevron-right hti-arrow"></i></div>`;
+    }).join('')}</div></div>`;
   }
   el.innerHTML=ht+`<div class="summary-chapter-list">${s.chapters.map((ch,i)=>{
     const tc=ch.topics.length,hc=ch.topics.filter(t=>t.stars>=2).length;
@@ -5717,6 +5798,182 @@ function _openRelTopic(ci,ti){
   rq.sort((a,b)=>b.mc-a.mc);rq=rq.slice(0,10);
   if(rq.length>0){const d=encodeURIComponent(JSON.stringify(rq.map(r=>({year:r.year,code:r.code,qNum:r.qNum}))));openRelatedQModal(d);}
 }
+
+// ===== HOT TOPIC (빈출 TOP 20) COLLAPSIBLE & MODAL =====
+window._htListOpen = {};
+window._htQuizState = {};
+
+function _toggleHtList(subjectName){
+  if(!window._htListOpen) window._htListOpen={};
+  window._htListOpen[subjectName] = !window._htListOpen[subjectName];
+  _renderChapters(document.getElementById('summaryContent'));
+}
+
+function openHtModal(subjectName, hotIdx){
+  const s = SUMMARY_PARSED?.subjects.find(x=>x.name===subjectName);
+  if(!s || !s.hotTopics[hotIdx]) return;
+  const h = s.hotTopics[hotIdx];
+  window._htQuizState = {};
+  window._htCurrentSubject = subjectName;
+  window._htCurrentIdx = hotIdx;
+
+  // Rank badge
+  const rankEl = document.getElementById('htModalRank');
+  const rc = hotIdx<3?'t':hotIdx<10?'m':'l';
+  rankEl.className = 'ht-modal-rank '+rc;
+  rankEl.textContent = hotIdx+1;
+
+  // Title
+  document.getElementById('htModalTitle').textContent = h.text;
+  const starsText = h.stars>=3 ? '★★★ 최다빈출' : h.stars>=2 ? '★★ 빈출' : h.stars>=1 ? '★ 기출' : '';
+  document.getElementById('htModalStars').textContent = starsText;
+
+  // Find matching topics from summary text
+  const keywords = h.text.replace(/\(.*?\)/g,' ').split(/[\s·,·()（）\-\/]+/).filter(k=>k.length>=2);
+  let matchedTopics = [];
+  for(const ch of s.chapters){
+    for(const t of ch.topics){
+      const topicText = t.title + ' ' + t.text;
+      const mc = keywords.filter(k=>topicText.includes(k)).length;
+      if(mc >= 2 || (keywords.length <= 3 && mc >= 1)) {
+        matchedTopics.push({topic:t, chapter:ch, score:mc});
+      }
+    }
+  }
+  matchedTopics.sort((a,b)=>b.score-a.score);
+  matchedTopics = matchedTopics.slice(0,3);
+
+  // Render summary
+  const summaryEl = document.getElementById('htModalSummary');
+  const summSection = document.getElementById('htModalSummarySection');
+  if(matchedTopics.length > 0) {
+    summSection.style.display = 'block';
+    summaryEl.innerHTML = matchedTopics.map((m,i) => {
+      const hl = _hlText(m.topic.text);
+      return `<div style="margin-bottom:${i<matchedTopics.length-1?'1.2rem':'0'}">
+        <div style="font-size:.76rem;font-weight:700;color:var(--primary);margin-bottom:.35rem;display:flex;align-items:center;gap:.3rem">
+          <i class="fas fa-bookmark" style="font-size:.6rem"></i> ${escHtml(m.chapter.title)} › ${escHtml(m.topic.title)}
+          ${m.topic.stars>=3?'<span class="star-badge hot">🔥 최다빈출</span>':m.topic.stars>=2?'<span class="star-badge warm">⭐ 빈출</span>':''}
+        </div>
+        <div style="font-size:.83rem;line-height:1.85;color:var(--gray-600)">${hl||escHtml(m.topic.text)}</div>
+      </div>`;
+    }).join('');
+  } else {
+    summSection.style.display = 'block';
+    summaryEl.innerHTML = `<div class="ht-modal-no-match"><i class="fas fa-search"></i>관련 요약 내용을 준비중입니다</div>`;
+  }
+
+  // Find related quiz questions
+  const quizSection = document.getElementById('htModalQuizSection');
+  const quizBody = document.getElementById('htModalQuizBody');
+  const quizCount = document.getElementById('htModalQuizCount');
+  let rq = [];
+  for(const yr of YEARS){
+    const yd = allData[yr]; if(!yd) continue;
+    for(const sj of yd.subjects){
+      if(sj.name !== subjectName) continue;
+      for(const q of sj.questions){
+        const qt = q.question + ' ' + q.options.map(o=>o.text).join(' ');
+        const mc = keywords.filter(k=>qt.includes(k)).length;
+        if(mc >= 1) rq.push({year:yr,code:sj.code,qNum:q.number,mc,fullQ:q});
+      }
+    }
+  }
+  rq.sort((a,b)=>b.mc - a.mc || b.year - a.year);
+  rq = rq.slice(0,10);
+  window._htQuizQuestions = rq;
+
+  if(rq.length > 0){
+    quizSection.style.display = 'block';
+    quizCount.textContent = rq.length + '개';
+    _renderHtQuiz();
+  } else {
+    quizSection.style.display = 'none';
+  }
+
+  document.getElementById('htModalOverlay').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function _renderHtQuiz(){
+  const body = document.getElementById('htModalQuizBody');
+  const rq = window._htQuizQuestions || [];
+  body.innerHTML = rq.map((item,idx) => {
+    const {fullQ, year, qNum} = item;
+    const state = window._htQuizState[idx];
+    const answered = state && state.answered;
+
+    const optsHtml = fullQ.options.map(opt => {
+      let cls = 'ht-q-opt';
+      if(answered){
+        cls += ' answered';
+        if(opt.num === fullQ.answer) cls += ' correct-answer';
+        if(state.selectedOpt === opt.num && opt.num !== fullQ.answer) cls += ' wrong-selected';
+      }
+      const oc = answered ? '' : `onclick="selectHtQuizOpt(${idx},${opt.num})"`;
+      return `<div class="${cls}" ${oc}><span class="ht-q-opt-num">${opt.num}.</span><span>${escHtml(opt.text)}</span></div>`;
+    }).join('');
+
+    let resultHtml = '';
+    if(answered){
+      resultHtml = state.correct
+        ? `<div class="ht-q-result correct"><i class="fas fa-check-circle"></i> 정답입니다!</div>`
+        : `<div class="ht-q-result wrong"><i class="fas fa-times-circle"></i> 오답 (정답: ${fullQ.answer}번)</div>`;
+    }
+
+    let explHtml = '';
+    if(answered && fullQ.correctExplanation){
+      explHtml = `<div class="ht-q-expl" id="htExpl_${idx}" style="display:none"><strong>💡 해설:</strong> ${escHtml(fullQ.correctExplanation)}</div>
+        <button class="ht-q-expl-btn" onclick="toggleHtExpl(${idx})"><i class="fas fa-lightbulb"></i> 해설 보기</button>`;
+    }
+
+    return `<div class="ht-q-item" id="htQ_${idx}">
+      <div class="ht-q-meta"><i class="fas fa-calendar"></i> ${year}년 · ${qNum}번 ${answered ? (state.correct ? '<span style="color:var(--success);margin-left:auto">✅</span>' : '<span style="color:var(--danger);margin-left:auto">❌</span>') : '<span style="color:var(--gray-400);margin-left:auto;font-size:.66rem">선택지를 눌러 풀어보세요</span>'}</div>
+      <div class="ht-q-text">${escHtml(fullQ.question)}</div>
+      <div class="ht-q-opts">${optsHtml}</div>
+      ${resultHtml}${explHtml}
+    </div>`;
+  }).join('');
+
+  // Score summary if all answered
+  const totalQ = rq.length;
+  const answeredCount = Object.keys(window._htQuizState).length;
+  if(answeredCount === totalQ && totalQ > 0){
+    const correctCount = Object.values(window._htQuizState).filter(s=>s.correct).length;
+    const rate = Math.round(correctCount/totalQ*100);
+    body.insertAdjacentHTML('beforeend', `<div class="ht-q-score">
+      <div style="font-size:1.4rem;font-weight:800;color:var(--primary);margin-bottom:.3rem">${correctCount} / ${totalQ}</div>
+      <div style="font-size:.8rem;font-weight:600;color:var(--gray-600)">${rate}% 정답률</div>
+      <div style="margin-top:.4rem;font-size:.73rem;color:${rate>=60?'var(--success)':'var(--danger)'};font-weight:700">${rate>=60?'🎉 합격 기준 통과!':'📚 더 노력이 필요해요!'}</div>
+    </div>`);
+  }
+}
+
+function selectHtQuizOpt(idx, optNum){
+  if(window._htQuizState[idx]?.answered) return;
+  const item = window._htQuizQuestions[idx];
+  if(!item) return;
+  const correct = optNum === item.fullQ.answer;
+  window._htQuizState[idx] = {answered:true, selectedOpt:optNum, correct};
+  _renderHtQuiz();
+  setTimeout(()=>{
+    const el = document.getElementById('htQ_'+idx);
+    if(el) el.scrollIntoView({behavior:'smooth',block:'center'});
+  },100);
+}
+
+function toggleHtExpl(idx){
+  const el = document.getElementById('htExpl_'+idx);
+  if(el) el.style.display = el.style.display==='none' ? 'block' : 'none';
+}
+
+function closeHtModal(){
+  document.getElementById('htModalOverlay').classList.remove('show');
+  document.body.style.overflow = '';
+}
+document.getElementById('htModalOverlay').addEventListener('click', (e)=>{
+  if(e.target===e.currentTarget) closeHtModal();
+});
 
 // ===== INIT =====
 async function init() {

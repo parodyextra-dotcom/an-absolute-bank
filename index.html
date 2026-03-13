@@ -1869,6 +1869,40 @@ body {
 .quiz-timer-inline.warning {
   background: linear-gradient(135deg, #ef4444, #dc2626);
 }
+/* ===== ENHANCED SUMMARY ===== */
+.star-badge{display:inline-flex;align-items:center;gap:2px;font-size:.58rem;font-weight:800;padding:2px 7px;border-radius:50px;line-height:1.3;white-space:nowrap;vertical-align:middle;margin-left:6px}
+.star-badge.hot{background:linear-gradient(135deg,#ff6b6b,#ee5a24);color:#fff;box-shadow:0 2px 8px rgba(238,90,36,.3);animation:starPulse 2s ease-in-out infinite}
+.star-badge.warm{background:linear-gradient(135deg,#ffa94d,#f59e0b);color:#fff}
+.star-badge.cool{background:linear-gradient(135deg,#74c0fc,#4dabf7);color:#fff}
+@keyframes starPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+.hl-yellow{background:linear-gradient(to bottom,transparent 55%,#fef08a 55%,#fef08a 90%,transparent 90%);padding:0 2px;font-weight:600;color:var(--gray-900)}
+.hl-pink{background:linear-gradient(to bottom,transparent 55%,#fecdd3 55%,#fecdd3 90%,transparent 90%);padding:0 2px;font-weight:600;color:var(--gray-900)}
+.hl-blue{background:linear-gradient(to bottom,transparent 55%,#bfdbfe 55%,#bfdbfe 90%,transparent 90%);padding:0 2px;font-weight:600;color:var(--gray-900)}
+.stc{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);margin:.6rem 1rem;overflow:hidden;border-left:4px solid var(--gray-200)}
+.stc.hot{border-left-color:#ef4444;background:linear-gradient(to right,#fff5f5,#fff)}
+.stc.warm{border-left-color:#f59e0b;background:linear-gradient(to right,#fffbeb,#fff)}
+.stc.cool{border-left-color:#3b82f6;background:linear-gradient(to right,#eff6ff,#fff)}
+.sth{display:flex;align-items:center;gap:.6rem;padding:.85rem 1rem;cursor:pointer;transition:background .15s}
+.sth:active{background:rgba(0,0,0,.02)}
+.sti{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.8rem;flex-shrink:0;color:#fff}
+.sti.hot{background:linear-gradient(135deg,#ef4444,#dc2626)}.sti.warm{background:linear-gradient(135deg,#f59e0b,#d97706)}.sti.cool{background:linear-gradient(135deg,#3b82f6,#2563eb)}.sti.none{background:var(--gray-300)}
+.stt{flex:1;font-size:.86rem;font-weight:700;color:var(--gray-800);line-height:1.3}
+.sta{color:var(--gray-300);font-size:.75rem;transition:transform .3s;flex-shrink:0}
+.sta.op{transform:rotate(90deg)}
+.stb{display:none;padding:0 1rem 1rem}
+.stb.op{display:block;animation:fadeIn .3s ease}
+.stx{font-size:.84rem;line-height:1.85;color:var(--gray-600);word-break:keep-all}
+.htl{margin:.6rem 1rem;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+.hth{padding:.85rem 1rem;background:linear-gradient(135deg,#fff7ed,#fef3c7);border-bottom:1px solid #fde68a;display:flex;align-items:center;gap:.5rem}
+.hth h3{font-size:.88rem;font-weight:800;color:#92400e}
+.hti{display:flex;align-items:center;gap:.65rem;padding:.6rem 1rem;border-bottom:1px solid var(--gray-50);font-size:.8rem;color:var(--gray-700)}
+.hti:last-child{border-bottom:none}
+.htr{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:800;flex-shrink:0}
+.htr.t{background:linear-gradient(135deg,#f59e0b,#f97316);color:#fff}.htr.m{background:#fef3c7;color:#92400e}.htr.l{background:var(--gray-100);color:var(--gray-500)}
+.exb{margin:.75rem 1rem;padding:1.1rem;background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:var(--radius);color:#fff;position:relative;overflow:hidden}
+.exb::before{content:'';position:absolute;top:-30%;right:-15%;width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,.1)}
+.exb h3{font-size:.92rem;font-weight:800;position:relative;z-index:1}
+.exb p{font-size:.75rem;opacity:.85;margin-top:.2rem;position:relative;z-index:1;line-height:1.5}
 </style>
 </head>
 <body>
@@ -2396,16 +2430,16 @@ body {
 <script>
 // ===== GLOBAL STATE =====
 const DATA_URLS = {
-  2016: 'data/2016.json.txt',
-  2017: 'data/2017.json.txt',
-  2018: 'data/2018.json.txt',
-  2019: 'data/2019.json.txt',
-  2020: 'data/2020.json.txt',
-  2021: 'data/2021.json.txt',
-  2022: 'data/2022.json.txt',
-  2023: 'data/2023.json.txt',
-  2024: 'data/2024.json.txt',
-  2025: 'data/2025.json.txt'
+  2016: 'data/2016.json',
+  2017: 'data/2017.json',
+  2018: 'data/2018.json',
+  2019: 'data/2019.json',
+  2020: 'data/2020.json',
+  2021: 'data/2021.json',
+  2022: 'data/2022.json',
+  2023: 'data/2023.json',
+  2024: 'data/2024.json',
+  2025: 'data/2025.json'
 };
 const YEARS = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025];
 const SUBJECT_COLORS = ['#6366f1','#8b5cf6','#ec4899','#f59e0b','#10b981','#06b6d4','#f97316'];
@@ -4187,7 +4221,7 @@ document.getElementById('wrongModal').addEventListener('click', (e) => {
 });
 
 // ===== SUMMARY (요점정리) =====
-const CURRICULUM = {
+let CURRICULUM = {
   "스포츠교육학": {
     emoji: "📚",
     color: "#6366f1",
@@ -5565,6 +5599,125 @@ function toggleRqExpl(idx) {
   }
 }
 
+// ===== DYNAMIC SUMMARY FROM 요점정리.txt =====
+let SUMMARY_PARSED = null;
+let summaryOpenTopics = {};
+const SUBJ_EMOJI = {'스포츠교육학':'📚','스포츠사회학':'🌐','스포츠심리학':'🧠','스포츠윤리':'⚖️','운동생리학':'🫀','운동역학':'⚙️','한국체육사':'🏛️'};
+const SUBJ_CLR = {'스포츠교육학':'#6366f1','스포츠사회학':'#8b5cf6','스포츠심리학':'#ec4899','스포츠윤리':'#f59e0b','운동생리학':'#10b981','운동역학':'#06b6d4','한국체육사':'#f97316'};
+
+function _parseSummary(text) {
+  const lines = text.split('\n'), result = {overview:'', subjects:[]};
+  let cs=null,cc=null,ct=null,hot=false,ov=[];
+  let i=0;
+  while(i<lines.length&&!lines[i].trim().startsWith('🔷')){const l=lines[i].trim();if(l&&!l.startsWith('📚'))ov.push(l);i++;}
+  result.overview=ov.join(' ').trim();
+  while(i<lines.length){
+    const l=lines[i].trim();
+    if(l.startsWith('🔷')){hot=false;const m=l.match(/🔷\s*과목\s*\d+\.\s*(.+)/);if(m){cs={name:m[1].trim(),emoji:SUBJ_EMOJI[m[1].trim()]||'📖',color:SUBJ_CLR[m[1].trim()]||'#6366f1',chapters:[],hotTopics:[]};result.subjects.push(cs);cc=null;ct=null;}i++;continue;}
+    if(l.startsWith('🔥')&&cs){hot=true;i++;continue;}
+    if(l.startsWith('📌')){hot=false;cs=null;i++;continue;}
+    if(hot&&cs&&/^[①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳]/.test(l)){const s=(l.match(/★/g)||[]).length;const t=l.replace(/^[①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳]\s*/,'').replace(/\s*★+\s*$/,'').trim();cs.hotTopics.push({text:t,stars:s});i++;continue;}
+    if(/^\d+장\s*·/.test(l)&&cs){hot=false;const m=l.match(/^(\d+)장\s*·\s*(.+)/);if(m){cc={title:`${m[1]}장. ${m[2].trim()}`,topics:[]};cs.chapters.push(cc);ct=null;}i++;continue;}
+    if(l.startsWith('▸')&&cc&&!hot){const s=(l.match(/★/g)||[]).length;let t=l.replace(/^▸\s*/,'').replace(/\s*★+.*$/,'').trim();ct={title:t,stars:s,_l:[]};cc.topics.push(ct);i++;continue;}
+    if(ct&&!hot&&l)ct._l.push(l);
+    i++;
+  }
+  for(const s of result.subjects)for(const c of s.chapters)for(const t of c.topics){t.text=t._l.join('\n');delete t._l;}
+  return result;
+}
+
+function _hlText(text){
+  if(!text)return '';
+  let h=escHtml(text);
+  h=h.replace(/"([^"]+)"/g,'<span class="hl-yellow">"$1"</span>');
+  h=h.replace(/"([^"]+)"/g,'<span class="hl-yellow">"$1"</span>');
+  h=h.replace(/\(([A-Za-z][A-Za-z\s\.,'&-]{2,})\)/g,'<span class="hl-blue">($1)</span>');
+  h=h.replace(/(?:포함되지 않는다|해당하지 않는다|아닌 것|옳지 않은|해당하지 않|아닌 것은)/g,'<span class="hl-pink">$&</span>');
+  h=h.replace(/→/g,'<span style="color:var(--primary);font-weight:700">→</span>');
+  return h;
+}
+function _sb(s){if(s>=3)return '<span class="star-badge hot">🔥 최다빈출</span>';if(s>=2)return '<span class="star-badge warm">⭐ 빈출</span>';if(s>=1)return '<span class="star-badge cool">📌 기출</span>';return '';}
+function _sc(s){if(s>=3)return 'hot';if(s>=2)return 'warm';if(s>=1)return 'cool';return 'none';}
+
+async function loadSummaryData(){
+  try{const r=await fetch('data/요점정리.txt');const t=await r.text();SUMMARY_PARSED=_parseSummary(t);
+  // Override CURRICULUM with parsed data
+  const c={};for(const s of SUMMARY_PARSED.subjects){c[s.name]={emoji:s.emoji,color:s.color,chapters:s.chapters.map(ch=>({title:ch.title,subs:ch.topics.map(t=>({title:t.title,stars:t.stars,points:[{t:t.title,d:t.text}]}))}))};} CURRICULUM=c;
+  }catch(e){console.error('Failed to load summary:',e);}
+}
+
+// Override summary rendering functions
+const _origRenderSummary = renderSummary;
+renderSummary = function() {
+  if (!SUMMARY_PARSED) { _origRenderSummary(); return; }
+  const bc=document.getElementById('summaryBreadcrumb'), content=document.getElementById('summaryContent');
+  let bh=`<span class="summary-breadcrumb-item ${summaryState.level==='subjects'?'current':''}" onclick="goSummaryLevel('subjects')">전체 과목</span>`;
+  if(summaryState.subject){bh+=`<i class="fas fa-chevron-right summary-breadcrumb-sep"></i><span class="summary-breadcrumb-item ${summaryState.level==='chapters'?'current':''}" onclick="goSummaryLevel('chapters')">${summaryState.subject}</span>`;}
+  if(summaryState.chapterIdx!==null&&summaryState.level==='subs'){const ch=CURRICULUM[summaryState.subject]?.chapters[summaryState.chapterIdx];if(ch)bh+=`<i class="fas fa-chevron-right summary-breadcrumb-sep"></i><span class="summary-breadcrumb-item current">${ch.title}</span>`;}
+  bc.innerHTML=bh;
+  if(summaryState.level==='subjects')_renderSubjects(content);
+  else if(summaryState.level==='chapters')_renderChapters(content);
+  else if(summaryState.level==='subs')_renderTopics(content);
+  else if(summaryState.level==='content'){summaryState.level='subs';renderSummary();}
+};
+
+function _renderSubjects(el){
+  const sel=getSelectedSubjects(),subjs=SUMMARY_PARSED.subjects;
+  let ov=SUMMARY_PARSED.overview?`<div class="exb"><h3>📋 시험 개요</h3><p>${escHtml(SUMMARY_PARSED.overview)}</p></div>`:'';
+  el.innerHTML=ov+`<div class="summary-subject-grid">${subjs.map(s=>{
+    const isSel=sel.includes(s.name),chC=s.chapters.length,tC=s.chapters.reduce((a,c)=>a+c.topics.length,0),hC=s.hotTopics.filter(h=>h.stars>=3).length;
+    return `<div class="summary-subject-card ${isSel?'':'subject-unselected'}" onclick="${isSel?`openSummaryChapters('${s.name}')`:`handleUnselectedSubject('${s.name}')`}">
+      <span class="subject-emoji">${s.emoji}</span><div class="subject-title">${s.name}</div>
+      <div class="subject-count">${isSel?`${chC}단원 · ${tC}주제${hC>0?' · 🔥'+hC:''}`:'미선택 과목'}</div></div>`;
+  }).join('')}</div>`;
+}
+
+function _renderChapters(el){
+  const s=SUMMARY_PARSED?.subjects.find(x=>x.name===summaryState.subject);if(!s)return;
+  let ht='';
+  if(s.hotTopics.length>0){
+    ht=`<div class="htl"><div class="hth"><h3>🔥 ${s.name} 빈출 TOP ${s.hotTopics.length}</h3></div>${s.hotTopics.map((h,i)=>{
+      const rc=i<3?'t':i<10?'m':'l';return `<div class="hti"><div class="htr ${rc}">${i+1}</div><div style="flex:1;line-height:1.4">${escHtml(h.text)}</div><span style="font-size:.7rem;flex-shrink:0">${'⭐'.repeat(Math.min(h.stars,3))}</span></div>`;
+    }).join('')}</div>`;
+  }
+  el.innerHTML=ht+`<div class="summary-chapter-list">${s.chapters.map((ch,i)=>{
+    const tc=ch.topics.length,hc=ch.topics.filter(t=>t.stars>=2).length;
+    return `<div class="summary-chapter-card"><div class="summary-chapter-header" onclick="openSummarySubs(${i})">
+      <div class="summary-chapter-num" style="background:${s.color}">${i+1}</div>
+      <div class="summary-chapter-info"><div class="summary-chapter-title">${ch.title}</div><div class="summary-chapter-sub">${tc}개 주제${hc>0?' · 🔥'+hc+' 빈출':''}</div></div>
+      <div class="summary-chapter-arrow"><i class="fas fa-chevron-right"></i></div></div></div>`;
+  }).join('')}</div>`;
+}
+
+function _renderTopics(el){
+  const s=SUMMARY_PARSED?.subjects.find(x=>x.name===summaryState.subject);if(!s)return;
+  const ch=s.chapters[summaryState.chapterIdx];if(!ch)return;
+  el.innerHTML=ch.topics.map((t,ti)=>{
+    const sc=_sc(t.stars),badge=_sb(t.stars),key=`${summaryState.chapterIdx}_${ti}`,isOp=summaryOpenTopics[key];
+    const hl=_hlText(t.text);
+    let relBtn='';
+    const kw=t.title.split(/[\s·,·()（）]+/).filter(k=>k.length>=2);
+    let rc=0;for(const yr of YEARS){const yd=allData[yr];if(!yd)continue;for(const sj of yd.subjects){if(sj.name!==summaryState.subject)continue;for(const q of sj.questions){const qt=q.question+' '+q.options.map(o=>o.text).join(' ');if(kw.filter(k=>qt.includes(k)).length>=1)rc++;}}}
+    if(rc>0)relBtn=`<div style="margin-top:.75rem"><button onclick="event.stopPropagation();_openRelTopic(${summaryState.chapterIdx},${ti})" style="padding:.4rem .75rem;border:1.5px solid var(--primary);background:var(--primary-bg);color:var(--primary);border-radius:50px;font-size:.72rem;font-weight:600;cursor:pointer;font-family:inherit"><i class="fas fa-link"></i> 관련 기출문제 ${rc}개</button></div>`;
+    return `<div class="stc ${sc}"><div class="sth" onclick="_togTopic('${key}')">
+      <div class="sti ${sc}"><i class="fas fa-${t.stars>=3?'fire':t.stars>=2?'star':t.stars>=1?'bookmark':'circle-info'}"></i></div>
+      <div class="stt">${escHtml(t.title)}${badge}</div>
+      <div class="sta ${isOp?'op':''}"><i class="fas fa-chevron-right"></i></div></div>
+      <div class="stb ${isOp?'op':''}">${hl?`<div class="stx">${hl}</div>`:''}${relBtn}</div></div>`;
+  }).join('')+`<div style="padding:.5rem 1rem 1rem"><button class="btn-prev" style="width:100%;justify-content:center;border-radius:var(--radius-sm);border:none;padding:.85rem" onclick="goSummaryLevel('chapters')"><i class="fas fa-chevron-left"></i> ${summaryState.subject} 전체 단원으로</button></div>`;
+}
+
+function _togTopic(key){summaryOpenTopics[key]=!summaryOpenTopics[key];_renderTopics(document.getElementById('summaryContent'));}
+
+function _openRelTopic(ci,ti){
+  const s=SUMMARY_PARSED?.subjects.find(x=>x.name===summaryState.subject);if(!s)return;
+  const t=s.chapters[ci]?.topics[ti];if(!t)return;
+  const kw=t.title.split(/[\s·,·()（）]+/).filter(k=>k.length>=2);
+  let rq=[];for(const yr of YEARS){const yd=allData[yr];if(!yd)continue;for(const sj of yd.subjects){if(sj.name!==summaryState.subject)continue;for(const q of sj.questions){const qt=q.question+' '+q.options.map(o=>o.text).join(' ');const mc=kw.filter(k=>qt.includes(k)).length;if(mc>=1)rq.push({year:yr,code:sj.code,qNum:q.number,mc});}}}
+  rq.sort((a,b)=>b.mc-a.mc);rq=rq.slice(0,10);
+  if(rq.length>0){const d=encodeURIComponent(JSON.stringify(rq.map(r=>({year:r.year,code:r.code,qNum:r.qNum}))));openRelatedQModal(d);}
+}
+
 // ===== INIT =====
 async function init() {
   loadSettings();
@@ -5573,7 +5726,7 @@ async function init() {
   updateBookmarkBadge();
   renderDday();
   renderSubjectSelection();
-  await loadAllData();
+  await Promise.all([loadAllData(), loadSummaryData()]);
   refreshHomeStats();
   renderHomeBoxes();
   renderSummary();

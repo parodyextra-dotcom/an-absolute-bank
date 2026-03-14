@@ -2144,19 +2144,6 @@ body {
     <p>2급 전문스포츠지도사 필기시험 대비</p>
   </div>
 
-  <!-- 🔥 배틀 모드 배너 -->
-  <div class="battle-banner" onclick="window.location.href='battle.html'">
-    <div class="battle-banner-bg"></div>
-    <div class="battle-banner-content">
-      <div class="battle-banner-icon">⚔️</div>
-      <div class="battle-banner-info">
-        <div class="battle-banner-title">배틀 모드</div>
-        <div class="battle-banner-desc">최대 4명과 실시간 문제 대결!</div>
-      </div>
-      <div class="battle-banner-arrow"><i class="fas fa-chevron-right"></i></div>
-    </div>
-  </div>
-
   <!-- D-Day Box -->
   <div class="dday-box" id="ddayBox" onclick="openDdaySetting()">
     <div class="dday-top">
@@ -2175,6 +2162,19 @@ body {
         <div class="dday-progress-fill" id="ddayProgressFill" style="width:0%"></div>
       </div>
       <div class="dday-progress-text" id="ddayProgressText">0%</div>
+    </div>
+  </div>
+
+  <!-- 🔥 배틀 모드 배너 -->
+  <div class="battle-banner" onclick="window.location.href='battle.html'">
+    <div class="battle-banner-bg"></div>
+    <div class="battle-banner-content">
+      <div class="battle-banner-icon">⚔️</div>
+      <div class="battle-banner-info">
+        <div class="battle-banner-title">배틀 모드</div>
+        <div class="battle-banner-desc">최대 4명과 실시간 문제 대결!</div>
+      </div>
+      <div class="battle-banner-arrow"><i class="fas fa-chevron-right"></i></div>
     </div>
   </div>
 
@@ -3168,12 +3168,14 @@ function saveDailyData(data) {
 }
 
 function generateDailyQuestions() {
-  // Collect all questions from all years
+  // Collect questions only from selected subjects
+  const selectedSubjects = getSelectedSubjects();
   const allQuestions = [];
   for (const year of YEARS) {
     const data = allData[year];
     if (!data) continue;
     for (const subj of data.subjects) {
+      if (!selectedSubjects.includes(subj.name)) continue;
       for (const q of subj.questions) {
         allQuestions.push({ year, code: subj.code, subjectName: subj.name, ...q });
       }

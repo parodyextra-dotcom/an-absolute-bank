@@ -1050,9 +1050,13 @@ const DATA_URLS = {
   2025: 'data/2025.json'
 };
 const YEARS = [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025];
+const EXTRA_DATA_URLS = {
+  '한국체육사': 'data/한국체육사300.json'
+};
 
 // ===== STATE =====
 let allData = {};
+let extraData = {}; // 추가 문제 데이터 (한국체육사300 등)
 let myPlayerId = null;
 let myNickname = '';
 let myAvatar = '🏋️';
@@ -1134,13 +1138,44 @@ async function loadAllData() {
       loaded++;
     } catch(e) { console.error(`Failed to load ${year}:`, e); }
   });
-  await Promise.all(promises);
+
+  // 추가 문제 데이터 로드 (한국체육사300 등)
+  const extraPromises = Object.entries(EXTRA_DATA_URLS).map(async ([subjectName, url]) => {
+    try {
+      const res = await fetch(url);
+      const raw = await res.json();
+      extraData[subjectName] = normalizeExtraData(subjectName, raw);
+      console.log(`✅ ${subjectName} 추가문제 ${raw.length}개 로드 완료`);
+    } catch(e) { console.error(`Failed to load extra data for ${subjectName}:`, e); }
+  });
+
+  await Promise.all([...promises, ...extraPromises]);
   hideLoading();
   if (loaded === 0) {
     showToast('⚠️ 데이터 로딩 실패');
   } else {
     console.log(`✅ ${loaded}개 연도 데이터 로드 완료`);
   }
+}
+
+function normalizeExtraData(subjectName, rawArray) {
+  // 한국체육사300.json 형식: [{id, chapter, section, question, options:[], answer, explanation, wrong_explanations}, ...]
+  const questions = [];
+  for (const q of rawArray) {
+    const options = (q.options || []).map((o, i) => ({ num: i + 1, text: String(o).replace(/^[①②③④⑤\d]+[\.\)]\s*/, '') }));
+    questions.push({
+      year: '추가문제',
+      subjectName: subjectName,
+      subjectCode: '',
+      number: q.id || 0,
+      question: q.question || '',
+      options: options,
+      answer: q.answer,
+      explanation: q.explanation || '',
+      source: `${q.chapter || ''} ${q.section || ''}`.trim()
+    });
+  }
+  return questions;
 }
 
 function normalizeData(year, raw) {
@@ -1183,6 +1218,7 @@ function normalizeData(year, raw) {
 // ===== GENERATE QUESTIONS =====
 function generateBattleQuestions(subjectName, count = 20) {
   const pool = [];
+  // 1) 기출문제 풀에서 해당 과목 문제 수집
   for (const year of YEARS) {
     const data = allData[year];
     if (!data) continue;
@@ -1191,6 +1227,13 @@ function generateBattleQuestions(subjectName, count = 20) {
     for (const q of subj.questions) {
       pool.push(q);
     }
+  }
+  // 2) 추가 문제 데이터가 있으면 합침 (한국체육사300 등)
+  if (extraData[subjectName] && extraData[subjectName].length > 0) {
+    for (const q of extraData[subjectName]) {
+      pool.push(q);
+    }
+    console.log(`🏛️ ${subjectName}: 기출 ${pool.length - extraData[subjectName].length}문제 + 추가 ${extraData[subjectName].length}문제 = 총 ${pool.length}문제 풀`);
   }
   // Shuffle (Fisher-Yates)
   for (let i = pool.length - 1; i > 0; i--) {

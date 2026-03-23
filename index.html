@@ -1955,6 +1955,31 @@ body {
 .ht-video-btn:hover{background:#fef3c7;border-color:#f59e0b;transform:translateY(-1px);box-shadow:0 3px 8px rgba(245,158,11,.25)}
 .ht-video-btn:active{transform:scale(.97)}
 .ht-video-btn i{color:#ef4444;font-size:.75rem}
+/* === 동영상강의 독립 박스 === */
+.vl-box{margin:.6rem 1rem;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+.vl-header{padding:.85rem 1rem;background:linear-gradient(135deg,#fee2e2,#fff1f2);border-bottom:none;display:flex;align-items:center;gap:.5rem;cursor:pointer;transition:background .15s;user-select:none}
+.vl-header:active{background:linear-gradient(135deg,#fecaca,#fde68a)}
+.vl-header h3{font-size:.88rem;font-weight:800;color:#b91c1c;flex:1;display:flex;align-items:center;gap:.4rem}
+.vl-header h3 i{color:#ef4444;font-size:.9rem}
+.vl-toggle{display:flex;align-items:center;gap:.3rem;font-size:.68rem;font-weight:700;color:#dc2626;white-space:nowrap}
+.vl-toggle i{transition:transform .3s ease;font-size:.6rem}
+.vl-toggle.open i{transform:rotate(180deg)}
+.vl-body{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.4,0,.2,1)}
+.vl-body.open{max-height:3000px;border-top:1px solid #fecaca}
+.vl-category{padding:.55rem .9rem;background:linear-gradient(135deg,#fef2f2,#fff);border-bottom:1px solid #fee2e2;font-size:.72rem;font-weight:800;color:#991b1b;display:flex;align-items:center;gap:.35rem}
+.vl-category i{font-size:.65rem;color:#f87171}
+.vl-item{display:flex;align-items:center;gap:.65rem;padding:.55rem 1rem;border-bottom:1px solid var(--gray-50);font-size:.78rem;color:var(--gray-700);text-decoration:none;transition:all .15s}
+.vl-item:hover{background:rgba(239,68,68,.04)}
+.vl-item:active{background:rgba(239,68,68,.08);transform:scale(.99)}
+.vl-item:last-child{border-bottom:none}
+.vl-item-icon{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.vl-item-icon.top{background:linear-gradient(135deg,#ef4444,#f97316);color:#fff;font-size:.55rem;font-weight:800}
+.vl-item-icon.mid{background:#fef2f2;color:#ef4444;font-size:.55rem;font-weight:800}
+.vl-item-icon.low{background:var(--gray-100);color:var(--gray-500);font-size:.55rem;font-weight:800}
+.vl-item-title{flex:1;font-weight:600;line-height:1.3}
+.vl-item-arrow{color:var(--gray-300);font-size:.6rem;flex-shrink:0;margin-left:auto}
+.vl-item-badge{font-size:.6rem;padding:.15rem .4rem;border-radius:20px;font-weight:700;flex-shrink:0}
+.vl-item-badge.new{background:#dcfce7;color:#166534}
 .hti{display:flex;align-items:center;gap:.65rem;padding:.6rem 1rem;border-bottom:1px solid var(--gray-50);font-size:.8rem;color:var(--gray-700);cursor:pointer;transition:all .15s}
 .hti:hover{background:rgba(245,158,11,.06)}
 .hti:active{background:rgba(245,158,11,.12);transform:scale(.99)}
@@ -6076,13 +6101,15 @@ function _renderSubjects(el){
 function _renderChapters(el){
   const s=SUMMARY_PARSED?.subjects.find(x=>x.name===summaryState.subject);if(!s)return;
   let ht='';
+  // 동영상강의 독립 박스 (빈출 TOP 위에 배치)
+  const videoBox = _getVideoBox(s.name);
+  ht += videoBox;
   if(s.hotTopics.length>0){
     const isOpen=window._htListOpen&&window._htListOpen[summaryState.subject];
-    const videoLinks = _getVideoLinks(s.name);
-    ht=`<div class="htl"><div class="hth" onclick="_toggleHtList('${summaryState.subject}')">
+    ht+=`<div class="htl"><div class="hth" onclick="_toggleHtList('${summaryState.subject}')">
       <h3>🔥 ${s.name} 빈출 TOP ${s.hotTopics.length}</h3>
       <div class="ht-toggle ${isOpen?'open':''}"><span>${isOpen?'접기':'펼치기'}</span> <i class="fas fa-chevron-down"></i></div>
-    </div><div class="ht-body ${isOpen?'open':''}">${videoLinks}${s.hotTopics.map((h,i)=>{
+    </div><div class="ht-body ${isOpen?'open':''}">${s.hotTopics.map((h,i)=>{
       const rc=i<3?'t':i<10?'m':'l';
       return `<div class="hti" onclick="openHtModal('${summaryState.subject}',${i})"><div class="htr ${rc}">${i+1}</div><div style="flex:1;line-height:1.4">${escHtml(h.text)}</div><span style="font-size:.7rem;flex-shrink:0">${'⭐'.repeat(Math.min(h.stars,3))}</span><i class="fas fa-chevron-right hti-arrow"></i></div>`;
     }).join('')}</div></div>`;
@@ -6131,27 +6158,132 @@ window._htQuizState = {};
 
 // 과목별 동영상강의 YouTube 링크
 const VIDEO_LECTURES = {
-  '한국체육사': [
-    { label: '한국체육사 상', url: 'https://youtu.be/l82SXYXABVQ?si=3BbqZHQ3zYvwX4za' },
-    { label: '한국체육사 중', url: 'https://youtu.be/Gd98OLo9bXU?si=tMAZoppfqJfafKre' },
-    { label: '한국체육사 하', url: 'https://youtu.be/9zPDQ7SS1V4?si=G2lQ6o22K09-iHmr' }
+  '스포츠사회학': [
+    { label: '스포츠사회학 상', url: 'https://www.youtube.com/watch?v=lQgCSnieU4I', level: 'top' },
+    { label: '스포츠사회학 중', url: 'https://www.youtube.com/watch?v=eZuHfEloWtY', level: 'mid' },
+    { label: '스포츠사회학 하', url: 'https://www.youtube.com/watch?v=qD-7F_yUh5w', level: 'low' }
   ],
   '스포츠교육학': [
-    { label: '스포츠교육학 상', url: 'https://youtu.be/r9WV7X6iP9w?si=gCUttiAe7bS4e8jq' },
-    { label: '스포츠교육학 중', url: 'https://youtu.be/ZzrILTJuNaQ?si=FDcwRAFKOnEEHY7x' },
-    { label: '스포츠교육학 하', url: 'https://youtu.be/y9nq_NHzL-U?si=7za_5GHUsEHxhZCg' }
+    { label: '스포츠교육학 상', url: 'https://www.youtube.com/watch?v=r9WV7X6iP9w&t=474s', level: 'top' },
+    { label: '스포츠교육학 중', url: 'https://www.youtube.com/watch?v=ZzrILTJuNaQ&t=5703s', level: 'mid' },
+    { label: '스포츠교육학 하', url: 'https://www.youtube.com/watch?v=y9nq_NHzL-U&t=8s', level: 'low' }
+  ],
+  '스포츠윤리': [
+    { label: '스포츠윤리 상', url: 'https://www.youtube.com/watch?v=O51K1x0Cg_c', level: 'top' },
+    { label: '스포츠윤리 중', url: 'https://www.youtube.com/watch?v=-TAmcCs4A8g', level: 'mid' },
+    { label: '스포츠윤리 하', url: 'https://www.youtube.com/watch?v=zmZSP7l3Nco', level: 'low' }
+  ],
+  '스포츠 윤리': [
+    { label: '스포츠윤리 상', url: 'https://www.youtube.com/watch?v=O51K1x0Cg_c', level: 'top' },
+    { label: '스포츠윤리 중', url: 'https://www.youtube.com/watch?v=-TAmcCs4A8g', level: 'mid' },
+    { label: '스포츠윤리 하', url: 'https://www.youtube.com/watch?v=zmZSP7l3Nco', level: 'low' }
+  ],
+  '스포츠심리학': [
+    { label: '스포츠심리학 상', url: 'https://www.youtube.com/watch?v=jf6RhNH-C1s', level: 'top' },
+    { label: '스포츠심리학 중', url: 'https://www.youtube.com/watch?v=Pu-ZT3itIrM', level: 'mid' },
+    { label: '스포츠심리학 하', url: 'https://www.youtube.com/watch?v=mdRunLAlSKk', level: 'low' }
+  ],
+  '한국체육사': [
+    { label: '한국체육사 상', url: 'https://www.youtube.com/watch?v=W6E482fcWuw', level: 'top' },
+    { label: '한국체육사 중', url: 'https://www.youtube.com/watch?v=YpUEY4KJ8jA', level: 'mid' },
+    { label: '한국체육사 하(1.개화기)', url: 'https://www.youtube.com/watch?v=sz0mHVOo0ak', level: 'low' },
+    { label: '한국체육사 하(2.일제강점기)', url: 'https://www.youtube.com/watch?v=sz0mHVOo0ak', level: 'low' },
+    { label: '한국체육사 하(3.광복이후)', url: 'https://www.youtube.com/watch?v=p7VpQpElvfo', level: 'low' },
+    { label: '2025년 기출문제 해설', url: 'https://www.youtube.com/watch?v=h3Gy-yK1Occ', level: 'new' }
+  ],
+  '운동역학': [
+    { label: '운동역학 상', url: 'https://www.youtube.com/watch?v=qzqWhYwZhkc', level: 'top' },
+    { label: '운동역학 중', url: 'https://www.youtube.com/watch?v=wbObAB_eooY', level: 'mid' },
+    { label: '운동역학 하', url: 'https://www.youtube.com/watch?v=lq9G9Ix7hkk', level: 'low' }
+  ],
+  '운동생리학': [
+    { label: '운동생리학 상', url: 'https://www.youtube.com/watch?v=45OpTL6qDoA', level: 'top' },
+    { label: '운동생리학 중', url: 'https://www.youtube.com/watch?v=S701RTYrENg', level: 'mid' },
+    { label: '운동생리학 하', url: 'https://www.youtube.com/watch?v=4EFVBkfR5Eg', level: 'low' }
   ]
 };
 
 function _getVideoLinks(subjectName) {
+  // 더 이상 빈출 TOP 안에 넣지 않음 (빈 문자열 반환)
+  return '';
+}
+
+// 동영상강의 독립 박스 토글 상태
+window._vlBoxOpen = {};
+
+function _toggleVlBox(subjectName){
+  if(!window._vlBoxOpen) window._vlBoxOpen={};
+  window._vlBoxOpen[subjectName] = !window._vlBoxOpen[subjectName];
+  _renderChapters(document.getElementById('summaryContent'));
+}
+
+function _getVideoBox(subjectName) {
   const lectures = VIDEO_LECTURES[subjectName];
-  if (!lectures) return '';
-  return `<div class="ht-video-section">
-    <div class="ht-video-label"><i class="fab fa-youtube"></i> 동영상강의</div>
-    <div class="ht-video-btns">${lectures.map(l => 
-      `<a class="ht-video-btn" href="${l.url}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()"><i class="fab fa-youtube"></i> ${l.label}</a>`
-    ).join('')}</div>
-  </div>`;
+  if (!lectures || lectures.length === 0) return '';
+  const isOpen = window._vlBoxOpen && window._vlBoxOpen[subjectName];
+  
+  // 난이도별 그룹핑
+  const topItems = lectures.filter(l => l.level === 'top');
+  const midItems = lectures.filter(l => l.level === 'mid');
+  const lowItems = lectures.filter(l => l.level === 'low');
+  const newItems = lectures.filter(l => l.level === 'new');
+  
+  const levelIcon = (lvl) => lvl === 'top' ? 'top' : lvl === 'mid' ? 'mid' : 'low';
+  const levelLabel = (lvl) => lvl === 'top' ? '상' : lvl === 'mid' ? '중' : '하';
+  
+  let bodyHtml = '';
+  
+  if (topItems.length > 0) {
+    bodyHtml += `<div class="vl-category"><i class="fas fa-bolt"></i> 핵심 요약 (상)</div>`;
+    bodyHtml += topItems.map(l => 
+      `<a class="vl-item" href="${l.url}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">
+        <div class="vl-item-icon top"><i class="fab fa-youtube"></i></div>
+        <div class="vl-item-title">${escHtml(l.label)}</div>
+        <i class="fas fa-external-link-alt vl-item-arrow"></i>
+      </a>`
+    ).join('');
+  }
+  
+  if (midItems.length > 0) {
+    bodyHtml += `<div class="vl-category"><i class="fas fa-book-open"></i> 주요 내용 (중)</div>`;
+    bodyHtml += midItems.map(l => 
+      `<a class="vl-item" href="${l.url}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">
+        <div class="vl-item-icon mid"><i class="fab fa-youtube"></i></div>
+        <div class="vl-item-title">${escHtml(l.label)}</div>
+        <i class="fas fa-external-link-alt vl-item-arrow"></i>
+      </a>`
+    ).join('');
+  }
+  
+  if (lowItems.length > 0) {
+    bodyHtml += `<div class="vl-category"><i class="fas fa-list-ul"></i> 세부 내용 (하)</div>`;
+    bodyHtml += lowItems.map(l => 
+      `<a class="vl-item" href="${l.url}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">
+        <div class="vl-item-icon low"><i class="fab fa-youtube"></i></div>
+        <div class="vl-item-title">${escHtml(l.label)}</div>
+        <i class="fas fa-external-link-alt vl-item-arrow"></i>
+      </a>`
+    ).join('');
+  }
+  
+  if (newItems.length > 0) {
+    bodyHtml += `<div class="vl-category"><i class="fas fa-star"></i> 기출문제 해설</div>`;
+    bodyHtml += newItems.map(l => 
+      `<a class="vl-item" href="${l.url}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">
+        <div class="vl-item-icon top"><i class="fab fa-youtube"></i></div>
+        <div class="vl-item-title">${escHtml(l.label)}</div>
+        <span class="vl-item-badge new">NEW</span>
+        <i class="fas fa-external-link-alt vl-item-arrow"></i>
+      </a>`
+    ).join('');
+  }
+  
+  return `<div class="vl-box"><div class="vl-header" onclick="_toggleVlBox('${subjectName}')">
+    <h3><i class="fab fa-youtube"></i> 동영상강의</h3>
+    <div class="vl-toggle ${isOpen?'open':''}">
+      <span>${isOpen?'접기':'펼치기'}</span> <i class="fas fa-chevron-down"></i>
+    </div>
+  </div><div class="vl-body ${isOpen?'open':''}">${bodyHtml}</div></div>`;
 }
 
 function _toggleHtList(subjectName){
